@@ -15,7 +15,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (magit general evil-surround ess evil-visual-mark-mode))))
+    (evil-collection magit general evil-surround ess evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -40,14 +40,19 @@
 ;; Turn on evil mode by default
 (use-package evil
   :ensure t ;; Install if not installed
+  :init
+  (setq evil-want-integration nil)
   :config   ;; Subsequent commands are for configuration after loading
-  (evil-mode))
-
-;; Enable surround plugin
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
+  (evil-mode 1)
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
+  (use-package evil-collection
+    :ensure t
+    :config
+    (evil-collection-init))
+  )
 
 ;; General package for better key-bindings
 (use-package general
@@ -152,11 +157,12 @@
 
 (use-package ess
   :ensure t
-  :hook ((ess-mode . (lambda () (setq ess-ask-for-ess-directory nil)))
-	 (ess-mode . (lambda () (setq ess-directory-function 'ans-r-file-here)))
-	 (ess-mode . (lambda () (setq ess-default-style 'RStudio))))
   :init
   (add-to-list 'evil-emacs-state-modes 'inferior-ess-mode)
+  :custom
+  (ess-ask-for-ess-directory nil)
+  (ess-directory-function 'ans-r-file-here)
+  (ess-default-style 'RStudio)
   :general
   (:states 'motion
 	   :keymaps 'ess-mode-map
