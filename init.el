@@ -13,7 +13,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (evil-surround ess evil-visual-mark-mode))))
+ '(package-selected-packages
+   (quote
+    (magit general evil-surround ess evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -26,6 +28,14 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile (require 'use-package))
+
+;; Global settings
+(show-paren-mode 1)
+(setq show-paren-delay 0)
+(global-linum-mode t)
+
+;; Set the current theme
+(load-theme 'wombat)
 
 ;; Turn on evil mode by default
 (use-package evil
@@ -40,24 +50,57 @@
   (global-evil-surround-mode 1))
 
 ;; General package for better key-bindings
+(use-package general
+  :ensure t)
 
-;; Set the current theme
-(load-theme 'wombat)
+;; Unbind some common keys
+(general-unbind 'motion
+  "SPC"
+  "C-u"
+  "\\")
 
 ;; Some custom vim keys
-(define-key evil-normal-state-map "S" 'save-buffer)
+(general-define-key
+ :states '(motion normal)
+ "S" 'save-buffer)
 
-;; Leader key
-;; Note that key-chords need to be defined via variables, as shown here
-(defvar ans--leader-global (make-sparse-keymap)
-  "Keymap for leader key shortcuts")
-(define-key evil-motion-state-map "," ans--leader-global)
-(define-key ans--leader-global "f" 'find-file)
-(define-key ans--leader-global "b" 'switch-to-buffer)
+(defun ans-switch-to-mru-buffer ()
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-;; Reload emacs init file with ",sv"
-;; Note again the use of `defvar` to set up the keymap
-;; Note also the use of 'interactive' -- this doesn't work otherwise
+(general-define-key
+ :states '(motion normal visual)
+;; Quickly switch between windows
+ "C-S-j" 'evil-window-down
+ "C-S-k" 'evil-window-up
+ "C-S-h" 'evil-window-left
+ "C-S-l" 'evil-window-right
+ ;; Scroll up (default vim behavior, but overridden by Emacs)
+ "C-u" 'evil-scroll-up
+ ;; More convenient buffer switching
+ "TAB" 'ans-switch-to-mru-buffer
+ "<right>" 'evil-next-buffer
+ "<left>" 'evil-prev-buffer)
+
+;; Leader and local leader
+(general-create-definer ans-leader-def :prefix "SPC")
+
+;; Global leader prefix mappings
+(ans-leader-def
+ :states 'motion
+;; Control-T-like behavior
+ "t" 'find-file
+ "b" 'switch-to-buffer)
+
+;; Remap <jk> to escape in insert mode
+(general-define-key
+ :states '(insert)
+ "j"
+ (general-key-dispatch 'self-insert-command
+   :timeout 0.25
+   "k" 'evil-normal-state))
+
+;; Reload emacs init file with "<leader>sv"
 (defun ans--reload-initfile ()
   "Reload the emacs init file"
   (interactive)
@@ -66,31 +109,110 @@
   "Edit the emacs init file"
   (interactive)
   (find-file "~/.emacs.d/init.el"))
-(defvar ans--leader-s (make-sparse-keymap) "Leader-s keymap")
-(define-key ans--leader-global "s" ans--leader-s)
-(define-key ans--leader-s "v" 'ans--reload-initfile)
 
-(defvar ans--leader-e (make-sparse-keymap) "Leader-e keymap")
-(define-key ans--leader-global "e" ans--leader-e)
-(define-key ans--leader-e "v" 'ans--edit-initfile)
+(ans-leader-def
+  :states '(motion normal)
+  "s v" 'ans--reload-initfile
+  "e v" 'ans--edit-initfile
+  "s x" (lambda() (interactive)(switch-to-buffer "*scratch*")))
 
-;; Window motions
-;; Note the use of `motion` state map so this works in read-only windows
-(define-key evil-motion-state-map (kbd "C-S-j") 'evil-window-down)
-(define-key evil-motion-state-map (kbd "C-S-k") 'evil-window-up)
-(define-key evil-motion-state-map (kbd "C-S-h") 'evil-window-left)
-(define-key evil-motion-state-map (kbd "C-S-l") 'evil-window-right)
-
-;; Filetype associations
-(add-to-list 'auto-mode-alist '("\\.R\\'" . ess-r-mode))
+(use-package magit
+  :ensure t
+  :general
+  (ans-leader-def
+    :states 'motion
+    "g s" 'magit-status))
 
 ;; Org mode
 (setq org-todo-keywords
       '((sequence "TODO" "STARTED" "VERIFY" "|" "DONE")))
 
+;; Common org-mode notes
+(ans-leader-def
+  :states 'motion
+  "o e" (lambda () (interactive)(find-file "~/Dropbox/Notes/emacs.org"))) 
+
+;; Org mode mappings
+(general-define-key
+ :states '(motion normal)
+ :keymaps 'org-mode-map
+ "RET" 'org-cycle
+ "<backspace>" 'outline-hide-subtree
+ "<C-return>" 'org-open-at-point
+ "g t" 'org-todo
+ "g o" (lambda() (interactive)(evil-end-of-line)(org-insert-heading-respect-content)(evil-append 1))
+ "g O" (lambda() (interactive)(evil-beginning-of-line)(org-insert-heading-respect-content)(evil-append 1)))
+
 ;; Lisp interaction mode
 ; (evil-define-key 'insert global-map (kbd "<C-return>") 'eval-last-sexp)
-(evil-define-key 'normal lisp-mode-shared-map (kbd "<C-return>") 'eval-defun)
+(general-define-key
+ :states '(motion normal)
+ :keymaps 'lisp-mode-shared-map
+ "<C-return>" 'eval-defun)
 
-;(evil-define-key 'normal 'org-mode-map
-;  (kbd "RET") 'org-cycle)
+(use-package ess
+  :ensure t
+  :hook ((ess-mode . (lambda () (setq ess-ask-for-ess-directory nil)))
+	 (ess-mode . (lambda () (setq ess-directory-function 'ans-r-file-here)))
+	 (ess-mode . (lambda () (setq ess-default-style 'RStudio))))
+  :init
+  (add-to-list 'evil-emacs-state-modes 'inferior-ess-mode)
+  :general
+  (:states 'motion
+	   :keymaps 'ess-mode-map
+	   :prefix "\\"
+	   "r f" 'ans-start-R
+	   "r q" 'ans-quit-R
+	   "l" 'ess-eval-line
+	   "d" 'ess-eval-line-and-step
+	   "p p" 'ess-eval-paragraph
+	   "p d" 'ess-eval-paragraph-and-step
+	   "a a" 'ess-eval-buffer
+	   "a d" 'ess-eval-buffer-from-here-to-end
+	   "a s" 'ess-eval-buffer-from-beg-to-here)
+  (:states 'visual
+	   :keymaps 'ess-mode-map
+	   :prefix "\\"
+	   "s s" 'ess-eval-region)
+  (:states 'insert
+	   :keymaps 'ess-mode-map
+	   "M-m" (lambda() (interactive)(insert " %>%"))
+	   "M--" 'ess-insert-S-assign)
+  (general-define-key
+   :keymaps 'evil-emacs-state-map
+   "C-S-j" 'evil-window-down
+   "C-S-k" 'evil-window-up
+   "C-S-h" 'evil-window-left
+   "C-S-l" 'evil-window-right)
+  )
+
+;; ESS mode mappings
+(defun ans-split-right-if-wide ()
+  (interactive)
+  (if (>= (window-total-width) 200)
+      (split-window-right -100)
+    (split-window-below)))
+
+;; Use here::here to determine path for R buffer
+(defun ans-r-file-here ()
+  (shell-command-to-string
+   (concat
+    "Rscript -e \""
+    "setwd(dirname('"(buffer-file-name)"'));"
+    "cat(here::here())"
+    "\"")))
+  
+(defun ans-start-R ()
+  "Start R with default options, splitting the window vertically."
+  (interactive)
+  (ans-split-right-if-wide)
+  (save-selected-window
+    (other-window 1)
+    (R "--no-save --no-restore")))
+
+(defun ans-quit-R ()
+  "Quit R process and close buffer"
+  (interactive)
+  (ess-quit)
+  (kill-buffer)
+  (delete-window))
