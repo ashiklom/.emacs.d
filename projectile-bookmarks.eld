@@ -1,0 +1,1 @@
+("~/.emacs.d/" "~/Projects/programming/r/metar/" "~/.config/nvim/")
