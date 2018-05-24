@@ -29,6 +29,10 @@
 (tool-bar-mode -1)
 (electric-pair-mode 1)		; Auto-close braces, parentheses, etc.
 
+(defvar backup-dir "~/.emacs.d/backups")
+(setq backup-directory-alist (list (cons "." backup-dir)))
+(setq make-backup-files nil)
+
 ;; I want line numbers for programming (prog) and text modes
 (defun ans-prog-mode-setup ()
   (linum-mode 1)
@@ -190,6 +194,9 @@
   (setq helm-grep-ag-command
 	"rg --color=always --smart-case --no-heading --line-number %s %s %s")
   (setq helm-autoresize-max-height 20)
+  (setq helm-display-function 'helm-display-buffer-in-own-frame
+	helm-display-buffer-reuse-frame t
+	helm-use-undecorated-frame-option t)
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
@@ -252,8 +259,10 @@ This makes repeat completions easier (e.g. when completing long file paths).
   (general-def
     :states 'insert
     ;; "TAB" 'company-indent-or-complete-common
-    "C-n" 'company-dabbrev
-    "C-p" 'company-dabbrev
+    ;; See below for discussion of company-dabbrev-code
+    ;; https://github.com/company-mode/company-mode/issues/360
+    "C-n" 'company-dabbrev-code
+    "C-p" 'company-dabbrev-code
     "C-f" 'company-files
     "C-l" 'company-complete
     )
@@ -271,7 +280,7 @@ This makes repeat completions easier (e.g. when completing long file paths).
   :ensure t
   :init
   (setq org-todo-keywords
-	'((sequence "TODO" "STARTED" "VERIFY" "|" "DONE")))
+	'((sequence "TODO" "STARTED" "VERIFY" "|" "DONE" "CANCELED")))
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   :general
   (general-def

@@ -5,3 +5,4 @@ elpa
 ac-comphist.dat
 projectile.cache
 abbrev_defs
+/tramp
