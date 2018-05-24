@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/Projects/programming/r/metar/" "~/.config/nvim/")
+("~/Projects/nasa-rtm/nasa_ef_2018/speed-talk/" "~/Projects/dissertation/defense-presentation/" "~/Projects/prospect-traits/rspecan/" "~/Documents/job_applications/PNNL_postdoc_Bond-Lamberty/pnnl_jobtalk/" "~/Documents/job_applications/nasa_goddard_spectroscopy/rnw_jobtalk/" "~/Documents/job_applications/nasa_goddard_spectroscopy/jobTalk_beamer/" "~/.emacs.d/" "~/Projects/programming/r/metar/" "~/Projects/pecan/pecan/" "~/.config/nvim/")

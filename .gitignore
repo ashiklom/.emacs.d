@@ -2,3 +2,6 @@ elpa
 .Rhistory
 *~
 \#*\#
+ac-comphist.dat
+projectile.cache
+abbrev_defs
