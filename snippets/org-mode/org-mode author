@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: org-mode author
+# key: author
+# --
+#+AUTHOR: $0
