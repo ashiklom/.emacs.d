@@ -1,3 +1,9 @@
+;;; init.el --- Alexey Shiklomanov's Emacs init file
+;;;
+;;; Commentary:
+;;;
+;;;
+;;; Code:
 ;; Use Emacs's internal package manager
 (package-initialize)
 (require 'package)
@@ -9,8 +15,11 @@
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 
 ;; Custom file. Mostly, I avoid using custom in favor of ~setq~.
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
+
+;; Also load stuff from emacswiki
+(add-to-list 'load-path (expand-file-name "emacswiki" user-emacs-directory))
 
 ;; Bootstrap use-package
 (unless (package-installed-p 'use-package)
@@ -21,24 +30,26 @@
 ;; Global settings
 (setq inhibit-splash-screen t
       inhibit-startup-message t
-      inhibit-startub-echo-area-message t
+      inhibit-startup-echo-area-message t
       show-paren-delay 0
-      abbrev-file-name "~/.emacs.d/abbrev_defs"
+      abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory)
       save-abbrevs 'silent)
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (electric-pair-mode 1)		; Auto-close braces, parentheses, etc.
 
-(defvar backup-dir "~/.emacs.d/backups")
+(defvar backup-dir (expand-file-name "backups" user-emacs-directory))
 (setq backup-directory-alist (list (cons "." backup-dir)))
 (setq make-backup-files nil)
 
 ;; I want line numbers for programming (prog) and text modes
 (defun ans-prog-mode-setup ()
+  "My custom setup for prog mode."
   (linum-mode 1)
   (toggle-truncate-lines 1)
   (flyspell-prog-mode))
 (defun ans-text-mode-setup ()
+  "My custom configuration for text mode."
   (linum-mode 1)
   (visual-line-mode)
   (flyspell-mode))
@@ -103,11 +114,6 @@
   "k" 'evil-previous-visual-line
   "gj" 'evil-next-line
   "gk" 'evil-previous-line
-  ;; Quickly switch between windows
-  "C-S-j" 'evil-window-down
-  "C-S-k" 'evil-window-up
-  "C-S-h" 'evil-window-left
-  "C-S-l" 'evil-window-right
   "C-=" 'evil-window-increase-height
   "C--" 'evil-window-decrease-height
   "C-+" 'evil-window-increase-width
@@ -115,10 +121,6 @@
   "C-0" 'balance-windows
   "C-)" 'shrink-window-if-larger-than-buffer
   "<C-M-down>" 'evil-window-increase-height
-  "<C-S-up>" 'buf-move-up
-  "<C-S-down>" 'buf-move-down
-  "<C-S-left>" 'buf-move-left
-  "<C-S-right>" 'buf-move-right
   "C-d" 'evil-scroll-down
   "C-u" 'evil-scroll-up
   )
@@ -126,28 +128,70 @@
 (general-def
   :states 'normal
   "S" 'save-buffer
-  ;; More convenient buffer switching
-  "TAB" 'ans-switch-to-mru-buffer
-  "<S-right>" 'evil-next-buffer
-  "<S-left>" 'evil-prev-buffer
-  "<S-up>" 'other-frame
-  "<S-down>" 'other-frame
-  "Q" 'kill-this-buffer
-  ;; Helm
-  "M-x" 'helm-M-x
   )
 
 (general-create-definer ans-leader-def :prefix "SPC")
 (ans-leader-def
-  :states 'motion
-  "b" 'switch-to-buffer
+  :states '(motion normal emacs)
+  :keymaps 'override
+  "b" 'helm-mini
+  "o" 'other-window
+  "0" 'delete-other-windows
+  "\\" 'evil-window-vsplit
+  "-" 'evil-window-split
+  "<up>" 'buf-move-up
+  "<down>" 'buf-move-down
+  "<left>" 'buf-move-left
+  "<right>" 'buf-move-right
+  "O" 'other-frame
+  "E" 'new-frame
+  "TAB" 'ans-switch-to-mru-buffer
+  "." 'evil-next-buffer
+  "," 'evil-prev-buffer
+  ":" 'eval-expression
+  "d" 'dired
+  "x" 'helm-M-x
+  "q" 'kill-this-buffer
+  "Q" 'evil-quit
   "sv" 'ans--reload-initfile
   "ev" 'ans--edit-initfile
   "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
-  "E" 'new-frame
-  "oe" (lambda () (interactive)(find-file "~/Dropbox/Notes/emacs.org"))
-  "ps" 'toggle-truncate-lines
+  "ws" 'toggle-truncate-lines
   "ss" 'delete-trailing-whitespace
+  "L" 'whitespace-mode			; Show all whitespace characters
+  "z" 'ans-toggle-minimize
+  "'" 'comment-dwim			; Insert right comment
+  "ea" 'align-regexp
+  "*" 'universal-argument		; Emacs's C-u
+  )
+
+(defvar ans-window-minimized '()
+  "Configuration of currently minimized windows.
+See `ans-toggle-minimize'.")
+
+(defun ans-toggle-minimize ()
+  "Toggle the maximization state of a window."
+  (interactive)
+  (if ans-window-minimized
+      (progn (set-window-configuration (pop ans-window-minimized))
+	     (message "Windows restored."))
+    (progn (push (current-window-configuration) ans-window-minimized)
+	   (delete-other-windows)
+	   (message "Window minimized."))
+    ))
+
+;; Edit comment boxes.
+(use-package rebox2
+  :ensure t
+  :general
+  (general-def
+    :states '(normal insert)
+    "M-Q" 'rebox-mode
+    "M-q" 'rebox-dwim)
+  :config
+  (add-to-list 'rebox-language-character-alist '(7 . "!"))
+  (setq rebox-regexp-start (vconcat rebox-regexp-start '("^[ \t]*!+")))
+  (rebox-register-all-templates)
   )
 
 (general-def
@@ -229,8 +273,8 @@
   :general
   (ans-leader-def
     :states '(normal visual)
-    "c c" 'evilnc-comment-or-uncomment-lines
-    "c p" 'evilnc-comment-or-uncomment-paragraphs
+    ";" 'evilnc-comment-or-uncomment-lines
+    "\"" 'evilnc-comment-or-uncomment-paragraphs
     )
   )
 
@@ -276,25 +320,72 @@ This makes repeat completions easier (e.g. when completing long file paths).
 
 (use-package org
   :ensure t
+  :mode ("\\.org\\'" . org-mode)
   :init
   (setq org-todo-keywords
 	'((sequence "TODO" "STARTED" "VERIFY" "|" "DONE" "CANCELED")))
+  (setq org-capture-templates
+	'(("E" "Emacs config"
+	   entry (file+headline "~/Dropbox/Notes/emacs.org" "Configuration to-do list")
+	   "** TODO %?")
+	  ("e" "Emacs note"
+	   entry (file+headline "~/Dropbox/Notes/emacs.org" "Misc")
+	   "** %?")))
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   :general
-  (general-def
-    :keymaps 'org-mode-map
-    :states 'normal
-    "RET" 'org-cycle
-    [tab] 'ans-switch-to-mru-buffer
-    "<backspace>" 'outline-hide-subtree
-    "<C-return>" 'org-open-at-point
-    "g t" 'org-todo
-    "g j" 'org-forward-heading-same-level
-    "g k" 'org-backward-heading-same-level
-    "g h" 'outline-up-heading
-    "g o" (lambda() (interactive)(evil-end-of-line)(org-insert-heading-respect-content)(evil-append 1))
-    "g O" (lambda() (interactive)(evil-beginning-of-line)(org-insert-heading-respect-content)(evil-append 1)))
-  )
+  (ans-leader-def
+    :states '(motion normal emacs)
+    "C" 'org-capture))
+
+;; Old keymaps, replaced by evil-org
+  ;; :general
+  ;; (general-def
+  ;;   :keymaps 'org-mode-map
+  ;;   :states 'normal
+  ;;   "RET" 'org-cycle
+  ;;   [tab] 'ans-switch-to-mru-buffer
+  ;;   "<backspace>" 'outline-hide-subtree
+  ;;   "<C-return>" 'org-open-at-point
+  ;;   "g t" 'org-todo
+  ;;   "g j" 'org-forward-heading-same-level
+  ;;   "g k" 'org-backward-heading-same-level
+  ;;   "g h" 'outline-up-heading
+  ;;   "g o" (lambda() (interactive)(evil-end-of-line)(org-insert-heading-respect-content)(evil-append 1))
+  ;;   "g O" (lambda() (interactive)(evil-beginning-of-line)(org-insert-heading-respect-content)(evil-append 1)))
+  ;; (general-def
+  ;;   :keymaps 'org-mode-map
+  ;;   :states 'normal
+  ;;   :predicate '(eolp)
+  ;;   ;; Move through ellipses
+  ;;   "h" (lambda() (interactive)(evil-backward-char 1 t))
+  ;;   "l" (lambda() (interactive)(evil-forward-char 1 t))
+  ;;   )
+
+(use-package rainbow-delimiters
+  :ensure t
+  :hook ((prog-mode) . rainbow-delimiters-mode))
+
+(use-package ace-jump-mode
+  :ensure t
+  :general
+  (ans-leader-def
+    :states '(motion normal emacs)
+    "SPC s" 'evil-ace-jump-char-mode
+    "SPC w" 'evil-ace-jump-word-mode
+    "SPC l" 'evil-ace-jump-line-mode))
+
+(use-package flycheck
+  :ensure t
+  :config (global-flycheck-mode))
+
+(use-package evil-org
+  :ensure t
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
 
 ;; Emacs Speaks Statistics (ESS)
 ;; IDE for R and other stats programs
@@ -362,6 +453,7 @@ This makes repeat completions easier (e.g. when completing long file paths).
   )
 
 (defun ans-latex-mode-setup ()
+  "Set custom options for LaTeX files."
   (require 'reftex)
   ;; Use settings for text mode
   (ans-text-mode-setup)
@@ -417,9 +509,8 @@ This makes repeat completions easier (e.g. when completing long file paths).
 
 (use-package smartparens
   :ensure t
-  :init
+  :config
   (require 'smartparens-config)
-  :hook ((prog-mode) . smartparens-strict-mode)
   :general
   (general-def
     :states 'insert
@@ -427,13 +518,14 @@ This makes repeat completions easier (e.g. when completing long file paths).
     "M-w" 'sp-forward-barf-sexp))
 
 (defun ans-split-right-if-wide ()
+  "Split the window to the right if there is sufficient space."
   (interactive)
   (if (>= (window-total-width) 200)
       (split-window-right -100)
     (split-window-below)))
 
 (defun ans-r-file-here ()
-  "Use here::here to determine path for R buffer"
+  "Use here::here to determine path for R buffer."
   (shell-command-to-string
    (concat
     "Rscript -e \""
@@ -450,23 +542,34 @@ This makes repeat completions easier (e.g. when completing long file paths).
     (R "--no-save --no-restore")))
 
 (defun ans-quit-R ()
-  "Quit R process and close buffer"
+  "Quit R process and close buffer."
   (interactive)
   (ess-quit)
   (kill-buffer)
   (delete-window))
 
 (defun ans-switch-to-mru-buffer ()
-  "Switch to most-recently-used (MRU) buffer"
+  "Switch to most-recently-used (MRU) buffer."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 (defun ans--reload-initfile ()
-  "Reload the emacs init file"
+  "Reload the Emacs init file."
   (interactive)
-  (load-file "~/.emacs.d/init.el"))
+  (load-file (expand-file-name "init.el" user-emacs-directory)))
 
 (defun ans--edit-initfile ()
-  "Edit the emacs init file"
+  "Edit the Emacs init file."
   (interactive)
-  (find-file "~/.emacs.d/init.el"))
+  (find-file (expand-file-name "init.el" user-emacs-directory)))
+
+;; Emacs server
+(use-package edit-server
+  :ensure t
+  :config
+  (edit-server-start))
+;; (setq server-socket-dir (expand-file-name "server" user-emacs-directory))
+;; (server-start)
+
+(provide 'init)
+;;; init.el ends here
