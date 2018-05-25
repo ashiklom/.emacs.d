@@ -290,13 +290,6 @@ See `ans-toggle-minimize'.")
   ;; Thanks to this:
   ;; https://github.com/otijhuis/evil-emacs.d/blob/7c122b0e05c367192444a85d12323487422b793b/config/evil-settings.el#L38-L39
   (add-hook 'evil-insert-state-exit-hook (lambda ()(company-abort)))
-  (defun ans-company-complete-continue ()
-    "Insert the result of a completion, then re-start completion.
-This makes repeat completions easier (e.g. when completing long file paths).
-"
-    (interactive)
-    (company-complete-selection)
-    (company-complete))
   :general
   (general-def
     :states 'insert
@@ -305,8 +298,8 @@ This makes repeat completions easier (e.g. when completing long file paths).
     ;; https://github.com/company-mode/company-mode/issues/360
     "C-n" 'company-dabbrev-code
     "C-p" 'company-dabbrev-code
-    "C-f" 'company-files
-    "C-l" 'company-complete
+    "C-f" 'ans-company-current-directory-backend
+    "C-l" 'company-complete		; Note that this includes company-files
     )
   (general-def
     :keymaps 'company-active-map
@@ -317,6 +310,28 @@ This makes repeat completions easier (e.g. when completing long file paths).
     "C-n" 'company-select-next
     "C-p" 'company-select-previous)
   )
+
+(defun ans-company-complete-continue ()
+  "Insert the result of a completion, then re-start completion.
+This makes repeat completions easier (e.g. when completing long file paths)."
+  (interactive)
+  (company-complete-selection)
+  (company-complete))
+
+(defun ans-company-current-directory-backend (command &optional arg &rest ignored)
+  "Complete files in the current directory.
+COMMAND company completion command.
+ARG company completion arguments.
+IGNORED company ignored arguments."
+  (interactive (list 'interactive))
+  (case command
+    (interactive (company-begin-backend 'ans-company-current-directory-backend))
+    (prefix (company-grab-symbol))
+    (candidates
+     (remove-if-not
+      (lambda (c) (string-prefix-p arg c))
+      (directory-files ".")))
+    ))
 
 (use-package org
   :ensure t
@@ -333,33 +348,15 @@ This makes repeat completions easier (e.g. when completing long file paths).
 	   "** %?")))
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   :general
+  (general-def
+    :states '(motion normal)
+    :keymaps 'org-mode-map
+    "<backspace>" 'outline-hide-subtree)
   (ans-leader-def
     :states '(motion normal emacs)
-    "C" 'org-capture))
-
-;; Old keymaps, replaced by evil-org
-  ;; :general
-  ;; (general-def
-  ;;   :keymaps 'org-mode-map
-  ;;   :states 'normal
-  ;;   "RET" 'org-cycle
-  ;;   [tab] 'ans-switch-to-mru-buffer
-  ;;   "<backspace>" 'outline-hide-subtree
-  ;;   "<C-return>" 'org-open-at-point
-  ;;   "g t" 'org-todo
-  ;;   "g j" 'org-forward-heading-same-level
-  ;;   "g k" 'org-backward-heading-same-level
-  ;;   "g h" 'outline-up-heading
-  ;;   "g o" (lambda() (interactive)(evil-end-of-line)(org-insert-heading-respect-content)(evil-append 1))
-  ;;   "g O" (lambda() (interactive)(evil-beginning-of-line)(org-insert-heading-respect-content)(evil-append 1)))
-  ;; (general-def
-  ;;   :keymaps 'org-mode-map
-  ;;   :states 'normal
-  ;;   :predicate '(eolp)
-  ;;   ;; Move through ellipses
-  ;;   "h" (lambda() (interactive)(evil-backward-char 1 t))
-  ;;   "l" (lambda() (interactive)(evil-forward-char 1 t))
-  ;;   )
+    "C" 'org-capture
+    "#" 'org-update-statistics-cookies
+    "g t" 'org-todo))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -376,7 +373,17 @@ This makes repeat completions easier (e.g. when completing long file paths).
 
 (use-package flycheck
   :ensure t
-  :config (global-flycheck-mode))
+  :config
+  (global-flycheck-mode)
+  (general-def
+    :states '(motion normal)
+    "]a" 'flycheck-next-error
+    "[a" 'flycheck-previous-error
+    "]A" 'flycheck-first-error)
+  (ans-leader-def
+    :states '(motion normal)
+    "!" 'flycheck-list-errors)
+  )
 
 (use-package evil-org
   :ensure t
@@ -517,6 +524,11 @@ This makes repeat completions easier (e.g. when completing long file paths).
     "M-e" 'sp-forward-slurp-sexp
     "M-w" 'sp-forward-barf-sexp))
 
+(use-package helm-bibtex
+  :ensure t
+  :commands helm-bibtex)
+(evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
+
 (defun ans-split-right-if-wide ()
   "Split the window to the right if there is sufficient space."
   (interactive)
@@ -568,8 +580,6 @@ This makes repeat completions easier (e.g. when completing long file paths).
   :ensure t
   :config
   (edit-server-start))
-;; (setq server-socket-dir (expand-file-name "server" user-emacs-directory))
-;; (server-start)
 
 (provide 'init)
 ;;; init.el ends here
