@@ -10,3 +10,4 @@ abbrev_defs
 /recentf
 /projectile-bookmarks.eld
 eshell/*
+flycheck_init.el

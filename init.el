@@ -66,6 +66,7 @@
 ;; Turn on evil mode by default
 (use-package evil
   :ensure t
+  :demand
   :config
   (evil-mode)
   (use-package evil-surround
