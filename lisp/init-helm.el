@@ -13,8 +13,8 @@
   (setq helm-autoresize-mode t)
   (setq helm-buffer-max-length 20)
   (setq helm-mode-fuzzy-match t)
-  (setq helm-grep-ag-command
-	"rg --color=always --smart-case --no-heading --line-number %s %s %s")
+  ;; (setq helm-grep-ag-command
+  ;; 	"rg --color=always --smart-case --no-heading --line-number %s %s %s")
   (setq helm-autoresize-max-height 20)
   (setq helm-display-function 'helm-display-buffer-in-own-frame
 	helm-display-buffer-reuse-frame t
@@ -22,6 +22,8 @@
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
+  ;; (use-package helm-rg :ensure t)
+  (use-package helm-ag :ensure t)
   :general
   (ans-leader-def
     :states 'normal
@@ -30,7 +32,8 @@
 
 (use-package projectile
   :ensure t
-  :commands (projectile-mode)
+  ;; :requires helm-rg
+  :requires helm-ag
   :config
   (projectile-mode))
 
@@ -43,8 +46,11 @@
     :states 'normal
     "P" 'helm-projectile
     "f" 'helm-projectile-find-file
-    "p" 'helm-projectile-switch-project
-    )
+    "p" 'helm-projectile-switch-project)
+  (ans-leader-def
+    :states 'normal
+    :keymaps 'projectile-mode-map
+    "rg" 'helm-projectile-ag)
   :config
   (defvar helm-source-file-not-found
     (helm-build-dummy-source
