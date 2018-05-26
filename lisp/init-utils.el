@@ -52,6 +52,8 @@ See `ans-toggle-minimize'.")
 	   (message "Window minimized."))
     ))
 
+(require 'dired+)
+(with-eval-after-load "dired+" (diredp-make-find-file-keys-reuse-dirs))
 
 (provide 'init-utils)
 ;;; init-utils ends here
