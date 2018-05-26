@@ -56,8 +56,11 @@
 (add-hook 'prog-mode-hook #'ans-prog-mode-setup)
 (add-hook 'text-mode-hook #'ans-text-mode-setup)
 
-;; Set the current theme
-(load-theme 'wombat)
+;; Aesthetics
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t)
+(color-theme-sanityinc-tomorrow-night)
+(set-face-attribute 'default nil :font "Input Mono Narrow-12")
 
 (require 'init-evil)
 (require 'init-utils)
