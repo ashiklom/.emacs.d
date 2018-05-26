@@ -59,8 +59,8 @@
 ;; Set the current theme
 (load-theme 'wombat)
 
-(require 'init-utils)
 (require 'init-evil)
+(require 'init-utils)
 (require 'init-helm)
 (require 'init-company)
 (require 'init-org)
