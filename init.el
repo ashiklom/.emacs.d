@@ -171,11 +171,15 @@
     "M-e" 'sp-forward-slurp-sexp
     "M-w" 'sp-forward-barf-sexp))
 
-;; Emacs server
+;; For editing text fields in the browser
 (use-package edit-server
   :ensure t
   :config
   (edit-server-start))
+
+(use-package adaptive-wrap
+  :ensure t
+  :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 
 (provide 'init)
 ;;; init.el ends here

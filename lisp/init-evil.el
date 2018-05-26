@@ -19,6 +19,14 @@
     (global-evil-surround-mode))
   (use-package evil-indent-textobject
     :ensure t)
+  (use-package evil-embrace
+    :ensure t
+    :init
+    (setq evil-embrace-show-help-p nil)
+    :config
+    (evil-embrace-enable-evil-surround-integration)
+    (add-hook 'org-mode-hook 'embrace-org-mode-hook)
+    (add-hook 'LaTeX-mode-hook 'embrace-LaTeX-mode-hook))
   ;; Don't use evil mode in these, but enable some Evil mappings
   (add-to-list 'evil-emacs-state-modes 'help-mode)
   (add-to-list 'evil-emacs-state-modes 'messages-buffer-mode)
@@ -117,6 +125,7 @@
   "'" 'comment-dwim			; Insert right comment
   "ea" 'align-regexp
   "*" 'universal-argument		; Emacs's C-u
+  "C" 'org-capture
   )
 
 (use-package evil-nerd-commenter
