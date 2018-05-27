@@ -11,3 +11,4 @@ abbrev_defs
 /projectile-bookmarks.eld
 eshell/*
 flycheck_init.el
+magithub/*

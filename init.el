@@ -95,13 +95,22 @@
     :states 'normal
     "g s" 'magit-status)
   )
-(use-package evil-magit :ensure t)
+(use-package evil-magit
+  :ensure t
+  :after magit)
 
 (use-package magithub
   :ensure t
   :after magit
   :config
-  (magithub-feature-autoinject t))
+  (magithub-feature-autoinject t)
+  (ans-leader-def
+    :states '(normal motion emacs)
+    "gd" 'magithub-dashboard)
+  (general-def
+    :keymaps 'magithub-dash-map
+    :states 'normal
+    "gu" 'magithub-dashboard-show-read-notifications-toggle))
 
 (use-package diff-hl
   :ensure t
