@@ -97,6 +97,12 @@
   )
 (use-package evil-magit :ensure t)
 
+(use-package magithub
+  :ensure t
+  :after magit
+  :config
+  (magithub-feature-autoinject t))
+
 (use-package diff-hl
   :ensure t
   :general
