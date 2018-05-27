@@ -6,6 +6,7 @@
 (use-package yasnippet
   :ensure t
   :demand
+  :diminish
   :init
   (setq yas-snippet-dirs '("~/.emacs.d/snippets"
 			   "~/.emacs.d/remote-snippets"))

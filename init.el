@@ -199,7 +199,21 @@
 
 (use-package adaptive-wrap
   :ensure t
+  :diminish
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
+
+(use-package elscreen
+  :ensure t
+  :diminish
+  :init
+  (setq elscreen-prefix-key (kbd "<C-SPC>"))
+  :config
+  (elscreen-start)
+  (general-def
+    :prefix elscreen-prefix-key
+    "q" 'elscreen-kill
+    "x" 'elscreen-kill-screen-and-buffers
+    "," 'elscreen-screen-nickname))
 
 ;; Visually-smooth scrolling
 (use-package sublimity
