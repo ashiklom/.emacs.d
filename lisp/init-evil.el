@@ -126,6 +126,7 @@
   "ea" 'align-regexp
   "*" 'universal-argument		; Emacs's C-u
   "C" 'org-capture
+  "ee" 'sr-speedbar-toggle
   )
 
 (use-package evil-nerd-commenter

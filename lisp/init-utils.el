@@ -55,5 +55,8 @@ See `ans-toggle-minimize'.")
 (require 'dired+)
 (with-eval-after-load "dired+" (diredp-make-find-file-keys-reuse-dirs))
 
+(setq sr-speedbar-right-side t)
+(require 'sr-speedbar)
+
 (provide 'init-utils)
 ;;; init-utils ends here
