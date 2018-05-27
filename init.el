@@ -33,7 +33,9 @@
       inhibit-startup-echo-area-message t
       show-paren-delay 0
       abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory)
-      save-abbrevs 'silent)
+      save-abbrevs 'silent
+      scroll-margin 2
+      scroll-step 1)
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (electric-pair-mode 1)		; Auto-close braces, parentheses, etc.
@@ -198,6 +200,18 @@
 (use-package adaptive-wrap
   :ensure t
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
+
+;; Visually-smooth scrolling
+(use-package sublimity
+  :ensure t
+  :disabled
+  :diminish
+  :init
+  (setq sublimity-scroll-weight 10
+	sublimity-scroll-drift-length 5)
+  :config
+  (require 'sublimity-scroll)
+  (sublimity-mode 1))
 
 (provide 'init)
 ;;; init.el ends here
