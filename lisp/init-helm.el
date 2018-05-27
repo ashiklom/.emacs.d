@@ -19,6 +19,8 @@
   (setq helm-display-function 'helm-display-buffer-in-own-frame
 	helm-display-buffer-reuse-frame t
 	helm-use-undecorated-frame-option t)
+  (setq helm-findutils-search-full-path t)
+  ;; (setq find-program "fd")
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
@@ -27,7 +29,8 @@
   :general
   (ans-leader-def
     :states 'normal
-    "t" 'helm-find-files)
+    "f" 'helm-find-files
+    "F" 'helm-find)
   )
 
 (use-package projectile
@@ -44,9 +47,8 @@
   :general
   (ans-leader-def
     :states 'normal
-    "P" 'helm-projectile
-    "f" 'helm-projectile-find-file
-    "p" 'helm-projectile-switch-project)
+    "p" 'helm-projectile
+    "P" 'helm-projectile-switch-project)
   (ans-leader-def
     :states 'normal
     :keymaps 'projectile-mode-map
