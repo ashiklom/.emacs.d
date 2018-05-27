@@ -47,10 +47,12 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
-(add-hook 'evil-org-mode-hook
-	  (lambda ()
-	    (push '(?* . ("*" . "*")) evil-surround-pairs-alist)
-	    (push '(?/ . ("/" . "/")) evil-surround-pairs-alist)))
+(defun ans-evil-org-mode-setup ()
+  "Custom setup for org mode."
+  (push '(?* . ("*" . "*")) evil-surround-pairs-alist)
+  (push '(?/ . ("/" . "/")) evil-surround-pairs-alist))
+
+(add-hook 'evil-org-mode-hook 'ans-evil-org-mode-setup)
 
 (use-package org-journal
   :ensure t

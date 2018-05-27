@@ -78,7 +78,6 @@
   "C-_" 'evil-window-decrease-width
   "C-0" 'balance-windows
   "C-)" 'shrink-window-if-larger-than-buffer
-  "<C-M-down>" 'evil-window-increase-height
   "C-d" 'evil-scroll-down
   "C-u" 'evil-scroll-up
   )

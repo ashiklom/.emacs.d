@@ -19,6 +19,8 @@
 
 ;; Also load stuff from emacswiki
 (add-to-list 'load-path (expand-file-name "emacswiki" user-emacs-directory))
+
+;; ...and from my own custom set of functions
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;; Bootstrap use-package
