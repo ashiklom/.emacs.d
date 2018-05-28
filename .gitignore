@@ -12,3 +12,4 @@ abbrev_defs
 eshell/*
 flycheck_init.el
 magithub/*
+/custom.el
