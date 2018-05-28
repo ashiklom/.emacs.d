@@ -234,5 +234,14 @@
   (require 'sublimity-scroll)
   (sublimity-mode 1))
 
+(use-package expand-region
+  :ensure t
+  :init
+  (setq expand-region-contract-fast-key ",")
+  :general
+  (general-def
+    :states 'motion
+    "z." 'er/expand-region))
+
 (provide 'init)
 ;;; init.el ends here

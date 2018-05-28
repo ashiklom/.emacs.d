@@ -36,6 +36,9 @@
   (setq paragraph-separate "[ 	\f]*$")
   )
 
+(use-package evil-latex-textobjects
+  :quelpa (evil-latex-textobjects :fetcher github :repo "hpdeifel/evil-latex-textobjects")
+  :hook (LaTeX-mode-hook . turn-on-evil-latex-textobjects-mode))
 
 (provide 'init-latex)
 ;;; init-latex ends here
