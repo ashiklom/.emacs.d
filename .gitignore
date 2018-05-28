@@ -13,3 +13,5 @@ eshell/*
 flycheck_init.el
 magithub/*
 /custom.el
+/quelpa/*
+/network-security.data
