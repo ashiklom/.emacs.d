@@ -10,12 +10,15 @@
   (setq org-todo-keywords
 	'((sequence "TODO" "STARTED" "VERIFY" "|" "DONE" "CANCELED")))
   (setq org-capture-templates
-	'(("E" "Emacs config"
-	   entry (file+headline "~/Dropbox/Notes/emacs.org" "Configuration to-do list")
+	'(("E" "Emacs config" entry
+	   (file+headline "~/Dropbox/Notes/emacs.org" "Configuration to-do list")
 	   "** TODO %?")
-	  ("e" "Emacs note"
-	   entry (file+headline "~/Dropbox/Notes/emacs.org" "Misc")
-	   "** %?")))
+	  ("e" "Emacs note" entry
+	   (file+headline "~/Dropbox/Notes/emacs.org" "Misc")
+	   "** %?")
+	  ("l" "Personal to-do item" entry
+	   (file+headline "~/Dropbox/Notes/life.org" "Tasks")
+	   "** TODO %?")))
   (setq org-hide-emphasis-markers t)
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   :general
