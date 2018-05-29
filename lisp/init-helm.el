@@ -64,12 +64,14 @@
     "P" 'helm-projectile-switch-project)
   (ans-leader-def
     :states '(motion normal)
-    :predicate '(ans/in-project-p)
-    "b" 'helm-projectile-switch-to-buffer
+    "b" (general-predicate-dispatch 'helm-mini
+	  (ans/in-project-p) 'helm-projectile-switch-to-buffer)
     "B" 'helm-mini
-    "f" 'helm-projectile-find-file
+    "f" (general-predicate-dispatch 'helm-find-files
+	  (ans/in-project-p) 'helm-projectile-find-file)
     "F" 'helm-find-files
-    "rg" 'helm-projectile-ag)
+    "rg" (general-predicate-dispatch 'helm-ag
+	   (ans/in-project-p) 'helm-projectile-ag))
   :config
   (defvar helm-source-file-not-found
     (helm-build-dummy-source
