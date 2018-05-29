@@ -31,20 +31,20 @@
   (add-to-list 'evil-emacs-state-modes 'help-mode)
   (add-to-list 'evil-emacs-state-modes 'messages-buffer-mode)
   (add-to-list 'evil-emacs-state-modes 'special-mode)
-  (general-def
-    :keymaps '(help-mode-map
-	       messages-buffer-mode-map
-	       special-mode-map)
-    "h" 'evil-backward-char
-    "l" 'evil-forward-char
-    "k" 'evil-previous-visual-line
-    "j" 'evil-next-visual-line
-    "C-u" 'evil-scroll-up
-    "C-d" 'evil-scroll-down
-    "/" 'evil-search-forward
-    "n" 'evil-search-next
-    "N" 'evil-search-previous
-    )
+  ;; (general-def
+  ;;   :keymaps '(help-mode-map
+  ;; 	       messages-buffer-mode-map
+  ;; 	       special-mode-map)
+  ;;   "h" 'evil-backward-char
+  ;;   "l" 'evil-forward-char
+  ;;   "k" 'evil-previous-visual-line
+  ;;   "j" 'evil-next-visual-line
+  ;;   "C-u" 'evil-scroll-up
+  ;;   "C-d" 'evil-scroll-down
+  ;;   "/" 'evil-search-forward
+  ;;   "n" 'evil-search-next
+  ;;   "N" 'evil-search-previous
+  ;;   )
   ;; Some special mappings for dired mode
   (add-to-list 'evil-emacs-state-modes 'dired-mode)
   (general-def
@@ -87,7 +87,9 @@
   "S" 'save-buffer
   )
 
-(general-create-definer ans-leader-def :prefix "SPC")
+(general-create-definer ans-leader-def
+  :prefix "SPC"
+  :non-normal-prefix "S-SPC")
 (ans-leader-def
   :states '(motion normal emacs)
   :keymaps 'override
