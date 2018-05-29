@@ -44,7 +44,8 @@
       scroll-step 1)
 (show-paren-mode 1)
 (tool-bar-mode -1)
-(electric-pair-mode 1)		; Auto-close braces, parentheses, etc.
+(electric-pair-mode 1)		; auto-close braces, parentheses, etc.
+(blink-cursor-mode -1)
 
 (defvar backup-dir (expand-file-name "backups" user-emacs-directory))
 (setq backup-directory-alist (list (cons "." backup-dir)))
