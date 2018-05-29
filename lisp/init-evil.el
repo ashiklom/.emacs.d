@@ -64,6 +64,7 @@
   "SPC"
   "C-u"
   "\\")
+(general-unbind "M-SPC")
 
 (general-def
   :states 'insert
@@ -73,7 +74,7 @@
   )
 
 (general-def
-  :states '(motion normal emacs)
+  :states '(motion normal visual)
   ;; Move by visual lines
   "j" 'evil-next-visual-line
   "k" 'evil-previous-visual-line
@@ -91,14 +92,13 @@
 
 (general-def
   :states 'normal
-  "S" 'save-buffer
-  )
+  "S" 'save-buffer)
 
 (general-create-definer ans-leader-def
   :prefix "SPC"
-  :non-normal-prefix "S-SPC")
+  :non-normal-prefix "M-SPC")
 (ans-leader-def
-  :states '(motion normal emacs)
+  :states '(motion normal visual emacs)
   :keymaps 'override
   "b" 'helm-mini
   "o" 'other-window
@@ -152,10 +152,11 @@
   :general
   (ans-leader-def
     :states '(motion normal emacs)
-    "SPC s" 'evil-ace-jump-char-mode
-    "SPC w" 'evil-ace-jump-word-mode
-    "SPC l" 'evil-ace-jump-line-mode))
-
+    :infix "SPC"
+    "w" 'evil-ace-jump-word-mode
+    "l" 'evil-ace-jump-line-mode
+    "f" 'evil-ace-jump-char-mode
+    "t" 'evil-ace-jump-char-to-mode))
 
 (provide 'init-evil)
 ;;; init-evil ends here
