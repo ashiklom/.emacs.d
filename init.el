@@ -253,5 +253,9 @@
     :states 'normal
     "gs" 'fill-function-arguments-dwim))
 
+;; Remember previous window configuration
+(winner-mode)
+(diminish winner-mode)
+
 (provide 'init)
 ;;; init.el ends here
