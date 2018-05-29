@@ -54,7 +54,8 @@
     :states '(motion normal visual)
     "gj" 'outline-next-heading
     "gk" 'outline-previous-heading
-    "g$" 'evil-end-of-line))
+    "g$" 'evil-end-of-line
+    "g%" 'ans/org-realign-tags))
 
 (defun ans-evil-org-mode-setup ()
   "Custom setup for org mode."
@@ -62,6 +63,11 @@
   (push '(?/ . ("/" . "/")) evil-surround-pairs-alist))
 
 (add-hook 'evil-org-mode-hook 'ans-evil-org-mode-setup)
+
+(defun ans/org-realign-tags ()
+  "Right-align org mode tags in current buffer."
+  (interactive)
+  (org-set-tags nil t))
 
 (use-package org-journal
   :ensure t
