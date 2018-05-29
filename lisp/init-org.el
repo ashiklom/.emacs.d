@@ -48,7 +48,13 @@
   (add-hook 'org-mode-hook 'evil-org-mode)
   (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
   (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+  (evil-org-agenda-set-keys)
+  (general-def
+    :keymaps 'evil-org-mode-map
+    :states '(motion normal visual)
+    "gj" 'outline-next-heading
+    "gk" 'outline-previous-heading
+    "g$" 'evil-end-of-line))
 
 (defun ans-evil-org-mode-setup ()
   "Custom setup for org mode."

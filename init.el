@@ -243,5 +243,16 @@
     :states 'motion
     "z." 'er/expand-region))
 
+(use-package fill-function-arguments
+  :quelpa (fill-function-arguments
+	   :fetcher
+	   github
+	   :repo
+	   "davidshepherd7/fill-function-arguments")
+  :general
+  (general-def
+    :states 'normal
+    "gs" 'fill-function-arguments-dwim))
+
 (provide 'init)
 ;;; init.el ends here
