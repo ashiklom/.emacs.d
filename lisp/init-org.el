@@ -8,7 +8,7 @@
   :mode ("\\.org\\'" . org-mode)
   :init
   (setq org-todo-keywords
-	'((sequence "TODO" "STARTED" "VERIFY" "|" "DONE" "CANCELED")))
+	'((sequence "TODO" "STARTED" "|" "DONE")))
   (setq org-capture-templates
 	'(("E" "Emacs config" entry
 	   (file+headline "~/Dropbox/Notes/emacs.org" "Configuration to-do list")
@@ -46,7 +46,7 @@
   :after org
   :config
   (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
+  (add-hook 'evil-org-mode-hook 'ans/evil-org-mode-setup)
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys)
   (general-def
@@ -57,12 +57,11 @@
     "g$" 'evil-end-of-line
     "g%" 'ans/org-realign-tags))
 
-(defun ans-evil-org-mode-setup ()
+(defun ans/evil-org-mode-setup ()
   "Custom setup for org mode."
   (push '(?* . ("*" . "*")) evil-surround-pairs-alist)
-  (push '(?/ . ("/" . "/")) evil-surround-pairs-alist))
-
-(add-hook 'evil-org-mode-hook 'ans-evil-org-mode-setup)
+  (push '(?/ . ("/" . "/")) evil-surround-pairs-alist)
+  (evil-org-set-key-theme '(navigation insert textobjects calendar)))
 
 (defun ans/org-realign-tags ()
   "Right-align org mode tags in current buffer."
