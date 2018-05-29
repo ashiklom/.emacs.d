@@ -24,34 +24,10 @@
     :ensure t
     :config
     (global-evil-surround-mode))
-  (use-package evil-indent-textobject
-    :ensure t)
-  (use-package evil-embrace
-    :ensure t
-    :init
-    (setq evil-embrace-show-help-p nil)
-    :config
-    (evil-embrace-enable-evil-surround-integration)
-    (add-hook 'org-mode-hook 'embrace-org-mode-hook)
-    (add-hook 'LaTeX-mode-hook 'embrace-LaTeX-mode-hook))
   ;; Don't use evil mode in these, but enable some Evil mappings
   (add-to-list 'evil-emacs-state-modes 'help-mode)
   (add-to-list 'evil-emacs-state-modes 'messages-buffer-mode)
   (add-to-list 'evil-emacs-state-modes 'special-mode)
-  ;; (general-def
-  ;;   :keymaps '(help-mode-map
-  ;; 	       messages-buffer-mode-map
-  ;; 	       special-mode-map)
-  ;;   "h" 'evil-backward-char
-  ;;   "l" 'evil-forward-char
-  ;;   "k" 'evil-previous-visual-line
-  ;;   "j" 'evil-next-visual-line
-  ;;   "C-u" 'evil-scroll-up
-  ;;   "C-d" 'evil-scroll-down
-  ;;   "/" 'evil-search-forward
-  ;;   "n" 'evil-search-next
-  ;;   "N" 'evil-search-previous
-  ;;   )
   ;; Some special mappings for dired mode
   (add-to-list 'evil-emacs-state-modes 'dired-mode)
   (general-def
@@ -60,10 +36,49 @@
     "E" 'find-file)
   )
 
+(use-package evil-indent-textobject
+  :ensure t
+  :after evil)
+
+(use-package evil-embrace
+  :ensure t
+  :after evil
+  :init
+  (setq evil-embrace-show-help-p nil)
+  :config
+  (evil-embrace-enable-evil-surround-integration)
+  (add-hook 'org-mode-hook 'embrace-org-mode-hook)
+  (add-hook 'LaTeX-mode-hook 'embrace-LaTeX-mode-hook))
+
+(defun ans/add-evil-maps (keymap)
+  "Add some basic navigation mappings (including hjkl) to KEYMAP."
+  (general-def
+    :keymaps keymap
+    "h" 'evil-backward-char
+    "l" 'evil-forward-char
+    "k" 'evil-previous-visual-line
+    "j" 'evil-next-visual-line
+    "C-u" 'evil-scroll-up
+    "C-d" 'evil-scroll-down
+    "/" 'evil-search-forward
+    "n" 'evil-search-next
+    "N" 'evil-search-previous
+    "C-w C-w" 'ace-window))
+
+(ans/add-evil-maps 'help-mode-map)
+
+(general-def
+  :keymaps '(override evil-org-mode-map org-mode-map)
+  "M-h" 'evil-window-left
+  "M-l" 'evil-window-right
+  "M-k" 'evil-window-up
+  "M-j" 'evil-window-down)
+
 (general-unbind '(motion normal visual)
   "SPC"
   "C-u"
   "\\")
+
 (general-unbind "M-SPC")
 
 (general-def
@@ -96,17 +111,14 @@
 
 (general-create-definer ans-leader-def
   :prefix "SPC"
-  :non-normal-prefix "M-SPC")
+  :non-normal-prefix "M-SPC"
+  :prefix-command 'ans-leader-command
+  :prefix-map 'ans-leader-map)
+
 (ans-leader-def
   :states '(motion normal visual emacs)
   :keymaps 'override
   "b" 'helm-mini
-  "o" 'other-window
-  "j" 'evil-window-down
-  "k" 'evil-window-up
-  "h" 'evil-window-left
-  "l" 'evil-window-right
-  "0" 'delete-other-windows
   "\\" 'evil-window-vsplit
   "-" 'evil-window-split
   "<up>" 'buf-move-up
@@ -122,13 +134,11 @@
   "d" 'dired
   "x" 'helm-M-x
   "q" 'kill-this-buffer
-  "Q" 'evil-quit
   "sv" 'ans--reload-initfile
   "ev" 'ans--edit-initfile
   "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
-  "ws" 'toggle-truncate-lines
   "ss" 'delete-trailing-whitespace
-  "L" 'whitespace-mode			; Show all whitespace characters
+  "L" 'toggle-truncate-lines
   "z" 'ans-toggle-minimize
   "'" 'comment-dwim			; Insert right comment
   "ea" 'align-regexp
@@ -152,11 +162,18 @@
   :general
   (ans-leader-def
     :states '(motion normal emacs)
-    :infix "SPC"
-    "w" 'evil-ace-jump-word-mode
-    "l" 'evil-ace-jump-line-mode
-    "f" 'evil-ace-jump-char-mode
-    "t" 'evil-ace-jump-char-to-mode))
+    "SPC w" 'evil-ace-jump-word-mode
+    "SPC l" 'evil-ace-jump-line-mode
+    "SPC f" 'evil-ace-jump-char-mode
+    "SPC t" 'evil-ace-jump-char-to-mode))
+
+(use-package ace-window
+  :ensure t
+  :init
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  :commands ace-window
+  :general
+  (general-def "M-o" 'ace-window))
 
 (provide 'init-evil)
 ;;; init-evil ends here
