@@ -8,6 +8,13 @@
 (use-package general
   :ensure t)
 
+;; Evaluate lisp at point
+;; Define this early to facilitate debugging
+(general-def
+  :keymaps 'lisp-mode-shared-map
+  :states '(motion insert)
+  "<C-return>" 'eval-defun)
+
 (use-package evil
   :ensure t
   :demand
@@ -149,10 +156,6 @@
     "SPC w" 'evil-ace-jump-word-mode
     "SPC l" 'evil-ace-jump-line-mode))
 
-(general-def
-  :keymaps 'lisp-mode-shared-map
-  :states '(motion insert)
-  "<C-return>" 'eval-defun)
 
 (provide 'init-evil)
 ;;; init-evil ends here
