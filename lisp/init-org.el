@@ -121,5 +121,18 @@ TAG is chosen interactively from the global tags completion table."
 	org-journal-file-format "%Y-%m-%d"))
 (evil-ex-define-cmd "now" 'org-journal-new-entry)
 
+(use-package org-projectile
+  :ensure t
+  :after (org projectile)
+  :config
+  (progn
+    (org-projectile-per-project)
+    (setq org-projectile-per-project-filepath "project-notes.org")
+    (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+    (push (org-projectile-project-todo-entry) org-capture-templates))
+  (ans-leader-def
+    :states '(motion normal emacs)
+    "T" 'org-projectile-project-todo-completing-read))
+
 (provide 'init-org)
 ;;; init-org ends here

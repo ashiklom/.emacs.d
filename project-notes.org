@@ -1,0 +1,4 @@
+#+TITLE: Project notes for emacs configuration
+#+AUTHOR: Alexey Shiklomanov
+
+* TODO An example to-do for the emacs.d project
