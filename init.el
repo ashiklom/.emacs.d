@@ -254,6 +254,14 @@
     :states 'normal
     "gs" 'fill-function-arguments-dwim))
 
+(use-package aggressive-indent
+  :ensure t
+  :hook (prog-mode . aggressive-indent-mode)
+  :config
+  (ans-leader-def
+    :states 'normal
+    "I" 'aggressive-indent-mode))
+
 ;; Remember previous window configuration
 (winner-mode)
 (diminish winner-mode)
