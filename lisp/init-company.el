@@ -68,7 +68,7 @@ IGNORED are arguments ignored by company."
   (interactive (list 'interactive))
   (case command
     (interactive (company-begin-backend 'ans/directory-file-backend))
-    (prefix (company-grab-symbol))
+    (prefix (company-grab-line "\\(?:[\"\']\\|\\s-\\|^\\)\\(.*?\\)" 1))
     (candidates
      (remove-if-not
       (lambda (c) (string-prefix-p arg c))
