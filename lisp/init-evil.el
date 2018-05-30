@@ -133,7 +133,8 @@
   "." 'evil-next-buffer
   "," 'evil-prev-buffer
   ":" 'eval-expression
-  "d" 'dired
+  "d" 'dired-other-window
+  "D" 'dired-other-frame
   "x" 'helm-M-x
   "q" 'kill-this-buffer
   "sv" 'ans--reload-initfile
