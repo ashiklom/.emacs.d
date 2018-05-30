@@ -128,11 +128,19 @@ TAG is chosen interactively from the global tags completion table."
   (progn
     (org-projectile-per-project)
     (setq org-projectile-per-project-filepath "project-notes.org")
-    (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+    (setq org-agenda-files (append org-agenda-files (-filter 'file-exists-p (org-projectile-todo-files))))
     (push (org-projectile-project-todo-entry) org-capture-templates))
   (ans-leader-def
     :states '(motion normal emacs)
     "T" 'org-projectile-project-todo-completing-read))
+
+(defun ans/clean-org-agenda-files ()
+  "Remove org agenda files that don't exist."
+  (interactive)
+  (setq org-agenda-files (-filter 'file-exists-p (org-agenda-files))))
+
+;; Run it once for good measure
+(ans/clean-org-agenda-files)
 
 (provide 'init-org)
 ;;; init-org ends here
