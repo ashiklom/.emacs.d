@@ -79,5 +79,12 @@
       :action 'find-file))
   (add-to-list 'helm-projectile-sources-list helm-source-file-not-found t))
 
+(use-package helm-org-rifle
+  :ensure t
+  :general
+  (ans-leader-def
+    :states 'normal
+    "a" 'helm-org-rifle-agenda-files))
+
 (provide 'init-helm)
 ;;; init-helm ends here

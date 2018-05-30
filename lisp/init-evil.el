@@ -144,8 +144,9 @@
   "ea" 'align-regexp
   "*" 'universal-argument		; Emacs's C-u
   "C" 'org-capture
-  "ee" 'sr-speedbar-toggle
-  )
+  "ee" 'sr-speedbar-toggle)
+
+(ans/add-evil-maps 'occur-mode-map)
 
 (use-package evil-nerd-commenter
   :ensure t

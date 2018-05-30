@@ -6,6 +6,7 @@
 (use-package org
   :ensure t
   :mode ("\\.org\\'" . org-mode)
+  :commands (org-mode org-agenda)
   :init
   (setq org-todo-keywords
 	'((sequence "TODO" "STARTED" "|" "DONE")))
@@ -19,6 +20,8 @@
 	  ("l" "Personal to-do item" entry
 	   (file+headline "~/Dropbox/Notes/life.org" "Tasks")
 	   "** TODO %?")))
+  (setq org-agenda-files '("~/Dropbox/Notes/" "~/Dropbox/Notes/journal/")
+	org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|\\`[0-9]+-[0-9]+-[0-9]+\\'")
   (setq org-hide-emphasis-markers t)
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   :general
@@ -26,11 +29,13 @@
     :states '(motion normal)
     :keymaps 'org-mode-map
     "<backspace>" 'outline-hide-subtree
-    "g t" 'org-todo)
+    "g t" 'org-todo
+    "C-c C-q" 'air-org-set-tags)
   (ans-leader-def
     :states '(motion normal emacs)
     :keymaps 'org-mode-map
-    "#" 'org-update-statistics-cookies)
+    "#" 'org-update-statistics-cookies
+    "t" 'air-org-set-tags)
   (general-def
     :states '(motion)
     :keymaps 'calendar-mode-map
@@ -67,6 +72,47 @@
   "Right-align org mode tags in current buffer."
   (interactive)
   (org-set-tags nil t))
+
+(defun air--org-swap-tags (tags)
+  "Replace any tags on the current headline with TAGS.
+
+The assumption is that TAGS will be a string conforming to Org Mode's
+tag format specifications, or nil to remove all tags."
+  (let ((old-tags (org-get-tags-string))
+        (tags (if tags
+                  (concat " " tags)
+                "")))
+    (save-excursion
+      (beginning-of-line)
+      (re-search-forward
+       (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
+       (line-end-position) t)
+      (replace-match tags)
+      (org-set-tags t))))
+
+(defun air-org-set-tags (tag)
+  "Add TAG if it is not in the list of tags, remove it otherwise.
+
+TAG is chosen interactively from the global tags completion table."
+  (interactive
+   (list (let ((org-last-tags-completion-table
+                (if (derived-mode-p 'org-mode)
+                    (org-uniquify
+                     (delq nil (append (org-get-buffer-tags)
+                                       (org-global-tags-completion-table))))
+                  (org-global-tags-completion-table))))
+           (org-icompleting-read
+            "Tag: " 'org-tags-completion-function nil nil nil
+            'org-tags-history))))
+  (let* ((cur-list (org-get-tags))
+         (new-tags (mapconcat 'identity
+                              (if (member tag cur-list)
+                                  (delete tag cur-list)
+                                (append cur-list (list tag)))
+                              ":"))
+         (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
+                nil)))
+    (air--org-swap-tags new)))
 
 (use-package org-journal
   :ensure t
