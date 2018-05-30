@@ -1,7 +1,6 @@
 ;;; init-company -- Configuration for Company
-;;;
 ;;; Commentary:
-;;;
+;;; Package-Requires: ((dash "2.14.1"))
 ;;; Code:
 
 (use-package company
@@ -24,7 +23,7 @@
     ;; https://github.com/company-mode/company-mode/issues/360
     "C-n" 'company-dabbrev-code
     "C-p" 'company-dabbrev-code
-    "C-f" 'ans-company-current-directory-backend
+    "C-f" 'ans/directory-file-backend
     "C-l" 'company-complete		; Note that this includes company-files
     )
   (general-def
@@ -44,20 +43,36 @@ This makes repeat completions easier (e.g. when completing long file paths)."
   (company-complete-selection)
   (company-complete))
 
-(defun ans-company-current-directory-backend (command &optional arg &rest ignored)
-  "Complete files in the current directory.
-COMMAND company completion command.
-ARG company completion arguments.
-IGNORED company ignored arguments."
+(use-package dash :ensure t)
+
+(defun ans/directory-completion-candidates (prefix)
+  "List files in projectile or current buffer directory that match PREFIX."
+  (let* ((starting-directory
+	  (condition-case nil
+	      (projectile-project-root)
+	    (error "./")))
+	 (my-prefix-base (file-name-nondirectory prefix))
+	 (my-prefix-dir (file-name-directory prefix))
+	 (my-complete-dir (concat starting-directory my-prefix-dir))
+	 (my-completions-all
+	  (file-name-all-completions my-prefix-base my-complete-dir))
+	 (my-completions (-difference my-completions-all '("./" "../"))))
+    (mapcar (lambda (file) (concat my-prefix-dir file)) my-completions)))
+
+(defun ans/directory-file-backend (command &optional arg &rest ignored)
+  "Complete files in current or projectile project directory.
+
+COMMAND is command called by company.
+ARG is the set of company completion arguments.
+IGNORED are arguments ignored by company."
   (interactive (list 'interactive))
   (case command
-    (interactive (company-begin-backend 'ans-company-current-directory-backend))
+    (interactive (company-begin-backend 'ans/directory-file-backend))
     (prefix (company-grab-symbol))
     (candidates
      (remove-if-not
       (lambda (c) (string-prefix-p arg c))
-      (directory-files ".")))
-    ))
+      (ans/directory-completion-candidates arg)))))
 
 (provide 'init-company)
 ;;; init-company ends here
