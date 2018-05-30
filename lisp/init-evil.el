@@ -34,6 +34,8 @@
     :keymaps '(dired-mode-map)
     :states '(emacs)
     "E" 'find-file)
+  ;; Treat symbols as evil words
+  (defalias #'forward-evil-word #'forward-evil-symbol)
   )
 
 (use-package evil-indent-textobject
