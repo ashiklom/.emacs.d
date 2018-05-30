@@ -1,4 +1,219 @@
 #+TITLE: Project notes for emacs configuration
 #+AUTHOR: Alexey Shiklomanov
 
-* TODO An example to-do for the emacs.d project
+* Configuration to-do list [31/55]
+** DONE Line numbers
+
+   - Interactively, use ~M-x linum-mode~
+   - In ~.emacs~, use ~(global-linum-mode t)~
+
+** DONE Auto-completion
+
+   - Use company.
+   - Added a current directory files company backend. See init.el.
+
+** DONE Color scheme
+
+   - Using the "wombat" color scheme for now -- nice, dark colors
+   - May consider switching to something else later on
+
+** DONE Spell checking [2/2]
+*** DONE Basic configuration
+
+    - Use ~flyspell-mode~ to check.
+    - ~ispell-*~ functions have various other uses, like adding words to dictionary.
+
+*** DONE Add new words to dictionary?
+
+    - Open ~ispell-word~ with ~z=~, then press ~i~ to add to dictionary.
+
+** DONE Remote file editing using TRAMP
+** DONE Fixing Evil highlight parentheses
+
+Look at this variable:
+(evil-highlight-closing-paren-at-point-states)
+
+From this write-up:
+http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
+
+For this to work, ~evil-integration.el~ has to be loaded, so make sure that ~evil-want-integration~ isn't set to nil.
+
+** DONE Automatically enable ESS R mode for R files
+
+   - Seems to be enabled by default
+
+** R keyboard shortcuts [9/11]                                     :keymap:R:
+*** DONE Set local leader to <\>
+*** DONE Start R with <\rf>
+
+    Defined custom interactive function ~ans-start-R~ to do this intelligently.
+
+*** DONE Quit R with <\rp>
+
+    Defined custom interactive function ~ans-quit-R~ to do this intelligently.
+
+*** DONE Don't prompt on quit
+*** DONE Disable Evil mode in R console
+
+    ...except for window-switching commands -- keep those.
+    - Use ~(add-to-list 'evil-emacs-state-modes 'inferior-ess-mode)~.
+    - Note that <C-z> can be used to toggle Evil-mode.
+
+*** DONE Send line with <\l>
+*** DONE Send paragraph with <\pp>
+*** DONE Send selection with <\ss>
+*** TODO Send line/selection and echo result
+*** DONE Insert pipe (=%>%=) with <M-m>
+*** TODO (Visual) select to next pipe
+
+    Facilitates debugging pipes.
+
+** DONE Vim surround, but for Emacs
+
+   - Use [[https://github.com/emacs-evil/evil-surround][evil-surround]] package
+
+** DONE [[https://github.com/noctuid/general.el][General.el]] -- better keymaps
+** DONE Magit                                                       :package:
+
+   Basics are set up.
+   
+   Open with ~<leader>gs~. Move up/down with ~n/p~. Stage with ~s~.
+
+** DONE Magithub                                                    :package:
+** DONE Helm -- similar to FZF, but for everything                  :package:
+
+   Basics are set up. Lots of helm extensions available.
+
+** DONE Fuzzy file finder, similar to fzf
+
+   Helm does this by default.
+
+** DONE Project management (projectile?)                            :package:
+** CANCELED Evil collection                                         :package:
+
+[[https://github.com/emacs-evil/evil-collection/blob/master/readme.org][Evil collection]] -- Evil keybindings in more places
+
+Generally seems safer to just do this by hand.
+
+** TODO [#C] Try Emacs for email                                    :package:
+
+   [[http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/][Guide]] for using Emacs for email.
+   
+   How to [[https://unix.stackexchange.com/questions/44214/encrypt-offlineimap-password/48355#48355][encrypt a plain-text password using Python and GPG]]
+
+** TODO [#C] Configure helm-bibtex                                     :helm:
+
+    See [[https://github.com/tmalsburg/helm-bibtex#usage][the README on GitHub.]]
+
+** TODO [#C] Play with Ebib.                                       ::package:
+
+    Here is the [[http://joostkremers.github.io/ebib/ebib-manual.html][manual.]]
+
+** TODO [#B] Extend my custom file completion.                  ::completion:
+
+   Pass the full prefix into the completion, but prepend "./" to it by default.
+   Nice opportunity to figure out how to use `(interactive)' mode.
+
+** DONE Smooth scrolling (i.e. vim-like scrolling)
+
+   - Don't jump half a page when Emacs gets close to the end of the page.
+   - See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Auto-Scrolling.html#Auto-Scrolling][automatic scrolling]] in Emacs wiki.
+   - Finished by setting ~scroll-margin~ to 2 (number of lines before scroll) and ~scroll-step~ to 1 (scroll one line at a time).
+   - For visually-smooth scrolling (like in GUI programs), see ~sublimity~ package.
+
+** TODO [#C] Org capture in a separate frame                            :org:
+** DONE Dired in split window (or separate frame?)                    :dired:
+   Use ~dired-other-window~ or ~dired-other-frame~
+** DONE Visual indent for soft wrap (like Vim's breakindent)
+
+   Use the ~adaptive-wrap~ package. Gave it a ~visual-line-mode~ hook.
+
+** TODO [#C] Hydras for helm mode                               :helm:keymap:
+
+   Opening a file in current buffer, window, frame.
+
+** DONE Make leader keys work in Messages buffers                    :keymap:
+   Resolved with new M-SPC mapping.
+** DONE SPC keybindings should override everything                   :keymap:
+   - Better idea -- use general's ~non-prefix~ map for Shift-Space
+   - Implemented this using ~:prefix-map/command~ and Mod-Space
+** DONE Vim-like tabs                                               :package:
+
+   Use ~elscreen~. I have keybindings similar to my Tmux configuration.
+
+** TODO [#C] Undo tree                                              :package:
+
+   Figure out how it works
+   
+   Maybe ~visualize-undo-tree~?
+
+** TODO [#B] Better helm keybindings                            :helm:keymap:
+
+   Use ~TAB~ to execute persistent action and something else (~C-j~?) to select action.
+
+** TODO [#C] Add helm actions for elscreen                             :helm:
+** TODO [#B] Fix evil scrolling                                        ::bug:
+
+   - Scrolling up and down should be reversible -- cursor should always be in the same spot.
+
+** DONE Always use helm-projectile                                     :helm:
+
+   - No separate binding for projectile-find-file, etc.
+     - Swapped ~projectile~ and ~projectile-find-project~ mappings.
+     - Changed leader mappings so ~f~ is ~helm-find-file~ and ~F~ is ~helm-find~ (i.e. system find command)
+
+** TODO [#C] Fix minor modes with ~delight~                           :package:
+
+   - E.g. Don't write "Projectile" -- just show the project name.
+
+** TODO [#C] Use ~fd~ as ~find-program~                                    :helm:
+
+   - Probably the best way to do this is to write a simple shell wrapper that converts find arguments to ~fd~ arguments.
+
+** DONE Set up org-mode agenda files                                    :org:
+
+   I think I just have to point it to the correct Dropbox folder.
+   
+   COMPLETED: Set variables ~org-agenda-files~ and ~org-agenda-file-regexp.~
+** DONE Don't use hjkl keybindings in Emacs editable buffers         :keymap:
+For instance, in customization buffer.
+...though then again, I probably don't want to use customize anyway.
+** DONE [#A] Fix Dired (dired plus?) colors                           :dired:
+   Dropped dired+ in favor of dired with an additional package for dealing with multiple buffers.
+** TODO [#C] Toggle show markup in org-mode                             :org:
+   - Toggle the variable
+   - Reload org mode
+** DONE Tag autocompletion in org-capture                               :org:
+** TODO [#C] Map ~<backtab> (S-Tab)~ to hide subtree                      :org:
+** DONE Always show tags at end of line                                 :org:
+   - Not quite automatic, but can be refreshed with ~g%~
+** TODO [#C] Keybinding for quickly adding a checkbox            :org:keymap:
+** TODO [#C] Cursor beacon (or whatever -- easier cursor finding)   :package:
+** DONE List all tags                                                   :org:
+   Use the ~org-tags-view~ command.
+** TODO [#C] Automatically tail LaTeX compilation log                 :latex:
+** DONE Unmap underscore from arrow                                :R:keymap:
+** STARTED Hooks for projectile mode [1/2]                             :helm:
+*** DONE Limit file and buffer navigation to the current project
+    - File -- helm-projectile-switch-to-file
+    - Buffer -- helm-projectile-switch-to-buffer
+*** TODO File completion relative to the project root
+** DONE Adjust maximum width on helm frame
+   - Make it wider to accommodate long paths
+   - Also, look into truncating it so it doesn't wrap (maybe set a helm-mode hook with truncate lines?)
+   - SOLVED: See various helm truncate options
+** DONE [#B] Indent after filling function arguments
+   Need to write a custom function for this.
+   Not quite, but just use ~aggressive-indent~.
+** TODO [#B] Set correct word boundary for R ESS                          :R:
+** DONE Function to horizontally split entire window
+   - Use ~(frame-root-window)~ to refer to the entire frame as a window splitting functions
+   - See my implementation in ~ans/hsplit-frame~
+** TODO [#C] Replace my minimize with [[http://melpa.milkbox.net/#/zoom-window][zoom-window]]
+** TODO [#C] Change rebox map to ~gr~ to rebox and ~gR~ for the major mode :keymap:
+** TODO [#C] Consider dired ranger                                   ::dired:
+
+https://melpa.org/#/ranger
+** TODO [#C] Re-organize init files
+   Mappings should all go together.
+** TODO air-org-tags function should work in insert mode         :org:keymap:
