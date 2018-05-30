@@ -52,8 +52,13 @@ See `ans-toggle-minimize'.")
 	   (message "Window minimized."))
     ))
 
-(require 'dired+)
-(with-eval-after-load "dired+" (diredp-make-find-file-keys-reuse-dirs))
+(use-package dired-single
+  :ensure t
+  :config
+  (general-def
+    :keymaps 'dired-mode-map
+    "RET" 'dired-single-buffer
+    "^" (lambda () (interactive) (dired-single-buffer ".."))))
 
 (setq sr-speedbar-right-side t)
 (require 'sr-speedbar)
