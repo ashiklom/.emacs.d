@@ -179,5 +179,11 @@
   :general
   (general-def "M-o" 'ace-window))
 
+(use-package evil-exchange
+  :ensure t
+  :after evil
+  :config
+  (evil-exchange-install))
+
 (provide 'init-evil)
 ;;; init-evil ends here
