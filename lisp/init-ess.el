@@ -14,7 +14,8 @@
   (setq ess-ask-for-ess-directory nil
 	ess-directory-function 'ans-r-file-here
 	ess-default-style 'RStudio
-	ess-use-company t)
+	ess-use-company t
+	ess-eval-visibly 'nowait)
   :config
   (require 'ess-rutils)
   (add-to-list 'ess-R-font-lock-keywords
@@ -39,7 +40,8 @@
     "v i" 'ess-r-devtools-install-package
     "v d" 'ess-r-devtools-document-package
     "v l" 'ess-r-devtools-load-package
-    "r o" 'ess-rutils-objs)
+    "r o" 'ess-rutils-objs
+    "r p" 'ans/ess-eval-symbol)
   (general-def
     :states 'visual
     :keymaps 'ess-mode-map
@@ -102,6 +104,14 @@
   (ess-quit)
   (kill-buffer)
   (delete-window))
+
+(defun ans/ess-eval-symbol ()
+  "Evaluate (usually print) the symbol at point."
+  (interactive)
+  (save-excursion
+    (er/mark-symbol)
+    (ess-eval-region (point) (mark) nil)
+    (deactivate-mark)))
 
 
 (provide 'init-ess)
