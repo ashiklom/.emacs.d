@@ -1,7 +1,12 @@
 #+TITLE: Project notes for emacs configuration
 #+AUTHOR: Alexey Shiklomanov
+#+TODO: TODO STARTED | DONE CANCELED
 
-* Configuration to-do list [31/55]
+* Helpful readings
+** [[http://tuhdo.github.io/helm-intro.html][Helm comprehensive introduction]] ::helm:
+
+
+* Configuration to-do list [31/67]
 ** DONE Line numbers
 
    - Interactively, use ~M-x linum-mode~
@@ -209,11 +214,29 @@ For instance, in customization buffer.
 ** DONE Function to horizontally split entire window
    - Use ~(frame-root-window)~ to refer to the entire frame as a window splitting functions
    - See my implementation in ~ans/hsplit-frame~
-** TODO [#C] Replace my minimize with [[http://melpa.milkbox.net/#/zoom-window][zoom-window]]
+** TODO [#C] Replace my minimize with [[http://melpa.milkbox.net/#/zoom-window][zoom-window]]            ::emacs:package:
 ** TODO [#C] Change rebox map to ~gr~ to rebox and ~gR~ for the major mode :keymap:
 ** TODO [#C] Consider dired ranger                                   ::dired:
 
 https://melpa.org/#/ranger
-** TODO [#C] Re-organize init files
+** TODO [#C] Re-organize init files                                  ::emacs:
    Mappings should all go together.
 ** TODO air-org-tags function should work in insert mode         :org:keymap:
+** TODO Org capture from within Firefox                                ::org:
+** TODO Use helm for org-projectile                         ::org:helm:emacs:
+** TODO Fix window actions for org-projectile                    ::org:emacs:
+ Should return to the current window layout, like org-capture does.
+ Is there a ~save-x~ function wrapper for window layouts?
+** TODO Helm completion to just list org agenda files       ::emacs:helm:org:
+** TODO Symlink project to-dos to Dropbox                              ::org:
+** TODO Leader-T mapping for tagging only in org files    ::emacs:keymap:org:
+** TODO Migrate emacs.org to emacs.d project notes               ::emacs:org:
+** TODO Set up archiving of org mode files                       ::org:emacs:
+** TODO Set up ignore paths for system ~locate~
+See [[https://askubuntu.com/a/160428/685956][this stack overflow]].
+** TODO Better tags                                              ::org:emacs:
+Separate out emacs configuration from everything else.
+** TODO Select and apply multiple tags in helm tag completion    ::org:emacs:
+Bonus: Tag actions?
+- Start with current tags selected.
+- Use search to select or unselect tags.
