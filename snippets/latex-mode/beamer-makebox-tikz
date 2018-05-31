@@ -1,0 +1,8 @@
+# key: bmt
+# name: beamer-makebox-tikz
+# --
+\makebox[\textwidth][c]{
+  \begin{tikzpicture}
+    $0
+  \end{tikzpicture}
+}
