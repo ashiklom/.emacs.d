@@ -141,12 +141,14 @@
   "ev" 'ans--edit-initfile
   "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
   "ss" 'delete-trailing-whitespace
-  "L" 'toggle-truncate-lines
   "z" 'ans-toggle-minimize
   "'" 'comment-dwim			; Insert right comment
   "ea" 'align-regexp
   "*" 'universal-argument		; Emacs's C-u
   "C" 'org-capture
+  "Y" 'org-store-link
+  "L" 'org-insert-last-stored-link
+  "@" 'org-agenda
   "ee" 'sr-speedbar-toggle)
 
 (ans/add-evil-maps 'occur-mode-map)

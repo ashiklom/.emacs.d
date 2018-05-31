@@ -12,7 +12,7 @@
 	'((sequence "TODO" "STARTED" "|" "DONE")))
   (setq org-capture-templates
 	'(("E" "Emacs config" entry
-	   (file+headline "~/Dropbox/Notes/emacs.org" "Configuration to-do list")
+	   (file+headline "~/.emacs.d/project-notes.org" "Configuration to-do list")
 	   "** TODO %?")
 	  ("e" "Emacs note" entry
 	   (file+headline "~/Dropbox/Notes/emacs.org" "Misc")
@@ -20,8 +20,7 @@
 	  ("l" "Personal to-do item" entry
 	   (file+headline "~/Dropbox/Notes/life.org" "Tasks")
 	   "** TODO %?")))
-  (setq org-agenda-files '("~/Dropbox/Notes/" "~/Dropbox/Notes/journal/")
-	org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|\\`[0-9]+-[0-9]+-[0-9]+\\'")
+  (setq org-agenda-files '("~/Dropbox/Notes/"))
   (setq org-hide-emphasis-markers t)
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   :general
@@ -54,6 +53,12 @@
   (add-hook 'evil-org-mode-hook 'ans/evil-org-mode-setup)
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys)
+  (ans-leader-def
+    :keymaps 'evil-org-mode-map
+    :states '(motion normal visual)
+    "L" 'org-insert-last-stored-link
+    "ss" 'org-schedule
+    "sd" 'org-deadline)
   (general-def
     :keymaps 'evil-org-mode-map
     :states '(motion normal visual)
@@ -118,7 +123,8 @@ TAG is chosen interactively from the global tags completion table."
   :ensure t
   :init
   (setq org-journal-dir "~/Dropbox/Notes/journal"
-	org-journal-file-format "%Y-%m-%d"))
+	org-journal-file-format "%Y-%m-%d"
+	org-journal-enable-agenda-integration t))
 (evil-ex-define-cmd "now" 'org-journal-new-entry)
 
 (use-package org-projectile
