@@ -6,7 +6,7 @@
 ;;; Code:
 (use-package ess
   :ensure t
-  :mode ("\\.[RR]\\'" . r-mode)
+  :mode ("\\.[rR]\\'" . r-mode)
   :init
   (add-to-list 'evil-emacs-state-modes 'inferior-ess-mode)
   (add-to-list 'evil-emacs-state-modes 'ess-rdired-mode)
@@ -86,7 +86,8 @@
   (shell-command-to-string
    (concat
     "Rscript -e \""
-    "setwd(dirname('"(buffer-file-name)"'));"
+    "my_dir <- dirname('"(buffer-file-name)"');"
+    "t <- tryCatch(setwd(my_dir), error = function(e) NULL);"
     "cat(here::here())"
     "\"")))
 
@@ -113,6 +114,8 @@
     (ess-eval-region (point) (mark) nil)
     (deactivate-mark)))
 
+;; ox-ravel -- Better R integration into org mode
+(require 'ox-ravel)
 
 (provide 'init-ess)
 ;;; init-ess ends here
