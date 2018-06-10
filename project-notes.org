@@ -1,12 +1,503 @@
-#+TITLE: Project notes for emacs configuration
+#+TITLE: Emacs configuration
 #+AUTHOR: Alexey Shiklomanov
-#+TODO: TODO STARTED | DONE CANCELED
+#+TODO: TODO NEXT | DONE CANCELED
+#+CATEGORY: Emacs config
 
-* Helpful readings
+* General Emacs configuration
+** *scratch* buffer
+
+Comes with a built-in Emacs lisp interpreter. Use it to quickly test commands.
+The following mappings are useful:
+#+NAME: Scratch buffer mapping
+#+BEGIN_SRC 
+(evil-define-key 'insert global-map (kbd "<C-return>") 'eval-last-sexp)
+(evil-define-key 'normal global-map (kbd "<C-return>") 'eval-defun)
+#+END_SRC
+
+** Keybindings
+*** Default
+
+    Help prefix -- <C-h>
+    Apropos -- <C-h> a
+    Key -- <C-h> k
+    Variable -- <C-h> v
+    Bindings in current mode - C-h b
+    [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Help-Summary.html][Full list of help commands]]
+    
+    [[https://www.gnu.org/software/emacs/refcards/pdf/refcard.pdf][Reference card]].
+
+*** Custom
+
+    Find file - <leader-f>
+    Switch to buffer - <leader-b>
+    Edit .emacs file - <leader-ev>
+    Source .emacs file - <leader-sv>
+
+** Packages
+
+   - Install packages with ~M-x package-install "package"~
+   - Load packages by default with ~require 'package~
+   - ~use-package~ is a nice package for managing packages
+     - First, install.
+     - Then, when installed, load packages with:
+       #+BEGIN_SRC emacs-lisp
+         (use-package packagename
+           :ensure t  ;; Ensure that package is installed
+           :init
+           (commands-to-run-before-init)
+           (...)
+           (...)
+           :config
+           (commands to run after package is loaded)
+           (...)
+           (...))
+       #+END_SRC
+
+** Emacs configuration examples
+
+   - [[https://github.com/caisah/emacs.dz][List of popular emacs config repos]] 
+   - [[https://github.com/nhoffman/.emacs.d/blob/master/init.el][nhoffman's init.el]] and [[writeup][https://nhoffman.github.io/.emacs.d/]]
+   - [[https://github.com/purcell/emacs.d][purcell]]
+
+* R ESS mode                                                          :R:ESS:
+** TODO Literate programming with [[org mode]]                      :R:org:emacs:
+
+   - One [[https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html][example guide]]
+   - [[http://minimallysufficient.github.io/2015/10/24/org-mode-as-an-alternative-to-knitr.html][Org mode as an alternative to Knitr]]
+   - Example implementation -- [[https://github.com/chasberry/orgmode-accessories][orgmode accessories]]
+   - Example of an org mode paper -- [[https://github.com/vikasrawal/orgpaper/blob/master/orgpapers.org][vikasrawal/orgpaper]]
+   - Example -- [[http://tucker-kellogg.com/blog/2012/06/04/making-interactive-slides-with-org-mode-and-googlevis-in-r/][Interactive slides]]
+   - Example -- [[https://cwcode.wordpress.com/2013/05/21/vignette/][R vignettes in Emacs org mode]]
+
+** Send command strings to R with `ess-view-send-to-R`
+* Org mode <<org mode>>
+** Syntax
+
+   - Inline code -- surround in =equals signs= or ~tildas~
+   - Links -- surround whole thing in brackets, then URL and LINK, both in brackets (see [[links]])
+
+** Keybindings
+*** Native
+
+    | Key            | Description                                                |
+    |----------------+------------------------------------------------------------|
+    | TAB            | Cycle through folding states                               |
+    | M-left/right   | Promote/demote element                                     |
+    | M-S-left/right | Promte/demote entire tree                                  |
+    | M-up/down      | Move elements up/down                                      |
+    | C-c C-t        | Cycle TODO states                                          |
+    | M-RET          | Add another item in the current list                       |
+    | C-c RET        | Create a table (at the end of a header)                    |
+    | C-c '          | Edit the current table, code block ,etc. in special buffer |
+
+*** To-do lists
+
+    - See detailed description [[https://orgmode.org/manual/TODO-items.html#TODO-items][here]].
+    - Default keymap is <C-c C-t> to cycle through (bound to the =org-todo= function)
+    - <S-right/left> also work.
+    - <M-S-RET> inserts a new TODO item below the current line.
+    - Use checkboxes ([ ]) to split up a list.
+    They do not work at the root of a TODO item, but do work for splitting up TODOs.
+    Use <C-c C-c> (org-toggle-checkbox) to toggle the checkbox state.
+    <M-S-RET> inserts a new checkbox in a checkbox list.
+
+*** Create a table
+
+    - See the [[https://orgmode.org/manual/Built_002din-table-editor.html#Built_002din-table-editor][manual]].
+    - Basically, just start typing the header, then hit <C-c RET>
+
+*** TODO Better keybindings for org mode [2/5]                       ::emacs:
+**** DONE Use RET instead of TAB to toggle state
+
+     Bound RET to org-cycle, and <backspace> to "outline-hide-subtree".
+     Also, use <C-return> to open links.
+
+**** STARTED Use <zo/c> keys (like vim folding) to toggle internal state
+
+     <za> already works -- does the same thing as <TAB>.
+     <zm> also works -- toggle the global folding
+
+**** DONE Better behavior for <o/O> (open new line)
+
+     Should do the same thing as <Return> -- create a new list item, not drop into text
+
+     "o/O" use default behavior. "go/gO" create new headings.
+
+**** TODO Use <TAB> to navigate to another buffer
+
+     Maybe use an override keymap?
+
+*** [[https://orgmode.org/worg/orgcard.html][Reference card]]
+** Templates -- See [[documentation][template documentation.]]
+*** Default templates:
+
+    #+BEGIN_EXAMPLE
+    s	#+BEGIN_SRC ... #+END_SRC
+    e	#+BEGIN_EXAMPLE ... #+END_EXAMPLE
+    q	#+BEGIN_QUOTE ... #+END_QUOTE
+    v	#+BEGIN_VERSE ... #+END_VERSE
+    c	#+BEGIN_CENTER ... #+END_CENTER
+    C	#+BEGIN_COMMENT ... #+END_COMMENT
+    l	#+BEGIN_EXPORT latex ... #+END_EXPORT
+    L	#+LATEX:
+    h	#+BEGIN_EXPORT html ... #+END_EXPORT
+    H	#+HTML:
+    a	#+BEGIN_EXPORT ascii ... #+END_EXPORT
+    A	#+ASCII:
+    i	#+INDEX: line
+    I	#+INCLUDE: line
+    #+END_EXAMPLE
+
+** Links <<links>>
+
+   Basic syntax is:
+   : [[Target][Description]]
+
+   Keyboard shortcut for interactive creation -- <C-c> <C-l>.
+   This is also used to edit the link (e.g. when cursor is over a link)
+
+   Can link lots of other stuff, including files, DOIs, and more.
+   See [[https://orgmode.org/manual/External-links.html][link entry in org mode manual]] 
+   
+   Toggle Link display with `org-toggle-link-display`. Relevant [[https://emacs.stackexchange.com/questions/5387/show-org-mode-hyperlink-as-plain-text][Stack Overflow]].
+
+** TODO Migrate SimpleNotes to org mode                              ::emacs:
+** Use [[https://orgmode.org/manual/session.html][sessions]] to restore old work
+** Manage multiple notes, perhaps with Refile?
+
+   See [[https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html][this writeup]] by Aaron Bieber
+
+** DONE Sync with Android
+
+Complete using Orgzly, with DropBox.
+
+** Readings
+*** [[https://blog.aaronbieber.com/2016/01/30/dig-into-org-mode.html][Dig into org mode]]
+
+*** Org Mode - Organize Your Life In Plain Text!                  :emacs:org:
+
+  http://doc.norang.ca/org-mode.html
+
+*** Org tutorials                                                 :org:emacs:
+
+  https://orgmode.org/worg/org-tutorials/
+
+*** novoid/org-mode-workshop: Workshop for Org-mode with focus on todo-, project- and workflow-management :emacs:org:
+
+  https://github.com/novoid/org-mode-workshop
+
+* Useful readings
+** [[https://www.masteringemacs.org/article/mastering-key-bindings-emacs][Mastering Key Bindings in Emacs]]
+** [[https://github.com/noctuid/evil-guide][Evil guide (noctuid)]]
+** [[https://sam217pa.github.io/2016/09/02/how-to-build-your-own-spacemacs/][How to build your own Spacemacs]]
+** [[https://blog.aaronbieber.com/2016/01/23/living-in-evil.html][Living in Evil]]
+** jkitchin/scimax: An emacs starterkit for scientists and engineers  :emacs:
+
+ https://github.com/jkitchin/scimax
+
+** caiorss/Emacs-Elisp-Programming: Tutorial about programming Elisp and Emacs text editor customization. :emacs:
+
+ https://github.com/caiorss/Emacs-Elisp-Programming
 ** [[http://tuhdo.github.io/helm-intro.html][Helm comprehensive introduction]] ::helm:
 
+* FAQ
+** Get current major mode
 
-* Configuration to-do list [31/67]
+   - <C-h v> : major mode
+
+** Close the selected split window
+
+   - <C-x 0> or (delete-window) ([[https://ftp.gnu.org/old-gnu/Manuals/emacs-20.7/html_chapter/emacs_20.html][source]])
+
+** Reload file-local variables (and other "default" configuration)
+
+  ~M-x normal-mode~ -- Emulates what happens when a file is opened (i.e. clear all interactive settings, run hooks, set file variables, etc.)
+  
+  In LaTeX files, use ~TeX-normal-mode~ (~C-nkjk)
+
+* Misc
+** Stan mode -- https://github.com/stan-dev/stan-mode
+** Emacs equivalent to vim's modeline is "File Variables" -- https://www.gnu.org/software/emacs/manual/html_node/emacs/File-Variables.html#File-Variables
+** [[https://jblevins.org/log/mmm][Syntax highlighting in Markdown]]
+** [[https://emacs.stackexchange.com/questions/2206/i-want-to-have-the-kbd-tags-for-my-blog-written-in-org-mode][<kbd> tags in org-mode]]
+** Writing company backends
+
+http://sixty-north.com/blog/series/how-to-write-company-mode-backends.html
+
+** Journaling with org-mode
+
+http://www.howardism.org/Technical/Emacs/journaling-org.html
+
+** Hacker News -- Journaling with Org Mode
+** LaTeX Vim paragraph error and [[https://github.com/emacs-evil/evil/issues/595][solution]]
+** EmacsWiki: Csv Mode
+
+https://www.emacswiki.org/emacs/CsvMode
+
+** [[https://koenig-haunstetten.de/2014/08/29/the-power-of-orgmode-capture-templates/][The power of org mode capture templates]]
+** [[http://sachachua.com/blog/2015/02/learn-take-notes-efficiently-org-mode/][Take notes more efficiently in org mode]]
+** [[https://orgmode.org/manual/Template-expansion.html#Template-expansion][Org mode template extensions]] :org:
+** Programming in Emacs Lisp
+
+https://www.gnu.org/software/emacs/manual/html_node/eintr/
+
+** Endless Parentheses · Concise ramblings on Emacs productivity.
+
+http://endlessparentheses.com/
+
+** Planet Emacsen
+
+http://planet.emacsen.org/
+
+** What the .emacs.d!?
+
+http://whattheemacsd.com/
+
+** emacs4developers/README.org at master · pierre-lecocq/emacs4developers
+
+https://github.com/pierre-lecocq/emacs4developers/blob/master/README.org
+
+** vermiculus/sx.el: Stack Exchange for Emacs
+
+https://github.com/vermiculus/sx.el/
+
+** politza/pdf-tools: Emacs support library for PDF files.
+
+https://github.com/politza/pdf-tools
+
+** Emacs Everywhere
+
+https://ambrevar.bitbucket.io/emacs-everywhere/
+
+** How to Write a Emacs Major Mode for Syntax Coloring
+
+http://ergoemacs.org/emacs/elisp_syntax_coloring.html
+
+** Videos - VimGolf in Emacs
+
+https://vimeo.com/timvisher/videos/page:1/sort:newest?cjevent=c7324b04623011e8838c02290a24060c
+
+** Jane Street Tech Blog - Putting the I back in IDE: Towards a Github Explorer
+
+https://blog.janestreet.com/putting-the-i-back-in-ide-towards-a-github-explorer/
+
+** Reddit thread -- emacs blew me away
+
+https://www.reddit.com/r/emacs/comments/8j15ji/how_has_emacs_ever_really_blown_you_away/?utm_source=reddit-android
+
+** Evil everywhere -- the rest of Emacs
+
+https://www.reddit.com/r/emacs/comments/7akqy3/evil_everywhere_the_rest_of_emacs/?utm_source=reddit-android
+
+** Alexander-Miller/treemacs
+
+https://github.com/Alexander-Miller/treemacs#treemacs---a-tree-layout-file-explorer-for-emacs
+
+** EmacsWiki: Undo Tree
+
+https://www.emacswiki.org/emacs/UndoTree
+
+** Getting Vim + Ctags Working with R
+
+http://tinyheero.github.io/2017/05/13/r-vim-ctags.html
+
+** rtags function | R Documentation
+
+https://www.rdocumentation.org/packages/utils/versions/3.5.0/topics/rtags
+
+** ggtags/README.rst at master · leoliu/ggtags
+
+https://github.com/leoliu/ggtags/blob/master/README.rst
+
+** Emacs Tags for R
+
+https://developer.r-project.org/rtags.html
+
+** Jane Street Tech Blog - Putting the I back in IDE: Towards a Github Explorer
+
+https://blog.janestreet.com/putting-the-i-back-in-ide-towards-a-github-explorer/
+
+** EmacsWiki: Hide Show
+
+https://www.emacswiki.org/emacs/HideShow
+
+** Using Interactive - GNU Emacs Lisp Reference Manual
+
+https://www.gnu.org/software/emacs/manual/html_node/elisp/Using-Interactive.html
+
+** magnars/expand-region.el: Emacs extension to increase selected region by semantic units.
+
+https://github.com/magnars/expand-region.el
+
+** Ebib Manual
+
+http://joostkremers.github.io/ebib/ebib-manual.html#notes-files
+
+** [[https://github.com/lunaryorn/swsnr.de/blob/master/_posts/2015-04-29-the-power-of-display-buffer-alist.md][The power of display-buffer-alist]]
+** [[http://www.i3s.unice.fr/~malapert/org/tips/emacs_orgmode.html][Yet another org mode configuration]]
+** [[http://sachachua.com/blog/2008/01/projects-in-emacs-org/][Projects in Emacs org mode]]
+** Literate org mode example -- [[http://ivanmalison.github.io/dotfiles/][Ivan Malison's dotfiles]] :org:
+** [[http://www.personal.psu.edu/bam49/notebook/org-mode-for-research/][Org mode for research]] :org:
+** Introduction Org Mode Project Management · Brian A. Maicke         :emacs:
+
+ http://www.personal.psu.edu/bam49/notebook/org-mode-for-research/
+
+** https://www.mojotech.com/blog/automating-internationalization-workflow-in-emacs/ :emacs:
+
+ https://www.mojotech.com/blog/automating-internationalization-workflow-in-emacs/
+** File Name Completion - GNU Emacs Lisp Reference Manual  :emacs:completion:
+   :PROPERTIES:
+   :project:  .emacs.d
+   :END:
+
+ https://www.gnu.org/software/emacs/manual/html_node/elisp/File-Name-Completion.html
+
+ Steps:
+ - Split the prefix into directory and file name. (Emacs functions for base and directory name?)
+ - If directory is blank, set it to projectile-root-directory or "." if that's nil.
+ - Run file name completion function (described here)
+ - Add directory name to all file names
+ - Return
+
+** overtone/emacs-live: M-x start-hacking                             :emacs:
+
+ https://github.com/overtone/emacs-live
+
+* Packages and tools
+** nex3/perspective-el: Perspectives for Emacs.                       :emacs:
+
+ https://github.com/nex3/perspective-el
+
+** emacs-purpose/README.md at master · bmag/emacs-purpose             :emacs:
+
+ https://github.com/bmag/emacs-purpose/blob/master/README.md
+
+** persp-projectile/README.md at master · bbatsov/persp-projectile    :emacs:
+
+ https://github.com/bbatsov/persp-projectile/blob/master/README.md
+
+** yoshiki/yaml-mode: The emacs major mode for editing files in the YAML data serialization format. :emacs:
+
+ https://github.com/yoshiki/yaml-mode
+
+** novoid/Memacs: What did I do on February 14th 2007? Visualize your (digital) life in Org-mode :emacs:
+
+ https://github.com/novoid/Memacs
+
+** atgreen/paperless: Emacs assisted PDF document filing              :emacs:
+
+ https://github.com/atgreen/paperless
+
+** nashamri/academic-phrases: Bypass that mental block when writing your papers. :emacs:
+
+ https://github.com/nashamri/academic-phrases
+
+** snosov1/toc-org: toc-org is an Emacs utility to have an up-to-date table of contents in the org files without exporting (useful primarily for readme files on GitHub) :emacs:org:
+
+ https://github.com/snosov1/toc-org
+
+** Wilfred/helpful: A better Emacs *help* buffer                      :emacs:
+
+ https://github.com/Wilfred/helpful
+
+** weirdNox/org-noter: Emacs document annotator, using Org-mode       :emacs:
+
+ https://github.com/weirdNox/org-noter
+
+ See also Interleave
+
+** rudolfochrist/interleave: Emacs minor mode to interleave notes and text books :emacs:
+
+ https://github.com/rudolfochrist/interleave
+
+** rakanalh/emacs-dashboard: An extensible emacs dashboard            :emacs:
+
+ https://github.com/rakanalh/emacs-dashboard
+
+** alphapapa/org-super-agenda: Supercharge your Org daily/weekly agenda by grouping items :emacs:
+
+ https://github.com/alphapapa/org-super-agenda
+
+** slime/slime: The Superior Lisp Interaction Mode for Emacs          :emacs:
+
+ https://github.com/slime/slime
+
+** vermiculus/sx.el: Stack Exchange for Emacs                         :emacs:
+
+ https://github.com/vermiculus/sx.el
+
+** yuya373/emacs-slack: slack client for emacs                        :emacs:
+
+ https://github.com/yuya373/emacs-slack
+
+** editorconfig/editorconfig-emacs: EditorConfig plugin for emacs     :emacs:
+
+ https://github.com/editorconfig/editorconfig-emacs
+
+** victorhge/iedit at 412490db4387ad9d040bfb5854f25de4c40c2146        :emacs:
+
+ https://github.com/victorhge/iedit/tree/412490db4387ad9d040bfb5854f25de4c40c2146
+
+** discover.el: discover more of Emacs using context menus - Mastering Emacs
+
+https://www.masteringemacs.org/article/discoverel-discover-emacs-context-menus
+
+** steckerhalter/discover-my-major: Discover key bindings and their meaning for the current Emacs major mode
+
+https://github.com/steckerhalter/discover-my-major
+
+** guide-key/README.org at master · kai2nenobu/guide-key
+
+https://github.com/kai2nenobu/guide-key/blob/master/README.org
+
+** emacs-helm/helm-descbinds: A helm frontend for describe-bindings.
+
+https://github.com/emacs-helm/helm-descbinds
+
+** nibrahim/Hyde: An Emacs mode to manage Jekyll blogs
+
+https://github.com/nibrahim/Hyde
+
+** multiple-cursors.el/README.md at master · magnars/multiple-cursors.el
+
+https://github.com/magnars/multiple-cursors.el/blob/master/README.md
+
+** ShingoFukuyama/helm-swoop: Efficiently hopping squeezed lines powered by Emacs helm interface
+
+https://github.com/ShingoFukuyama/helm-swoop
+
+** yuya373/emacs-slack: slack client for emacs
+
+https://github.com/yuya373/emacs-slack
+
+** auto-package-update.el/README.md at master · rranelli/auto-package-update.el
+
+https://github.com/rranelli/auto-package-update.el/blob/master/README.md
+
+** s.el/README.md at master · magnars/s.el
+
+https://github.com/magnars/s.el/blob/master/README.md
+
+** milkypostman/powerline: emacs powerline
+
+https://github.com/milkypostman/powerline
+
+** Malabarba/smart-mode-line: A powerful and beautiful mode-line for Emacs.
+
+https://github.com/Malabarba/smart-mode-line
+
+** raugturi/powerline-evil: Utilities for better Evil support for Powerline
+
+https://github.com/raugturi/powerline-evil
+
+** [[http://joostkremers.github.io/pandoc-mode/][Pandoc mode]]
+** blerner/auc-tikz                                                   :latex:
+
+https://github.com/blerner/auc-tikz
+
+** List of awesome Emacs packages -- https://github.com/emacs-tw/awesome-emacs
+
+* Configuration to-do list [36/88]                                   ::emacs:
 ** DONE Line numbers
 
    - Interactively, use ~M-x linum-mode~
@@ -67,9 +558,9 @@ For this to work, ~evil-integration.el~ has to be loaded, so make sure that ~evi
 *** DONE Send line with <\l>
 *** DONE Send paragraph with <\pp>
 *** DONE Send selection with <\ss>
-*** TODO Send line/selection and echo result
+*** TODO Send line/selection and echo result                            :ESS:
 *** DONE Insert pipe (=%>%=) with <M-m>
-*** TODO (Visual) select to next pipe
+*** TODO (Visual) select to next pipe                                   :ESS:
 
     Facilitates debugging pipes.
 
@@ -167,11 +658,11 @@ Generally seems safer to just do this by hand.
      - Swapped ~projectile~ and ~projectile-find-project~ mappings.
      - Changed leader mappings so ~f~ is ~helm-find-file~ and ~F~ is ~helm-find~ (i.e. system find command)
 
-** TODO [#C] Fix minor modes with ~delight~                           :package:
+** TODO [#C] Fix minor modes with ~delight~                         :package:
 
    - E.g. Don't write "Projectile" -- just show the project name.
 
-** TODO [#C] Use ~fd~ as ~find-program~                                    :helm:
+** TODO [#C] Use ~fd~ as ~find-program~                                :helm:
 
    - Probably the best way to do this is to write a simple shell wrapper that converts find arguments to ~fd~ arguments.
 
@@ -189,7 +680,7 @@ For instance, in customization buffer.
    - Toggle the variable
    - Reload org mode
 ** DONE Tag autocompletion in org-capture                               :org:
-** TODO [#C] Map ~<backtab> (S-Tab)~ to hide subtree                      :org:
+** TODO [#C] Map ~<backtab> (S-Tab)~ to hide subtree                    :org:
 ** DONE Always show tags at end of line                                 :org:
    - Not quite automatic, but can be refreshed with ~g%~
 ** TODO [#C] Keybinding for quickly adding a checkbox            :org:keymap:
@@ -214,24 +705,28 @@ For instance, in customization buffer.
 ** DONE Function to horizontally split entire window
    - Use ~(frame-root-window)~ to refer to the entire frame as a window splitting functions
    - See my implementation in ~ans/hsplit-frame~
-** TODO [#C] Replace my minimize with [[http://melpa.milkbox.net/#/zoom-window][zoom-window]]            ::emacs:package:
+** TODO [#C] Replace my minimize with [[http://melpa.milkbox.net/#/zoom-window][zoom-window]] ::emacs:package:
 ** TODO [#C] Change rebox map to ~gr~ to rebox and ~gR~ for the major mode :keymap:
 ** TODO [#C] Consider dired ranger                                   ::dired:
 
 https://melpa.org/#/ranger
 ** TODO [#C] Re-organize init files                                  ::emacs:
    Mappings should all go together.
-** TODO air-org-tags function should work in insert mode         :org:keymap:
+** TODO air-org-tags function should work in other modes         :org:keymap:
+   Currently doesn't work in insert or agenda modes (motion state).
 ** TODO Org capture from within Firefox                                ::org:
-** TODO Use helm for org-projectile                         ::org:helm:emacs:
+** DONE Use helm for org-projectile                         ::org:helm:emacs:
 ** TODO Fix window actions for org-projectile                    ::org:emacs:
  Should return to the current window layout, like org-capture does.
  Is there a ~save-x~ function wrapper for window layouts?
-** TODO Helm completion to just list org agenda files       ::emacs:helm:org:
+** DONE Helm completion to just list org agenda files       ::emacs:helm:org:
+   And learned how to write my own helm source! See [[file:lisp/init-org.el][org init file]].
 ** TODO Symlink project to-dos to Dropbox                              ::org:
+   - Note taken on [2018-06-10 Sun 14:41] \\
+     Bonus if this can be done automatically in Emacs. Something like: Loop over (org-agenda-files), extract the project name (PROPERTY in the file?), and use that as the link name.
 ** TODO Leader-T mapping for tagging only in org files    ::emacs:keymap:org:
-** TODO Migrate emacs.org to emacs.d project notes               ::emacs:org:
-** TODO Set up archiving of org mode files                       ::org:emacs:
+** DONE Migrate emacs.org to emacs.d project notes               ::emacs:org:
+** DONE Set up archiving of org mode files                       ::org:emacs:
 ** TODO Set up ignore paths for system ~locate~
 See [[https://askubuntu.com/a/160428/685956][this stack overflow]].
 ** TODO Better tags                                              ::org:emacs:
@@ -240,3 +735,49 @@ Separate out emacs configuration from everything else.
 Bonus: Tag actions?
 - Start with current tags selected.
 - Use search to select or unselect tags.
+** TODO ESS: Keymap to convert pkg::function to "imports" statement    ::ESS:
+** TODO Set up clocking in org mode                                    ::org:
+   ...as described in [[http://doc.norang.ca/org-mode.html][Organize Your Life in Plain Text]]
+** TODO Disable, or at least toggle, spell check in R source files   ::R:ESS:
+** TODO Lisp function to add ~pkg::function~ at point to ~imports~ list ::ESS:R:
+   - Parse the ~imports~ block at the beginning of the script
+     - Define block as first and last occurrence
+** TODO Convert all ~pkg::function~ calls in a script to ~imports~   ::ESS:R:
+** TODO Remap ` to ~ in org mode                                ::org:keymap:
+   To make it easier to write code.
+** TODO Company completion in ESS inferior buffer         ::ESS:completion:R:
+   Currently uses helm
+** TODO Company documentation popup                             ::completion:
+   There might be a separate package for this?
+** TODO Map C-u and C-d to scroll up/down in ESS inferior buffer ::ESS:keymap:
+** TODO Capitalization bug in air tag function?
+   Seems to automatically capitalize tags when first tag is capitalized?
+** TODO Better Evil mappings for dired                        ::dired:keymap:
+   - j for next line
+   - k for previous line
+   - U (S-U) for up a directory
+   - RET to enter a directory
+   - r to reload (or gr, to match magit)
+   - / to search
+   - * to toggle all marks
+   - m to mark, u to unmark (default)
+   - d to delete (default)
+   - x to execute delete (default)
+** TODO More conservative requirements for ESS script vs. code buffer ::ESS:R:
+   Follow the logic of Nvim-R: Use a calculated ratio (60-40?) with a minimum script width threshold (80 characters?).
+** TODO Figure out how to close helm preview buffer                   ::helm:
+** TODO Use entire window width for Elscreen tab bar
+** TODO Smartparens paren insert should move cursor to where paren is ::keymap:
+   Basically, the same as in Vim. Right now, the cursor stays put. May have to compose an Elisp function to do this (i.e. move paren, then jump to it).
+** TODO Better text object matching                                ::package:
+   Perhaps ~evil-matchit~?
+** TODO Set up LaTeX environments as text objects                     :latex:
+   Commands like ~vie~ should select everything inside ~begin~ and ~end~ blocks. The evil latex textobject package should do this, but may need additional configuration.
+** TODO Fix R syntax highlighting in Rmarkdown files                 ::R:ESS:
+   - Look at how polymode does it.
+     - [[https://jblevins.org/log/mmm][General mmm guide]]
+     - [[http://stefanavey.com/lessons/2018/01/04/ess-render][Knit button in Emacs]]
+     - [[https://vxlabs.com/tag/polymode/][MMM mode]]
+** TODO Knit R markdown in one command                                 ::ESS:
+** TODO Profile Emacs startup time
+** TODO Make MRU buffer project-specific, and ignore special buffers
