@@ -28,6 +28,7 @@
   (add-to-list 'evil-emacs-state-modes 'help-mode)
   (add-to-list 'evil-emacs-state-modes 'messages-buffer-mode)
   (add-to-list 'evil-emacs-state-modes 'special-mode)
+  (add-to-list 'evil-emacs-state-modes 'pdf-view-mode)
   ;; Some special mappings for dired mode
   (add-to-list 'evil-emacs-state-modes 'dired-mode)
   (general-def

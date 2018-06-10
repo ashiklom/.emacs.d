@@ -271,6 +271,11 @@
     :states 'normal
     "I" 'aggressive-indent-mode))
 
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install))
+
 ;; Remember previous window configuration
 (winner-mode)
 (diminish winner-mode)

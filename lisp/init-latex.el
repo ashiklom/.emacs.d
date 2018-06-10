@@ -11,15 +11,19 @@
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
-  (add-hook 'LaTeX-mode-hook 'ans-latex-mode-setup)
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+	TeX-source-correlate-start-server t)
   :config
-  (use-package auctex-latexmk
-    :ensure t
-    :init
-    (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-    :config
-    (auctex-latexmk-setup))
-  )
+  (add-hook 'LaTeX-mode-hook 'ans-latex-mode-setup)
+  (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook #'TeX-revert-document-buffer))
+
+(use-package auctex-latexmk
+  :ensure t
+  :after tex
+  :init
+  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+  :config
+  (auctex-latexmk-setup))
 
 (use-package helm-bibtex
   :ensure t
