@@ -84,7 +84,8 @@
   :general
   (ans-leader-def
     :states 'normal
-    "a" 'helm-org-rifle-agenda-files))
+    "a" 'helm-org-rifle-agenda-files
+    "A" 'ans/helm-org-agenda-list-files))
 
 (provide 'init-helm)
 ;;; init-helm ends here

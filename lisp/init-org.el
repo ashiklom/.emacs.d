@@ -9,7 +9,7 @@
   :commands (org-mode org-agenda)
   :init
   (setq org-todo-keywords
-	'((sequence "TODO" "STARTED" "|" "DONE")))
+	'((sequence "TODO" "NEXT" "|" "DONE")))
   (setq org-capture-templates
 	'(("E" "Emacs config" entry
 	   (file+headline "~/.emacs.d/project-notes.org" "Configuration to-do list")
@@ -17,11 +17,33 @@
 	  ("e" "Emacs note" entry
 	   (file+headline "~/Dropbox/Notes/emacs.org" "Misc")
 	   "** %?")
-	  ("l" "Personal to-do item" entry
-	   (file+headline "~/Dropbox/Notes/life.org" "Tasks")
-	   "** TODO %?")))
-  (setq org-agenda-files '("~/Dropbox/Notes/"))
+	  ("t" "TODO" entry
+	   (file "~/Dropbox/Notes/unsorted.org")
+	   "* TODO %?\n%U\n%a\n") ; :clock-in t :clock-resume t
+	  ("u" "Miscellaneous note" entry
+	   (file "~/Dropbox/Notes/unsorted.org")
+	   "* %? :NOTE:\n%U\n%a\n")))
   (setq org-hide-emphasis-markers t)
+  (setq org-babel-load-languages '((emacs-lisp . t) (R . t)))
+  (setq org-agenda-files '("~/Dropbox/Notes/")
+	org-agenda-custom-commands
+	'((" " "Agenda"
+	   ((agenda "" nil)
+	    (tags "REFILE"
+		  ((org-agenda-overriding-header "Tasks to Refile")
+		   (org-tags-match-list-sublevels nil)))
+	    (tags-todo "-REFILE-emacs"
+		       ((org-agenda-overriding-header "Other tasks")
+			(org-agenda-prefix-format)))
+	    (tags-todo "emacs"
+		       ((org-agenda-overriding-header "Emacs configuration"))))
+	   nil)))
+  (setq org-refile-targets '((nil :maxlevel . 9)
+			     (org-agenda-files :maxlevel . 9))
+	org-refile-use-outline-path t
+	org-outline-path-complete-in-steps t
+	org-refile-allow-creating-parent-nodes 'confirm
+	org-refile-target-verify-function 'ans/verify-refile-target)
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   :general
   (general-def
@@ -30,6 +52,11 @@
     "<backspace>" 'outline-hide-subtree
     "g t" 'org-todo
     "C-c C-q" 'air-org-set-tags)
+  (general-def
+    :states 'visual
+    :keymaps 'org-mode-map
+    :prefix "\\"
+    "ss" 'eval-region)
   (ans-leader-def
     :states '(motion normal emacs)
     :keymaps 'org-mode-map
@@ -44,6 +71,10 @@
     "j" 'calendar-forward-week
     "H" 'calendar-backward-month
     "L" 'calendar-forward-month))
+
+(defun ans/verify-refile-target ()
+  "Exclude TODO keywords with a done state from refile targets."
+  (not (member (nth 2 (org-heading-components)) org-done-keywords)))
 
 (use-package evil-org
   :ensure t
@@ -106,7 +137,7 @@ TAG is chosen interactively from the global tags completion table."
                      (delq nil (append (org-get-buffer-tags)
                                        (org-global-tags-completion-table))))
                   (org-global-tags-completion-table))))
-           (org-icompleting-read
+           (completing-read
             "Tag: " 'org-tags-completion-function nil nil nil
             'org-tags-history))))
   (let* ((cur-list (org-get-tags))
@@ -147,6 +178,25 @@ TAG is chosen interactively from the global tags completion table."
 
 ;; Run it once for good measure
 (ans/clean-org-agenda-files)
+
+;; Custom source listing all agenda files
+(defun ans/helm-org-agenda-list-files ()
+  "Helm source listing all current org agenda files."
+  (interactive)
+  (helm :sources (helm-build-sync-source
+		     "Org agenda files"
+		   :candidates (org-agenda-files)
+		   :action '(("Open file" . find-file)))
+	:buffer "*helm agenda files*"))
+
+;; Automatically grouped agendas
+;; (use-package org-super-agenda
+;;   :ensure t
+;;   :after org
+;;   :init
+;;   (setq )
+;;   :config
+;;   (org-super-agenda-mode))
 
 (provide 'init-org)
 ;;; init-org ends here
