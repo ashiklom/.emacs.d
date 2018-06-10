@@ -177,14 +177,22 @@
   :config
   (mmm-add-classes
    '((ans-rmarkdown
-      :submode R-mode
-      :face mmm-declaration-submode-face
+      :submode r-mode
       :front "^```{r.*}[\r\n]"
       :back "^```$"
       ))
    )
   (mmm-add-mode-ext-class 'markdown-mode "\\.Rmd\\'" 'ans-rmarkdown)
   )
+
+;; ;; Alternative: Polymode
+;; ;; Currently feels buggy
+;; (use-package polymode
+;;   :ensure t
+;;   :mode
+;;   (("\\.Rnw" . poly-noweb+r-mode)
+;;    ("\\.Rmd" . poly-markdown+r-mode)
+;;    ("\\.md" . poly-markdown-mode)))
 
 (use-package simpleclip
   :ensure t
@@ -248,10 +256,8 @@
 
 (use-package fill-function-arguments
   :quelpa (fill-function-arguments
-	   :fetcher
-	   github
-	   :repo
-	   "davidshepherd7/fill-function-arguments")
+	   :fetcher github
+	   :repo "davidshepherd7/fill-function-arguments")
   :general
   (general-def
     :states 'normal
