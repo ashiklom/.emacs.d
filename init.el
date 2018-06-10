@@ -30,8 +30,11 @@
 (eval-when-compile (require 'use-package))
 
 ;; For installing packages from source (e.g. GitHub)
-(use-package quelpa-use-package
-  :ensure t)
+(use-package quelpa
+  :ensure t
+  :init
+  (setq quelpa-update-melpa-p nil))
+(use-package quelpa-use-package :ensure t)
 
 ;; Global settings
 (setq inhibit-splash-screen t
