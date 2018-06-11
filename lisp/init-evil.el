@@ -134,8 +134,9 @@
   "." 'evil-next-buffer
   "," 'evil-prev-buffer
   ":" 'eval-expression
-  "d" 'dired-other-window
-  "D" 'dired-other-frame
+  "dd" 'dired
+  "dw" 'dired-other-window
+  "df" 'dired-other-frame
   "x" 'helm-M-x
   "q" 'kill-this-buffer
   "sv" 'ans--reload-initfile
