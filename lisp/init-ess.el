@@ -41,7 +41,8 @@
     "v d" 'ess-r-devtools-document-package
     "v l" 'ess-r-devtools-load-package
     "r o" 'ess-rutils-objs
-    "r p" 'ans/ess-eval-symbol)
+    "r p" 'ans/ess-eval-symbol
+    "k r" 'ans/rmarkdown-render)
   (general-def
     :states 'visual
     :keymaps 'ess-mode-map
@@ -73,6 +74,11 @@
   (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
 
 (add-hook 'inferior-ess-mode-hook 'ans/inferior-ess-mode-setup)
+
+(defun ans/rmarkdown-render ()
+  "Render the current R markdown document."
+  (interactive)
+  (ess-send-string (ess-get-process) (format "rmarkdown::render('%s')" (buffer-file-name))))
 
 (defun ans-split-right-if-wide ()
   "Split the window to the right if there is sufficient space."
