@@ -110,7 +110,10 @@
 
 (general-def
   :states 'normal
-  "S" 'save-buffer)
+  "S" 'save-buffer
+  "C-c C-s c" 'slack-channel-select
+  "C-c C-s m" 'slack-im-select
+  "C-c C-s t" 'slack-thread-select)
 
 (general-create-definer ans-leader-def
   :prefix "SPC"

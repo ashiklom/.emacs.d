@@ -254,6 +254,35 @@
   :config
   (pdf-tools-install))
 
+(use-package slack
+  :ensure t
+  :commands (slack-start)
+  :config
+  (ans/slack-setup)
+  (general-def
+    :keymaps 'slack-message-buffer-mode-map
+    :states 'normal
+    "gk" 'slack-buffer-goto-prev-message
+    "gj" 'slack-buffer-goto-next-message)
+  (ans-leader-def
+    :keymaps 'slack-message-buffer-mode-map
+    :states 'normal
+    "mm" 'slack-message-write-another-buffer
+    "sd" 'slack-message-delete
+    "se" 'slack-message-edit
+    "sra" 'slack-message-add-reaction
+    "srd" 'slack-message-remove-reaction
+    "sf" 'slack-file-upload
+    "st" 'slack-thread-start
+    "ic" 'slack-channel-select
+    "im" 'slack-im-select)
+  )
+
+(use-package alert
+  :commands (alert)
+  :init
+  (setq alert-default-style 'notify))
+
 ;; Remember previous window configuration
 (winner-mode)
 (diminish winner-mode)
