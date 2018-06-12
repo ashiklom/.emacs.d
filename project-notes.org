@@ -497,7 +497,7 @@ https://github.com/blerner/auc-tikz
 
 ** List of awesome Emacs packages -- https://github.com/emacs-tw/awesome-emacs
 
-* Configuration to-do list [38/89]                                   ::emacs:
+* Configuration to-do list [38/96]                                   ::emacs:
 ** DONE Line numbers
 
    - Interactively, use ~M-x linum-mode~
@@ -591,21 +591,21 @@ For this to work, ~evil-integration.el~ has to be loaded, so make sure that ~evi
 
 Generally seems safer to just do this by hand.
 
-** TODO [#C] Try Emacs for email                                    :package:
+** TODO Try Emacs for email                                         :package:
 
    [[http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/][Guide]] for using Emacs for email.
    
    How to [[https://unix.stackexchange.com/questions/44214/encrypt-offlineimap-password/48355#48355][encrypt a plain-text password using Python and GPG]]
 
-** TODO [#C] Configure helm-bibtex                                     :helm:
+** TODO Configure helm-bibtex                                          :helm:
 
     See [[https://github.com/tmalsburg/helm-bibtex#usage][the README on GitHub.]]
 
-** TODO [#C] Play with Ebib.                                       ::package:
+** TODO Play with Ebib.                                            ::package:
 
     Here is the [[http://joostkremers.github.io/ebib/ebib-manual.html][manual.]]
 
-** TODO [#B] Extend my custom file completion.                  ::completion:
+** TODO Extend my custom file completion.                       ::completion:
 
    Pass the full prefix into the completion, but prepend "./" to it by default.
    Nice opportunity to figure out how to use `(interactive)' mode.
@@ -617,14 +617,14 @@ Generally seems safer to just do this by hand.
    - Finished by setting ~scroll-margin~ to 2 (number of lines before scroll) and ~scroll-step~ to 1 (scroll one line at a time).
    - For visually-smooth scrolling (like in GUI programs), see ~sublimity~ package.
 
-** TODO [#C] Org capture in a separate frame                            :org:
+** TODO Org capture in a separate frame                                 :org:
 ** DONE Dired in split window (or separate frame?)                    :dired:
    Use ~dired-other-window~ or ~dired-other-frame~
 ** DONE Visual indent for soft wrap (like Vim's breakindent)
 
    Use the ~adaptive-wrap~ package. Gave it a ~visual-line-mode~ hook.
 
-** TODO [#C] Hydras for helm mode                               :helm:keymap:
+** TODO Hydras for helm mode                                    :helm:keymap:
 
    Opening a file in current buffer, window, frame.
 
@@ -637,18 +637,18 @@ Generally seems safer to just do this by hand.
 
    Use ~elscreen~. I have keybindings similar to my Tmux configuration.
 
-** TODO [#C] Undo tree                                              :package:
+** TODO Undo tree                                                   :package:
 
    Figure out how it works
    
    Maybe ~visualize-undo-tree~?
 
-** TODO [#B] Better helm keybindings                            :helm:keymap:
+** TODO Better helm keybindings                                 :helm:keymap:
 
    Use ~TAB~ to execute persistent action and something else (~C-j~?) to select action.
 
-** TODO [#C] Add helm actions for elscreen                             :helm:
-** TODO [#B] Fix evil scrolling                                        ::bug:
+** TODO Add helm actions for elscreen                                  :helm:
+** TODO Fix evil scrolling                                             ::bug:
 
    - Scrolling up and down should be reversible -- cursor should always be in the same spot.
 
@@ -658,11 +658,11 @@ Generally seems safer to just do this by hand.
      - Swapped ~projectile~ and ~projectile-find-project~ mappings.
      - Changed leader mappings so ~f~ is ~helm-find-file~ and ~F~ is ~helm-find~ (i.e. system find command)
 
-** TODO [#C] Fix minor modes with ~delight~                         :package:
+** TODO Fix minor modes with ~delight~                              :package:
 
    - E.g. Don't write "Projectile" -- just show the project name.
 
-** TODO [#C] Use ~fd~ as ~find-program~                                :helm:
+** TODO Use ~fd~ as ~find-program~                                     :helm:
 
    - Probably the best way to do this is to write a simple shell wrapper that converts find arguments to ~fd~ arguments.
 
@@ -676,18 +676,18 @@ For instance, in customization buffer.
 ...though then again, I probably don't want to use customize anyway.
 ** DONE [#A] Fix Dired (dired plus?) colors                           :dired:
    Dropped dired+ in favor of dired with an additional package for dealing with multiple buffers.
-** TODO [#C] Toggle show markup in org-mode                             :org:
+** TODO Toggle show markup in org-mode                                  :org:
    - Toggle the variable
    - Reload org mode
 ** DONE Tag autocompletion in org-capture                               :org:
-** TODO [#C] Map ~<backtab> (S-Tab)~ to hide subtree                    :org:
+** TODO Map ~<backtab> (S-Tab)~ to hide subtree                         :org:
 ** DONE Always show tags at end of line                                 :org:
    - Not quite automatic, but can be refreshed with ~g%~
-** TODO [#C] Keybinding for quickly adding a checkbox            :org:keymap:
-** TODO [#C] Cursor beacon (or whatever -- easier cursor finding)   :package:
+** TODO Keybinding for quickly adding a checkbox                 :org:keymap:
+** TODO Cursor beacon (or whatever -- easier cursor finding)        :package:
 ** DONE List all tags                                                   :org:
    Use the ~org-tags-view~ command.
-** TODO [#C] Automatically tail LaTeX compilation log                 :latex:
+** TODO Automatically tail LaTeX compilation log                      :latex:
 ** DONE Unmap underscore from arrow                                :R:keymap:
 ** STARTED Hooks for projectile mode [1/2]                             :helm:
 *** DONE Limit file and buffer navigation to the current project
@@ -710,12 +710,12 @@ For instance, in customization buffer.
 ** DONE Function to horizontally split entire window
    - Use ~(frame-root-window)~ to refer to the entire frame as a window splitting functions
    - See my implementation in ~ans/hsplit-frame~
-** TODO [#C] Replace my minimize with [[http://melpa.milkbox.net/#/zoom-window][zoom-window]] ::emacs:package:
-** TODO [#C] Change rebox map to ~gr~ to rebox and ~gR~ for the major mode :keymap:
-** TODO [#C] Consider dired ranger                                   ::dired:
+** TODO Replace my minimize with [[http://melpa.milkbox.net/#/zoom-window][zoom-window]] ::emacs:package:
+** TODO Change rebox map to ~gr~ to rebox and ~gR~ for the major mode :keymap:
+** TODO Consider dired ranger                                        ::dired:
 
 https://melpa.org/#/ranger
-** TODO [#C] Re-organize init files                                  ::emacs:
+** TODO Re-organize init files                                       ::emacs:
    Mappings should all go together.
 ** TODO air-org-tags function should work in other modes         :org:keymap:
    Currently doesn't work in insert or agenda modes (motion state).
@@ -789,3 +789,28 @@ Bonus: Tag actions?
 ** TODO Agenda view for NEXT tasks                               ::emacs:org:
 ** TODO Use tmux-like keys for window management
    - Use ~C-SPC~ prefix for opening and closing splits, etc.
+** TODO Try perspective instead of elscreen
+   [[file:project-notes.org::*nex3/perspective-el:%20Perspectives%20for%20Emacs.][Link to note]]
+** TODO Org mode desired workflow                                 :emacs:org:
+*** TODO Agenda views
+    Agenda - Have a view with all of these, as well as subsets
+    - Tasks scheduled for today (in core agenda view already?)
+    - Next tasks
+    - Tasks with deadlines, sorted by deadline
+    - Tasks without a deadline
+    - "Spare time" tasks
+*** TODO Task clocking
+    Clock into and out of tasks
+*** TODO Daily summary - Given a date, show what I did, including...
+    - Tasks worked on, and for how long
+    - Meetings
+    - Calls
+    - Captured notes and tasks
+** TODO Fix case sensitivity of search in `helm-org-refile`       ::helm:org:
+   Lowercase searches give lowercase matches, even though the original keys are uppercase. Refiling to these then fails.
+** TODO End of line-related keys should ignore tags             ::org:keymap:
+   E.g. ~A~ should append after the bullet
+** TODO Fix ~gj~ and ~gk~ mappings in org-mode                ::org:emacs:keymap:
+   Should jump to previous/next heading.
+** TODO Don't show duplicate tags in agenda view                 ::emacs:org:
+** TODO Fix duplicate entries in agenda view                 ::emacs:bug:org:
