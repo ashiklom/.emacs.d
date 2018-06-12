@@ -124,17 +124,6 @@
     :states 'normal
     "gu" 'magithub-dashboard-show-read-notifications-toggle))
 
-(use-package diff-hl
-  :ensure t
-  :general
-  (general-def
-    :states 'normal
-    "] c" 'diff-hl-next-hunk
-    "[ c" 'diff-hl-previous-hunk)
-  (ans-leader-def
-    :states 'normal
-    "g g" 'diff-hl-mode))
-
 (use-package diminish :ensure t)
 
 (use-package rainbow-delimiters
@@ -233,18 +222,6 @@
     "x" 'elscreen-kill-screen-and-buffers
     "," 'elscreen-screen-nickname))
 
-;; Visually-smooth scrolling
-(use-package sublimity
-  :ensure t
-  :disabled
-  :diminish
-  :init
-  (setq sublimity-scroll-weight 10
-	sublimity-scroll-drift-length 5)
-  :config
-  (require 'sublimity-scroll)
-  (sublimity-mode 1))
-
 (use-package expand-region
   :ensure t
   :init
@@ -273,6 +250,7 @@
 
 (use-package pdf-tools
   :ensure t
+  :mode (("\\.pdf\\'" . pdf-view-mode))
   :config
   (pdf-tools-install))
 
