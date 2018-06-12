@@ -497,7 +497,7 @@ https://github.com/blerner/auc-tikz
 
 ** List of awesome Emacs packages -- https://github.com/emacs-tw/awesome-emacs
 
-* Configuration to-do list [38/96]                                   ::emacs:
+* Configuration to-do list [38/99]                                   ::emacs:
 ** DONE Line numbers
 
    - Interactively, use ~M-x linum-mode~
@@ -814,3 +814,7 @@ Bonus: Tag actions?
    Should jump to previous/next heading.
 ** TODO Don't show duplicate tags in agenda view                 ::emacs:org:
 ** TODO Fix duplicate entries in agenda view                 ::emacs:bug:org:
+** TODO Overview of unread Slack messages by team              ::emacs:slack:
+   Will probably have to write my own function, but should be mostly possible using functions from the slack package.
+** TODO C-n/C-p completion should work in plain text buffers ::completion:emacs:
+** TODO Fix leftover cursor line when switching evil modes       ::emacs:bug:

@@ -18,6 +18,7 @@
 (use-package evil
   :ensure t
   :demand
+  :init
   :config
   (evil-mode)
   (use-package evil-surround
@@ -113,7 +114,8 @@
   "S" 'save-buffer
   "C-c C-s c" 'slack-channel-select
   "C-c C-s m" 'slack-im-select
-  "C-c C-s t" 'slack-thread-select)
+  "C-c C-s t" 'slack-thread-select
+  "C-c C-s u" 'slack-select-unread-rooms)
 
 (general-create-definer ans-leader-def
   :prefix "SPC"
@@ -127,6 +129,7 @@
   "b" 'helm-mini
   "\\" 'evil-window-vsplit
   "-" 'evil-window-split
+  "+" 'make-frame-command
   "<up>" 'buf-move-up
   "<down>" 'buf-move-down
   "<left>" 'buf-move-left
@@ -145,7 +148,9 @@
   "Y" 'org-store-link
   "L" 'org-insert-last-stored-link
   "@" 'org-agenda
-  "ee" 'sr-speedbar-toggle)
+  "ee" 'sr-speedbar-toggle
+  "ww" 'quit-window
+  "wd" 'delete-window)
 
 (ans/add-evil-maps 'occur-mode-map)
 
@@ -155,8 +160,8 @@
   (ans-leader-def
     :states '(normal visual)
     ";" 'evilnc-comment-or-uncomment-lines
-    "\"" 'evilnc-comment-or-uncomment-paragraphs
-    )
+  "\"" 'evilnc-comment-or-uncomment-paragraphs
+  )
   )
 
 (use-package ace-jump-mode
