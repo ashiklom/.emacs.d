@@ -497,7 +497,7 @@ https://github.com/blerner/auc-tikz
 
 ** List of awesome Emacs packages -- https://github.com/emacs-tw/awesome-emacs
 
-* Configuration to-do list [36/88]                                   ::emacs:
+* Configuration to-do list [38/89]                                   ::emacs:
 ** DONE Line numbers
 
    - Interactively, use ~M-x linum-mode~
@@ -701,7 +701,12 @@ For instance, in customization buffer.
 ** DONE [#B] Indent after filling function arguments
    Need to write a custom function for this.
    Not quite, but just use ~aggressive-indent~.
-** TODO [#B] Set correct word boundary for R ESS                          :R:
+** DONE [#B] Set correct word boundary for R ESS                          :R:
+   Fixed with the following:
+#+BEGIN_SRC lisp
+  (add-to-list 'ess-R-font-lock-keywords
+	       '(ess-fl-keyword:fun-calls . t) t)
+#+END_SRC
 ** DONE Function to horizontally split entire window
    - Use ~(frame-root-window)~ to refer to the entire frame as a window splitting functions
    - See my implementation in ~ans/hsplit-frame~
@@ -778,6 +783,9 @@ Bonus: Tag actions?
      - [[https://jblevins.org/log/mmm][General mmm guide]]
      - [[http://stefanavey.com/lessons/2018/01/04/ess-render][Knit button in Emacs]]
      - [[https://vxlabs.com/tag/polymode/][MMM mode]]
-** TODO Knit R markdown in one command                                 ::ESS:
+** DONE Knit R markdown in one command                                 ::ESS:
 ** TODO Profile Emacs startup time
 ** TODO Make MRU buffer project-specific, and ignore special buffers
+** TODO Agenda view for NEXT tasks                               ::emacs:org:
+** TODO Use tmux-like keys for window management
+   - Use ~C-SPC~ prefix for opening and closing splits, etc.
