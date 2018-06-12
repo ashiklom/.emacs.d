@@ -131,24 +131,15 @@
   "<down>" 'buf-move-down
   "<left>" 'buf-move-left
   "<right>" 'buf-move-right
-  "O" 'other-frame
-  "E" 'new-frame
-  "TAB" 'ans-switch-to-mru-buffer
-  "." 'evil-next-buffer
-  "," 'evil-prev-buffer
   ":" 'eval-expression
   "dd" 'dired
   "dw" 'dired-other-window
   "df" 'dired-other-frame
   "x" 'helm-M-x
-  "q" 'kill-this-buffer
   "sv" 'ans--reload-initfile
-  "ev" 'ans--edit-initfile
   "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
   "ss" 'delete-trailing-whitespace
-  "z" 'ans-toggle-minimize
   "'" 'comment-dwim			; Insert right comment
-  "ea" 'align-regexp
   "*" 'universal-argument		; Emacs's C-u
   "C" 'org-capture
   "Y" 'org-store-link
