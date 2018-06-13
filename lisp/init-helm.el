@@ -32,6 +32,8 @@
   (general-def
     :keymaps 'helm-map
     "TAB" 'helm-execute-persistent-action
+    "<right>" 'right-char
+    "<left>" 'left-char
     "C-z" 'helm-select-action
     "C-n" 'helm-next-line
     "C-p" 'helm-previous-line
@@ -65,7 +67,8 @@
   :init
   (setq helm-projectile-fuzzy-match t
 	helm-projectile-truncate-lines t
-	projectile-completion-system 'helm)
+	projectile-completion-system 'helm
+	projectile-switch-project-action 'helm-projectile)
   :config
   (helm-projectile-on)
   :general
@@ -75,20 +78,8 @@
     "P" 'helm-projectile-switch-project)
   (ans-leader-def
     :states '(motion normal)
-    "b" (general-predicate-dispatch 'helm-mini
-	  (ans/in-project-p) 'helm-projectile-switch-to-buffer)
-    "B" 'helm-mini
-    "f" (general-predicate-dispatch 'helm-find-files
-	  (ans/in-project-p) 'helm-projectile-find-file)
-    "F" 'helm-find-files
     "rg" (general-predicate-dispatch 'helm-ag
-	   (ans/in-project-p) 'helm-projectile-ag))
-  :config
-  (defvar helm-source-file-not-found
-    (helm-build-dummy-source
-	"Create file"
-      :action 'find-file))
-  (add-to-list 'helm-projectile-sources-list helm-source-file-not-found t))
+	   (ans/in-project-p) 'helm-projectile-ag)))
 
 (use-package helm-org-rifle
   :ensure t
@@ -97,6 +88,24 @@
     :states 'normal
     "a" 'helm-org-rifle-agenda-files
     "A" 'ans/helm-org-agenda-list-files))
+
+(use-package helm-swoop
+  :ensure t
+  :init
+  (setq helm-swoop-split-direction 'split-window-horizontally)
+  :general
+  (ans-leader-def
+    :states '(motion normal)
+    "ii" 'helm-swoop
+    "ib" 'helm-multi-swoop-all
+    "ip" 'helm-multi-swoop-projectile
+    "i0" 'helm-swoop-back-to-last-point))
+
+(use-package helm-descbinds
+  :ensure t
+  :after helm
+  :config
+  (helm-descbinds-mode))
 
 (provide 'init-helm)
 ;;; init-helm ends here

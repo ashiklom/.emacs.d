@@ -127,6 +127,7 @@
   :states '(motion normal visual emacs)
   :keymaps 'override
   "b" 'helm-mini
+  "f" 'helm-find-files
   "\\" 'evil-window-vsplit
   "-" 'evil-window-split
   "+" 'make-frame-command
@@ -150,7 +151,9 @@
   "@" 'org-agenda
   "ee" 'sr-speedbar-toggle
   "ww" 'quit-window
-  "wd" 'delete-window)
+  "wd" 'delete-window
+  "/" 'helm-occur
+  "\"" 'helm-show-kill-ring)
 
 (ans/add-evil-maps 'occur-mode-map)
 
@@ -159,10 +162,7 @@
   :general
   (ans-leader-def
     :states '(normal visual)
-    ";" 'evilnc-comment-or-uncomment-lines
-  "\"" 'evilnc-comment-or-uncomment-paragraphs
-  )
-  )
+    ";" 'evilnc-comment-or-uncomment-lines))
 
 (use-package ace-jump-mode
   :ensure t
