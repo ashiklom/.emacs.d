@@ -18,3 +18,4 @@ magithub/*
 /emojis/*
 /lisp/init-slack.el
 /url/*
+/request

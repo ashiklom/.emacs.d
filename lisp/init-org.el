@@ -12,7 +12,7 @@
 	'((sequence "TODO" "NEXT" "|" "DONE")))
   (setq org-capture-templates
 	'(("E" "Emacs config" entry
-	   (file+headline "~/.emacs.d/project-notes.org" "Configuration to-do list")
+	   (file+headline "~/Dropbox/Notes/emacs.org" "Configuration to-do list")
 	   "** TODO %?")
 	  ("e" "Emacs note" entry
 	   (file+headline "~/Dropbox/Notes/emacs.org" "Misc")
@@ -33,10 +33,10 @@
 		  ((org-agenda-overriding-header "Tasks to Refile")
 		   (org-tags-match-list-sublevels nil)))
 	    (tags-todo "-REFILE-emacs"
-		       ((org-agenda-overriding-header "Other tasks")
-			(org-agenda-prefix-format)))
+		       ((org-agenda-overriding-header "Other tasks")))
 	    (tags-todo "emacs"
-		       ((org-agenda-overriding-header "Emacs configuration"))))
+		       ((org-agenda-overriding-header "Emacs configuration")
+			(org-agenda-sorting-strategy '(todo-state-down)))))
 	   nil)))
   (setq org-refile-targets '((nil :maxlevel . 9)
 			     (org-agenda-files :maxlevel . 9))
@@ -47,11 +47,17 @@
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   :general
   (general-def
+    :keymaps 'org-mode-map
+    "C-c C-q" 'air-org-set-tags)
+  (general-def
     :states '(motion normal)
     :keymaps 'org-mode-map
     "<backspace>" 'outline-hide-subtree
-    "g t" 'org-todo
-    "C-c C-q" 'air-org-set-tags)
+    "gt" 'org-todo
+    "gj" 'outline-next-heading
+    "gk" 'outline-previous-heading
+    "g$" 'evil-end-of-line
+    "g%" 'ans/org-realign-tags)
   (general-def
     :states 'visual
     :keymaps 'org-mode-map
@@ -62,6 +68,12 @@
     :keymaps 'org-mode-map
     "#" 'org-update-statistics-cookies
     "t" 'air-org-set-tags)
+  (ans-leader-def
+    :keymaps 'org-mode-map
+    :states '(motion normal visual)
+    "L" 'org-insert-last-stored-link
+    "ss" 'org-schedule
+    "sd" 'org-deadline)
   (general-def
     :states '(motion)
     :keymaps 'calendar-mode-map
@@ -84,19 +96,7 @@
   (add-hook 'evil-org-mode-hook 'ans/evil-org-mode-setup)
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys)
-  (ans-leader-def
-    :keymaps 'evil-org-mode-map
-    :states '(motion normal visual)
-    "L" 'org-insert-last-stored-link
-    "ss" 'org-schedule
-    "sd" 'org-deadline)
-  (general-def
-    :keymaps 'evil-org-mode-map
-    :states '(motion normal visual)
-    "gj" 'outline-next-heading
-    "gk" 'outline-previous-heading
-    "g$" 'evil-end-of-line
-    "g%" 'ans/org-realign-tags))
+  )
 
 (defun ans/evil-org-mode-setup ()
   "Custom setup for org mode."
@@ -158,19 +158,6 @@ TAG is chosen interactively from the global tags completion table."
 	org-journal-enable-agenda-integration t))
 (evil-ex-define-cmd "now" 'org-journal-new-entry)
 
-(use-package org-projectile
-  :ensure t
-  :after (org projectile)
-  :config
-  (progn
-    (org-projectile-per-project)
-    (setq org-projectile-per-project-filepath "project-notes.org")
-    (setq org-agenda-files (append org-agenda-files (-filter 'file-exists-p (org-projectile-todo-files))))
-    (push (org-projectile-project-todo-entry) org-capture-templates))
-  (ans-leader-def
-    :states '(motion normal emacs)
-    "T" 'org-projectile-project-todo-completing-read))
-
 (defun ans/clean-org-agenda-files ()
   "Remove org agenda files that don't exist."
   (interactive)
@@ -188,15 +175,6 @@ TAG is chosen interactively from the global tags completion table."
 		   :candidates (org-agenda-files)
 		   :action '(("Open file" . find-file)))
 	:buffer "*helm agenda files*"))
-
-;; Automatically grouped agendas
-;; (use-package org-super-agenda
-;;   :ensure t
-;;   :after org
-;;   :init
-;;   (setq )
-;;   :config
-;;   (org-super-agenda-mode))
 
 (provide 'init-org)
 ;;; init-org ends here

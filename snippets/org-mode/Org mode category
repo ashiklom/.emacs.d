@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Org mode category
+# key: ocat
+# --
+#+ CATEGORY: $0
