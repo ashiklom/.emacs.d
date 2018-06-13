@@ -29,6 +29,14 @@
     :states 'normal
     "f" 'helm-find-files
     "F" 'helm-find)
+  (general-def
+    :keymaps 'helm-map
+    "TAB" 'helm-execute-persistent-action
+    "C-z" 'helm-select-action
+    "C-n" 'helm-next-line
+    "C-p" 'helm-previous-line
+    "C-S-n" 'helm-next-source
+    "C-S-p" 'helm-previous-source)
   )
 
 (defun ans/hsplit-frame ()
@@ -56,7 +64,10 @@
   :ensure t
   :init
   (setq helm-projectile-fuzzy-match t
-	helm-projectile-truncate-lines t)
+	helm-projectile-truncate-lines t
+	projectile-completion-system 'helm)
+  :config
+  (helm-projectile-on)
   :general
   (ans-leader-def
     :states 'normal
