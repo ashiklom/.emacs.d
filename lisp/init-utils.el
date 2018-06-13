@@ -52,6 +52,18 @@ See `ans-toggle-minimize'.")
 	   (message "Window minimized."))
     ))
 
+(defun ans/delete-file-and-buffer ()
+  "Kill the current buffer and delete the associated file."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (when filename
+      (progn
+	(delete-file filename)
+	(message "Deleted file %s" filename)
+	(kill-buffer)))))
+
+(evil-ex-define-cmd "dkill" 'ans/delete-file-and-buffer)
+
 (use-package dired-single
   :ensure t
   :config
