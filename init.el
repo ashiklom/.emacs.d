@@ -160,7 +160,7 @@
   :demand
   :init
   (setq mmm-global-mode 'maybe)
-  (setq mmm-submode-decoration-level 1)
+  (setq mmm-submode-decoration-level 2)
   (setq mmm-parse-when-idle t)
   (setq mmm-idle-timer-delay 0.2)
   :config
