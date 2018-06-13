@@ -83,9 +83,9 @@
 (defun ans-split-right-if-wide ()
   "Split the window to the right if there is sufficient space."
   (interactive)
-  (if (>= (window-total-width) 200)
-      (split-window-right -100)
-    (split-window-below)))
+  (if (< (window-total-width) 140)
+      (split-window-below)
+    (split-window-right (* -4 (/ (window-total-width) 9)))))
 
 (defun ans-r-file-here ()
   "Use here::here to determine path for R buffer."
