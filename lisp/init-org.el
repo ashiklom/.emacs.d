@@ -40,8 +40,8 @@
 	   nil)))
   (setq org-refile-targets '((nil :maxlevel . 9)
 			     (org-agenda-files :maxlevel . 9))
-	org-refile-use-outline-path t
-	org-outline-path-complete-in-steps t
+	org-refile-use-outline-path 'file
+	org-outline-path-complete-in-steps nil
 	org-refile-allow-creating-parent-nodes 'confirm
 	org-refile-target-verify-function 'ans/verify-refile-target)
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
@@ -57,7 +57,9 @@
     "gj" 'outline-next-heading
     "gk" 'outline-previous-heading
     "g$" 'evil-end-of-line
-    "g%" 'ans/org-realign-tags)
+    "g%" 'ans/org-realign-tags
+    "go" 'ans/evil-insert-heading-after-current
+    "gO" 'ans/evil-insert-heading)
   (general-def
     :states 'visual
     :keymaps 'org-mode-map
@@ -83,6 +85,18 @@
     "j" 'calendar-forward-week
     "H" 'calendar-backward-month
     "L" 'calendar-forward-month))
+
+(defun ans/evil-insert-heading ()
+  "Insert heading before point and enter insert mode."
+  (interactive)
+  (org-insert-heading)
+  (evil-insert 1))
+
+(defun ans/evil-insert-heading-after-current ()
+  "Insert heading after point and enter insert mode."
+  (interactive)
+  (org-insert-heading-respect-content)
+  (evil-insert 1))
 
 (defun ans/verify-refile-target ()
   "Exclude TODO keywords with a done state from refile targets."
