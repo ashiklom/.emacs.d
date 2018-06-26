@@ -53,6 +53,7 @@
 (defvar backup-dir (expand-file-name "backups" user-emacs-directory))
 (setq backup-directory-alist (list (cons "." backup-dir)))
 (setq make-backup-files nil)
+(setq auto-save-default nil)
 
 ;; I want line numbers for programming (prog) and text modes
 (defun ans-prog-mode-setup ()
@@ -153,26 +154,43 @@
    ("\\.Rmd\\'" . markdown-mode)
    ("\\.markdown\\'" . markdown-mode))
   :init
-  (setq markdown-command "pandoc"))
-
-(use-package mmm-mode
-  :ensure t
-  :demand
-  :init
-  (setq mmm-global-mode 'maybe)
-  (setq mmm-submode-decoration-level 2)
-  (setq mmm-parse-when-idle t)
-  (setq mmm-idle-timer-delay 0.2)
+  (setq markdown-command "pandoc")
   :config
-  (mmm-add-classes
-   '((ans-rmarkdown
-      :submode r-mode
-      :front "^```{r.*}[\r\n]"
-      :back "^```$"
-      ))
-   )
-  (mmm-add-mode-ext-class 'markdown-mode "\\.Rmd\\'" 'ans-rmarkdown)
+  ;; From aaronbieber/fence-edit.el
+  (require 'fence-edit)
+  (add-to-list 'fence-edit-blocks '("^```{r.*}" "^```$" R))
+  (add-to-list 'fence-edit-blocks '("^```{tikz.*}" "^```$" latex))
+  (general-def
+    :keymaps 'markdown-mode-map
+    :states '(motion normal visual)
+    "\\e" 'fence-edit-code-at-point)
+  (general-def
+    :keymaps 'fence-edit-mode-map
+    "C-c C-c" 'fence-edit-exit
+    "C-c C-k" 'fence-edit-abort)
   )
+
+;; (use-package mmm-mode
+;;   :ensure t
+;;   :init
+;;   (setq mmm-global-mode 'maybe)
+;;   (setq mmm-submode-decoration-level 2)
+;;   (setq mmm-parse-when-idle nil)
+;;   (setq mmm-idle-timer-delay 0.2)
+;;   :config
+;;   (mmm-add-classes
+;;    '((ans-rmarkdown
+;;       :submode r-mode
+;;       :front "^```{r.*}[\r\n]"
+;;       :back "^```$"
+;;       )
+;;      (ans-latex
+;;       :submode latex-mode
+;;       :front "^```{tikz.*}[\r\n]"
+;;       :back "^```$")))
+;;   (mmm-add-mode-ext-class 'markdown-mode "\\.Rmd\\'" 'ans-rmarkdown)
+;;   (mmm-add-mode-ext-class 'markdown-mode "\\.Rmd\\'" 'ans-latex)
+;;   )
 
 ;; ;; Alternative: Polymode
 ;; ;; Currently feels buggy
