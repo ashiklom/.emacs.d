@@ -19,26 +19,22 @@
   :ensure t
   :demand
   :init
+  (setq evil-want-integration nil)
   :config
   (evil-mode)
-  (use-package evil-surround
-    :ensure t
-    :config
-    (global-evil-surround-mode))
-  ;; Don't use evil mode in these, but enable some Evil mappings
-  (add-to-list 'evil-emacs-state-modes 'help-mode)
-  (add-to-list 'evil-emacs-state-modes 'messages-buffer-mode)
-  (add-to-list 'evil-emacs-state-modes 'special-mode)
-  (add-to-list 'evil-emacs-state-modes 'pdf-view-mode)
-  ;; Some special mappings for dired mode
-  (add-to-list 'evil-emacs-state-modes 'dired-mode)
-  (general-def
-    :keymaps '(dired-mode-map)
-    :states '(emacs)
-    "E" 'find-file)
-  ;; Treat symbols as evil words
-  (defalias #'forward-evil-word #'forward-evil-symbol)
-  )
+  (defalias #'forward-evil-word #'forward-evil-symbol))
+
+(use-package evil-surround
+  :ensure t
+  :after evil
+  :config
+  (global-evil-surround-mode))
+
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :config
+  (evil-collection-init))
 
 (use-package evil-indent-textobject
   :ensure t
@@ -69,14 +65,12 @@
     "N" 'evil-search-previous
     "C-w C-w" 'ace-window))
 
-(ans/add-evil-maps 'help-mode-map)
-
-(general-def
-  :keymaps '(override evil-org-mode-map org-mode-map)
-  "M-h" 'evil-window-left
-  "M-l" 'evil-window-right
-  "M-k" 'evil-window-up
-  "M-j" 'evil-window-down)
+;; (general-def
+;;   :keymaps '(override evil-org-mode-map org-mode-map)
+;;   "M-h" 'evil-window-left
+;;   "M-l" 'evil-window-right
+;;   "M-k" 'evil-window-up
+;;   "M-j" 'evil-window-down)
 
 (general-unbind '(motion normal visual)
   "SPC"

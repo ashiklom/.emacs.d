@@ -26,14 +26,14 @@
     "C-f" 'ans/directory-file-backend
     "C-l" 'company-complete		; Note that this includes company-files
     )
-  (general-def
-    :keymaps 'company-active-map
-    "ESC" 'company-abort
-    "TAB" 'company-complete-common
-    "C-l" 'ans-company-complete-continue
-    "SPC" 'company-complete-common-or-cycle
-    "C-n" 'company-select-next
-    "C-p" 'company-select-previous)
+  ;; (general-def
+  ;;   :keymaps 'company-active-map
+  ;;   "ESC" 'company-abort
+  ;;   "TAB" 'company-complete-common
+  ;;   "C-l" 'ans-company-complete-continue
+  ;;   "SPC" 'company-complete-common-or-cycle
+  ;;   "C-n" 'company-select-next
+  ;;   "C-p" 'company-select-previous)
   )
 
 (defun ans-company-complete-continue ()

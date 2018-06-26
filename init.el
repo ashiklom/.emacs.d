@@ -108,6 +108,7 @@
     :states 'normal
     "g s" 'magit-status)
   )
+
 (use-package evil-magit
   :ensure t
   :after magit)

@@ -109,8 +109,7 @@
   (add-hook 'org-mode-hook 'evil-org-mode)
   (add-hook 'evil-org-mode-hook 'ans/evil-org-mode-setup)
   (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys)
-  )
+  (evil-org-agenda-set-keys))
 
 (defun ans/evil-org-mode-setup ()
   "Custom setup for org mode."
