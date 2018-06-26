@@ -111,17 +111,22 @@
 
 (general-def
   :states 'normal
-  "S" 'save-buffer
-  "C-c C-s c" 'slack-channel-select
-  "C-c C-s m" 'slack-im-select
-  "C-c C-s t" 'slack-thread-select
-  "C-c C-s u" 'slack-select-unread-rooms)
+  "S" 'save-buffer)
+
+(general-def
+  :states '(motion normal)
+  :prefix "C-c C-s"
+  "c" 'slack-channel-select
+  "m" 'slack-im-select
+  "t" 'slack-thread-select
+  "u" 'slack-select-unread-rooms
+  "r" 'slack-select-rooms)
 
 (general-create-definer ans-leader-def
-  :prefix "SPC"
-  :non-normal-prefix "M-SPC"
-  :prefix-command 'ans-leader-command
-  :prefix-map 'ans-leader-map)
+:prefix "SPC"
+:non-normal-prefix "M-SPC"
+:prefix-command 'ans-leader-command
+:prefix-map 'ans-leader-map)
 
 (ans-leader-def
   :states '(motion normal visual emacs)
