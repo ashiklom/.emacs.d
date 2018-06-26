@@ -38,7 +38,8 @@
     "C-n" 'helm-next-line
     "C-p" 'helm-previous-line
     "C-S-n" 'helm-next-source
-    "C-S-p" 'helm-previous-source)
+    "C-S-p" 'helm-previous-source
+    "C-l" 'helm-yank-selection)
   )
 
 (defun ans/hsplit-frame ()
