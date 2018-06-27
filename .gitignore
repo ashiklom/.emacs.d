@@ -19,3 +19,4 @@ magithub/*
 /lisp/init-slack.el
 /url/*
 /request
+/undo
