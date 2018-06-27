@@ -228,18 +228,19 @@
   :diminish
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 
-(use-package elscreen
+(use-package perspective
   :ensure t
-  :diminish
+  :commands persp-switch
   :init
-  (setq elscreen-prefix-key (kbd "<C-SPC>"))
+  (setq persp-mode-prefix-key (kbd "<C-SPC>"))
   :config
-  (elscreen-start)
-  (general-def
-    :prefix elscreen-prefix-key
-    "q" 'elscreen-kill
-    "x" 'elscreen-kill-screen-and-buffers
-    "," 'elscreen-screen-nickname))
+  (persp-mode)
+  :general
+  (ans-leader-def
+    :states '(motion normal visual)
+    "o" 'persp-switch
+    "[" 'persp-prev
+    "]" 'persp-next))
 
 (use-package expand-region
   :ensure t
