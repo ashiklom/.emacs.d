@@ -18,23 +18,22 @@
   :general
   (general-def
     :states 'insert
-    ;; "TAB" 'company-indent-or-complete-common
     ;; See below for discussion of company-dabbrev-code
     ;; https://github.com/company-mode/company-mode/issues/360
-    "C-n" 'company-dabbrev-code
-    "C-p" 'company-dabbrev-code
     "C-f" 'ans/directory-file-backend
     "C-l" 'company-complete		; Note that this includes company-files
     )
-  ;; (general-def
-  ;;   :keymaps 'company-active-map
-  ;;   "ESC" 'company-abort
-  ;;   "TAB" 'company-complete-common
-  ;;   "C-l" 'ans-company-complete-continue
-  ;;   "SPC" 'company-complete-common-or-cycle
-  ;;   "C-n" 'company-select-next
-  ;;   "C-p" 'company-select-previous)
-  )
+  (general-def
+    :states 'insert
+    :keymaps 'prog-mode-map
+    "C-n" 'company-dabbrev-code
+    "C-p" 'company-dabbrev-code)
+  (general-def
+    :states 'insert
+    :keymaps 'text-mode-map
+    "C-n" 'company-dabbrev
+    "C-p" 'company-dabbrev))
+
 
 (defun ans-company-complete-continue ()
   "Insert the result of a completion, then re-start completion.

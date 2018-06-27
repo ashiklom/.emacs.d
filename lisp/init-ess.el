@@ -8,8 +8,6 @@
   :ensure t
   :mode ("\\.[rR]\\'" . r-mode)
   :init
-  (add-to-list 'evil-emacs-state-modes 'inferior-ess-mode)
-  (add-to-list 'evil-emacs-state-modes 'ess-rdired-mode)
   (setq comint-move-point-for-output t)	; Scroll R buffer on output
   (setq ess-ask-for-ess-directory nil
 	ess-directory-function 'ans-r-file-here
@@ -48,6 +46,11 @@
     :keymaps 'ess-mode-map
     :prefix "\\"
     "s s" 'ess-eval-region)
+  (general-def
+    :states 'insert
+    :keymaps 'inferior-ess-mode-map
+    "_" 'self-insert-command
+    "M--" 'ess-insert-S-assign)
   (general-def
     :states 'insert
     :keymaps 'ess-mode-map
