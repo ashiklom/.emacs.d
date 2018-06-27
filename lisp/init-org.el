@@ -23,7 +23,7 @@
 	  ("u" "Miscellaneous note" entry
 	   (file "~/Dropbox/Notes/unsorted.org")
 	   "* %? :NOTE:\n%U\n%a\n")))
-  (setq org-hide-emphasis-markers t)
+  (setq org-hide-emphasis-markers nil)	; Toggle with ans/org-toggle-emphasis-markers
   (setq org-babel-load-languages '((emacs-lisp . t) (R . t)))
   (setq org-agenda-files '("~/Dropbox/Notes/")
 	org-agenda-custom-commands
@@ -66,10 +66,10 @@
     :prefix "\\"
     "ss" 'eval-region)
   (ans-leader-def
-    :states '(motion normal emacs)
     :keymaps 'org-mode-map
+    :states '(motion normal emacs)
     "#" 'org-update-statistics-cookies
-    "t" 'air-org-set-tags)
+    "%" 'ans/org-toggle-emphasis-markers)
   (ans-leader-def
     :keymaps 'org-mode-map
     :states '(motion normal visual)
@@ -188,6 +188,14 @@ TAG is chosen interactively from the global tags completion table."
 		   :candidates (org-agenda-files)
 		   :action '(("Open file" . find-file)))
 	:buffer "*helm agenda files*"))
+
+(defun ans/org-toggle-emphasis-markers ()
+  "Toggle the display of org emphasis markers."
+  (interactive)
+  (if org-hide-emphasis-markers
+      (setq org-hide-emphasis-markers nil)
+    (setq org-hide-emphasis-markers t))
+  (font-lock-flush))
 
 (provide 'init-org)
 ;;; init-org ends here
