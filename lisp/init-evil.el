@@ -33,7 +33,10 @@
 (use-package evil-collection
   :ensure t
   :after evil
+  :init
+  (setq evil-collection-company-use-tng nil)
   :config
+  (setq evil-collection-mode-list (remove 'company evil-collection-mode-list))
   (evil-collection-init))
 
 (use-package evil-indent-textobject

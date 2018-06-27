@@ -15,6 +15,10 @@
   ;; Thanks to this:
   ;; https://github.com/otijhuis/evil-emacs.d/blob/7c122b0e05c367192444a85d12323487422b793b/config/evil-settings.el#L38-L39
   (add-hook 'evil-insert-state-exit-hook (lambda ()(company-abort)))
+  ;; See discussion in: https://github.com/expez/company-quickhelp/issues/17
+  (add-hook 'company-completion-started-hook 'ans/set-company-maps)
+  (add-hook 'company-completion-finished-hook 'ans/unset-company-maps)
+  (add-hook 'company-completion-cancelled-hook 'ans/unset-company-maps)
   :general
   (general-def
     :states 'insert
@@ -27,13 +31,41 @@
     :states 'insert
     :keymaps 'prog-mode-map
     "C-n" 'company-dabbrev-code
-    "C-p" 'company-dabbrev-code)
+    "C-p" 'company-dabbrev-code
+    "C-S-n" 'company-dabbrev
+    "C-S-p" 'company-dabbrev)
   (general-def
     :states 'insert
     :keymaps 'text-mode-map
     "C-n" 'company-dabbrev
     "C-p" 'company-dabbrev))
 
+(use-package company-quickhelp
+  :ensure t
+  :diminish 'company-quickhelp-mode
+  :after company
+  :config
+  (company-quickhelp-mode))
+
+(defun ans/unset-company-maps (&rest unused)
+  "Set default mappings (outside of company).
+Arguments (UNUSED) are ignored."
+  (general-def
+    :states 'insert
+    :keymaps 'override
+    "C-n" nil
+    "C-p" nil
+    "C-l" nil))
+
+(defun ans/set-company-maps (&rest unused)
+  "Set maps for when you're inside company completion.
+Arguments (UNUSED) are ignored."
+  (general-def
+    :states 'insert
+    :keymaps 'override
+    "C-n" 'company-select-next
+    "C-p" 'company-select-previous
+    "C-l" 'ans-company-complete-continue))
 
 (defun ans-company-complete-continue ()
   "Insert the result of a completion, then re-start completion.
