@@ -71,3 +71,13 @@
   :commands (alert)
   :init
   (setq alert-default-style 'libnotify))
+
+(use-package persp-mode
+  :ensure t
+  :init
+  (setq persp-auto-save-opt 0
+	persp-auto-resume-time 0)
+  (setq persp-keymap-prefix (kbd "<C-SPC>"))
+  :config
+  (persp-mode 1))
+
