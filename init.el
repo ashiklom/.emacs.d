@@ -230,6 +230,15 @@
   :diminish
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 
+;; (use-package persp-mode
+;;   :ensure t
+;;   :init
+;;   (setq persp-auto-save-opt 0
+;; 	persp-auto-resume-time 0)
+;;   (setq persp-keymap-prefix (kbd "<C-SPC>"))
+;;   :config
+;;   (persp-mode 1))
+
 (use-package perspective
   :ensure t
   :commands persp-switch
