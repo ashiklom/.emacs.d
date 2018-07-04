@@ -62,6 +62,14 @@ See `ans-toggle-minimize'.")
 	(message "Deleted file %s" filename)
 	(kill-buffer)))))
 
+(defun ans/pop-window-into-frame ()
+  "Pop current window into its own frame."
+  (interactive)
+  (let ((buffer (current-buffer)))
+    (unless (one-window-p)
+      (delete-window))
+    (display-buffer-pop-up-frame buffer nil)))
+
 (evil-ex-define-cmd "dkill" 'ans/delete-file-and-buffer)
 
 (use-package dired-single
