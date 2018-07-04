@@ -183,8 +183,23 @@
 (use-package evil-exchange
   :ensure t
   :after evil
+  :diminish
   :config
   (evil-exchange-install))
+
+(use-package evil-numbers
+  :ensure t
+  :after evil
+  :diminish
+  :init
+  (defhydra evil-numbers-hydra ()
+    "Increment or decrement numbers."
+    ("=" evil-numbers/inc-at-pt "Increment")
+    ("-" evil-numbers/dec-at-pt "Decrement"))
+  :general
+  (general-def
+    :states 'normal
+    "C-a" 'evil-numbers-hydra/body))
 
 (provide 'init-evil)
 ;;; init-evil ends here
