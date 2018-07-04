@@ -23,7 +23,6 @@
   (helm-mode 1)
   (helm-autoresize-mode 1)
   ;; (use-package helm-rg :ensure t)
-  (use-package helm-ag :ensure t)
   :general
   (ans-leader-def
     :states 'normal
@@ -41,6 +40,10 @@
     "C-S-p" 'helm-previous-source
     "C-l" 'helm-yank-selection)
   )
+
+(use-package helm-ag
+  :ensure t
+  :after helm)
 
 (defun ans/hsplit-frame ()
   "Split window entirely below the current frame."
