@@ -152,7 +152,9 @@
   "L" 'org-insert-last-stored-link
   "@" 'org-agenda
   "ww" 'quit-window
+  "wW" 'kill-this-buffer
   "wd" 'delete-window
+  "wD" 'kill-buffer-and-window
   "/" 'helm-occur
   "\"" 'helm-show-kill-ring)
 
@@ -167,7 +169,6 @@
 
 (use-package evil-easymotion
   :ensure t
-  :after evil
   :config
   (evilem-default-keybindings "SPC SPC"))
 
