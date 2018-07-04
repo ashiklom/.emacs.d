@@ -80,10 +80,5 @@ See `ans-toggle-minimize'.")
     "RET" 'dired-single-buffer
     "^" (lambda () (interactive) (dired-single-buffer ".."))))
 
-(use-package sr-speedbar
-  :ensure t
-  :init
-  (setq sr-speedbar-right-side t))
-
 (provide 'init-utils)
 ;;; init-utils ends here

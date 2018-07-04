@@ -151,7 +151,6 @@
   "Y" 'org-store-link
   "L" 'org-insert-last-stored-link
   "@" 'org-agenda
-  "ee" 'sr-speedbar-toggle
   "ww" 'quit-window
   "wd" 'delete-window
   "/" 'helm-occur
