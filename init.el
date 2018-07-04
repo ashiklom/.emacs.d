@@ -135,6 +135,7 @@
 
 (use-package flycheck
   :ensure t
+  :diminish
   :config
   (global-flycheck-mode)
   (general-def
@@ -277,6 +278,7 @@
 
 (use-package undo-tree
   :ensure t
+  :diminish
   :init
   (setq undo-tree-history-directory-alist `(("." . "~/.emacs.d/undo"))
   	undo-tree-auto-save-history t)
