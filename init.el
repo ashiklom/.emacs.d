@@ -285,6 +285,18 @@
   :config
   (global-undo-tree-mode))
 
+(use-package hl-todo
+  :ensure t
+  :config
+  (global-hl-todo-mode)
+  (defhydra hl-todo-hydra ()
+    "Browse todo tags."
+    ("n" hl-todo-next "Next")
+    ("p" hl-todo-previous "Previous"))
+  (ans-leader-def
+    :states 'normal
+    "t" 'hl-todo-hydra/body))
+
 ;; Remember previous window configuration
 (winner-mode)
 (diminish winner-mode)
