@@ -166,15 +166,11 @@
     :states '(normal visual)
     ";" 'evilnc-comment-or-uncomment-lines))
 
-(use-package ace-jump-mode
+(use-package evil-easymotion
   :ensure t
-  :general
-  (ans-leader-def
-    :states '(motion normal emacs)
-    "SPC w" 'evil-ace-jump-word-mode
-    "SPC l" 'evil-ace-jump-line-mode
-    "SPC f" 'evil-ace-jump-char-mode
-    "SPC t" 'evil-ace-jump-char-to-mode))
+  :after evil
+  :config
+  (evilem-default-keybindings "SPC SPC"))
 
 (use-package ace-window
   :ensure t
