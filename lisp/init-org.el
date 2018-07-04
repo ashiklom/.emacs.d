@@ -9,7 +9,7 @@
   :commands (org-mode org-agenda)
   :init
   (setq org-todo-keywords
-	'((sequence "TODO" "NEXT" "|" "DONE")))
+	'((sequence "TODO" "NEXT" "|" "DONE" "CANCELED")))
   (setq org-capture-templates
 	'(("E" "Emacs config" entry
 	   (file+headline "~/Dropbox/Notes/emacs.org" "Configuration to-do list")
