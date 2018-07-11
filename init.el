@@ -52,6 +52,8 @@
 (blink-cursor-mode -1)
 (global-hl-line-mode)
 
+(setq column-number-mode t)
+
 (defvar backup-dir (expand-file-name "backups" user-emacs-directory))
 (setq backup-directory-alist (list (cons "." backup-dir)))
 (setq make-backup-files nil)
