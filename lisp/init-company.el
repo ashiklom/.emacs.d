@@ -105,5 +105,22 @@ IGNORED are arguments ignored by company."
       (lambda (c) (string-prefix-p arg c))
       (ans/directory-completion-candidates arg)))))
 
+(defun ans/org-keyword-backend (command &optional arg &rest ignored)
+  "Completion backend for org keywords (COMMAND, ARG, IGNORED)."
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'org-keyword-backend))
+    (prefix (and (eq major-mode 'org-mode)
+                 (cons (company-grab-line "^#\\+\\(\\w*\\)" 1)
+                       t)))
+    (candidates (mapcar #'upcase
+                        (cl-remove-if-not
+                         (lambda (c) (string-prefix-p arg c))
+                         (pcomplete-completions))))
+    (ignore-case t)
+    (duplicates t)))
+
+(add-to-list 'company-backends 'ans/org-keyword-backend)
+
 (provide 'init-company)
 ;;; init-company ends here
