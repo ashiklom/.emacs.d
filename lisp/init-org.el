@@ -197,5 +197,8 @@ TAG is chosen interactively from the global tags completion table."
     (setq org-hide-emphasis-markers t))
   (font-lock-flush))
 
+(use-package org-capture-pop-frame
+  :ensure t)
+
 (provide 'init-org)
 ;;; init-org ends here
