@@ -59,6 +59,16 @@
 
 (setq compilation-scroll-output t)
 
+;; Global variables
+(defvar ans/reference-dir (file-name-as-directory "~/Dropbox/references")
+  "Root directory for storing my bibliography.")
+(defvar ans/reference-dir-pdfs (concat ans/reference-dir "pdfs")
+  "Subdirectory containing PDF files of papers in my bibliography.")
+(defvar ans/reference-bibfile (concat ans/reference-dir "library.bib")
+  "Full path to my personal bibtex file.")
+(defvar ans/reference-notes (concat ans/reference-dir "notes.org")
+  "Full path to reference-related notes.")
+
 ;; I want line numbers for programming (prog) and text modes
 (defun ans-prog-mode-setup ()
   "My custom setup for prog mode."

@@ -27,8 +27,26 @@
 
 (use-package helm-bibtex
   :ensure t
+  :init
+  (setq bibtex-completion-bibliography ans/reference-bibfile
+	bibtex-completion-library-path ans/reference-dir-pdfs
+	bibtex-completion-notes-path ans/reference-notes
+	bibtex-autokey-name-case-convert-function 'downcase
+	bibtex-autokey-name-year-separator "_"
+	bibtex-autokey-year-title-separator "_"
+	bibtex-autokey-year-length 4
+	bibtex-autokey-titlewords 1
+	bibtex-autokey-titleword-length nil
+	bibtex-autokey-titleword-case-convert-function 'downcase)
   :commands helm-bibtex)
 (evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
+
+(use-package org-ref
+  :ensure t
+  :init
+  (setq org-ref-bibliography-notes ans/reference-notes
+	org-ref-default-bibliography '(ans/reference-bibfile)
+	org-ref-pdf-directory ans/reference-dir-pdfs))
 
 (defun ans-latex-mode-setup ()
   "Set custom options for LaTeX files."
