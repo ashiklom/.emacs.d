@@ -157,7 +157,9 @@
   "wd" 'delete-window
   "wD" 'kill-buffer-and-window
   "/" 'helm-occur
-  "\"" 'helm-show-kill-ring)
+  "\"" 'helm-show-kill-ring
+  "mp" 'projectile-compile-project
+  "mm" 'compile)
 
 (ans/add-evil-maps 'occur-mode-map)
 
