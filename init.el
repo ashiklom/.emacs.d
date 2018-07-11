@@ -50,11 +50,14 @@
 (menu-bar-mode -1)
 (electric-pair-mode 1)		; auto-close braces, parentheses, etc.
 (blink-cursor-mode -1)
+(global-hl-line-mode)
 
 (defvar backup-dir (expand-file-name "backups" user-emacs-directory))
 (setq backup-directory-alist (list (cons "." backup-dir)))
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+
+(setq compilation-scroll-output t)
 
 ;; I want line numbers for programming (prog) and text modes
 (defun ans-prog-mode-setup ()
@@ -90,14 +93,13 @@
   :ensure t
   :general
   (general-def
-    :states '(normal insert)
-    "M-Q" 'rebox-mode
-    "M-q" 'rebox-dwim)
+    :states 'normal
+    "gR" 'rebox-mode
+    "gr" 'rebox-dwim)
   :config
   (add-to-list 'rebox-language-character-alist '(7 . "!"))
   (setq rebox-regexp-start (vconcat rebox-regexp-start '("^[ \t]*!+")))
-  (rebox-register-all-templates)
-  )
+  (rebox-register-all-templates))
 
 ;; Swap buffer positions
 (use-package buffer-move :ensure t)

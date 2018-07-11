@@ -150,6 +150,7 @@
   "C" 'org-capture
   "Y" 'org-store-link
   "L" 'org-insert-last-stored-link
+  "vl" 'visual-line-mode
   "@" 'org-agenda
   "ww" 'quit-window
   "wW" 'kill-this-buffer
@@ -168,9 +169,8 @@
     ";" 'evilnc-comment-or-uncomment-lines))
 
 (use-package evil-easymotion
-  :ensure t
-  :config
-  (evilem-default-keybindings "SPC SPC"))
+  :ensure t)
+(evilem-default-keybindings "SPC SPC")
 
 (use-package ace-window
   :ensure t
