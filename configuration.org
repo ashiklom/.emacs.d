@@ -1048,89 +1048,91 @@ IGNORED are arguments ignored by company."
 *** Core configuration
     
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :ensure t
-  :mode ("\\.org\\'" . org-mode)
-  :commands (org-mode org-agenda)
-  :init
-  (setq org-todo-keywords
-	'((sequence "TODO" "NEXT" "|" "DONE" "CANCELED")))
-  (setq org-capture-templates
-	'(("E" "Emacs config" entry
-	   (file+headline "~/Dropbox/Notes/emacs.org" "Configuration to-do list")
-	   "** TODO %?")
-	  ("e" "Emacs note" entry
-	   (file+headline "~/Dropbox/Notes/emacs.org" "Misc")
-	   "** %?")
-	  ("t" "TODO" entry
-	   (file "~/Dropbox/Notes/unsorted.org")
-	   "* TODO %?\n%U\n%a\n") ; :clock-in t :clock-resume t
-	  ("u" "Miscellaneous note" entry
-	   (file "~/Dropbox/Notes/unsorted.org")
-	   "* %? :NOTE:\n%U\n%a\n")))
-  (setq org-hide-emphasis-markers nil)	; Toggle with ans/org-toggle-emphasis-markers
-  (setq org-babel-load-languages '((emacs-lisp . t) (R . t))
-	org-src-fontify-natively t)
-  (setq org-agenda-files '("~/Dropbox/Notes/")
-	org-agenda-custom-commands
-	'((" " "Agenda"
-	   ((agenda "" nil)
-	    (tags "REFILE"
-		  ((org-agenda-overriding-header "Tasks to Refile")
-		   (org-tags-match-list-sublevels nil)))
-	    (tags-todo "-REFILE-emacs"
-		       ((org-agenda-overriding-header "Other tasks")))
-	    (tags-todo "emacs"
-		       ((org-agenda-overriding-header "Emacs configuration")
-			(org-agenda-sorting-strategy '(todo-state-down)))))
-	   nil)))
-  (setq org-refile-targets '((nil :maxlevel . 9)
-			     (org-agenda-files :maxlevel . 9))
-	org-refile-use-outline-path 'file
-	org-outline-path-complete-in-steps nil
-	org-refile-allow-creating-parent-nodes 'confirm
-	org-refile-target-verify-function 'ans/verify-refile-target)
-  (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
-  :general
-  (general-def
-    :keymaps 'org-mode-map
-    "C-c C-q" 'air-org-set-tags)
-  (general-def
-    :states '(motion normal)
-    :keymaps 'org-mode-map
-    "<backspace>" 'outline-hide-subtree
-    "gt" 'org-todo
-    "gj" 'outline-next-heading
-    "gk" 'outline-previous-heading
-    "g$" 'evil-end-of-line
-    "g%" 'ans/org-realign-tags
-    "go" 'ans/evil-insert-heading-after-current
-    "gO" 'ans/evil-insert-heading)
-  (general-def
-    :states 'visual
-    :keymaps 'org-mode-map
-    :prefix "\\"
-    "ss" 'eval-region)
-  (ans-leader-def
-    :keymaps 'org-mode-map
-    :states '(motion normal emacs)
-    "#" 'org-update-statistics-cookies
-    "%" 'ans/org-toggle-emphasis-markers)
-  (ans-leader-def
-    :keymaps 'org-mode-map
-    :states '(motion normal visual)
-    "L" 'org-insert-last-stored-link
-    "ss" 'org-schedule
-    "sd" 'org-deadline)
-  (general-def
-    :states '(motion)
-    :keymaps 'calendar-mode-map
-    "h" 'calendar-backward-day
-    "l" 'calendar-forward-day
-    "k" 'calendar-backward-week
-    "j" 'calendar-forward-week
-    "H" 'calendar-backward-month
-    "L" 'calendar-forward-month))
+  (use-package org
+    :ensure t
+    :mode ("\\.org\\'" . org-mode)
+    :commands (org-mode org-agenda)
+    :init
+    (setq org-todo-keywords
+	  '((sequence "TODO" "NEXT" "|" "DONE" "CANCELED")))
+    (setq org-capture-templates
+	  '(("E" "Emacs config" entry
+	     (file+headline "~/Dropbox/Notes/emacs.org" "Configuration to-do list")
+	     "** TODO %?")
+	    ("e" "Emacs note" entry
+	     (file+headline "~/Dropbox/Notes/emacs.org" "Misc")
+	     "** %?")
+	    ("t" "TODO" entry
+	     (file "~/Dropbox/Notes/unsorted.org")
+	     "* TODO %?\n%U\n%a\n") ; :clock-in t :clock-resume t
+	    ("u" "Miscellaneous note" entry
+	     (file "~/Dropbox/Notes/unsorted.org")
+	     "* %? :NOTE:\n%U\n%a\n")))
+    (setq org-hide-emphasis-markers nil)	; Toggle with ans/org-toggle-emphasis-markers
+    (setq org-babel-load-languages '((emacs-lisp . t) (R . t))
+	  org-src-fontify-natively t)
+    (setq org-agenda-files '("~/Dropbox/Notes/")
+	  org-agenda-custom-commands
+	  '((" " "Agenda"
+	     ((agenda "" nil)
+	      (tags "REFILE"
+		    ((org-agenda-overriding-header "Tasks to Refile")
+		     (org-tags-match-list-sublevels nil)))
+	      (tags-todo "-REFILE-emacs"
+			 ((org-agenda-overriding-header "Other tasks")))
+	      (tags-todo "emacs"
+			 ((org-agenda-overriding-header "Emacs configuration")
+			  (org-agenda-sorting-strategy '(todo-state-down)))))
+	     nil)))
+    (setq org-refile-targets '((nil :maxlevel . 9)
+			       (org-agenda-files :maxlevel . 9))
+	  org-refile-use-outline-path 'file
+	  org-outline-path-complete-in-steps nil
+	  org-refile-allow-creating-parent-nodes 'confirm
+	  org-refile-target-verify-function 'ans/verify-refile-target)
+    (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
+    :config
+    (ans/clean-org-agenda-files)
+    :general
+    (general-def
+      :keymaps 'org-mode-map
+      "C-c C-q" 'air-org-set-tags)
+    (general-def
+      :states '(motion normal)
+      :keymaps 'org-mode-map
+      "<backspace>" 'outline-hide-subtree
+      "gt" 'org-todo
+      "gj" 'outline-next-heading
+      "gk" 'outline-previous-heading
+      "g$" 'evil-end-of-line
+      "g%" 'ans/org-realign-tags
+      "go" 'ans/evil-insert-heading-after-current
+      "gO" 'ans/evil-insert-heading)
+    (general-def
+      :states 'visual
+      :keymaps 'org-mode-map
+      :prefix "\\"
+      "ss" 'eval-region)
+    (ans-leader-def
+      :keymaps 'org-mode-map
+      :states '(motion normal emacs)
+      "#" 'org-update-statistics-cookies
+      "%" 'ans/org-toggle-emphasis-markers)
+    (ans-leader-def
+      :keymaps 'org-mode-map
+      :states '(motion normal visual)
+      "L" 'org-insert-last-stored-link
+      "ss" 'org-schedule
+      "sd" 'org-deadline)
+    (general-def
+      :states '(motion)
+      :keymaps 'calendar-mode-map
+      "h" 'calendar-backward-day
+      "l" 'calendar-forward-day
+      "k" 'calendar-backward-week
+      "j" 'calendar-forward-week
+      "H" 'calendar-backward-month
+      "L" 'calendar-forward-month))
 
 #+END_SRC
 *** Custom functions
@@ -1202,9 +1204,6 @@ TAG is chosen interactively from the global tags completion table."
   "Remove org agenda files that don't exist."
   (interactive)
   (setq org-agenda-files (-filter 'file-exists-p (org-agenda-files))))
-
-;; Run it once for good measure
-(ans/clean-org-agenda-files)
 
 ;; Custom source listing all agenda files
 (defun ans/helm-org-agenda-list-files ()
