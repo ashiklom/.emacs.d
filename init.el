@@ -3,9 +3,8 @@
 ;;; Commentary:
 ;;;
 ;;; Code:
-;; Use Emacs's internal package manager
 (let ((file-name-handler-alist nil)
-      (my-emacs-file (expand-file-name "emacs.elc" user-emacs-directory)))
+      (my-emacs-file (expand-file-name "configuration.elc" user-emacs-directory)))
   ;; If config is precompiled, load it
   (if (file-exists-p my-emacs-file)
       (load-file my-emacs-file)

@@ -894,7 +894,7 @@ Core helm configuration.
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
-    :commands '(global-company-mode company-complete ans/directory-file-backend)
+    :commands (global-company-mode company-complete ans/directory-file-backend)
     :diminish 'company-mode
     :init
     (setq company-selection-wrap-around t)
@@ -1571,14 +1571,12 @@ Edit comment boxes.
   (use-package aggressive-indent
     :ensure t
     :hook (prog-mode . aggressive-indent-mode)
-    :init
-    (add-to-list 'aggressive-indent-excluded-modes 'makefile-mode)
     :config
+    (add-to-list 'aggressive-indent-excluded-modes 'makefile-mode)
     (ans-leader-def
       :states 'normal
       "I" 'aggressive-indent-mode))
 #+END_SRC
-*** 
 *** undo-tree
 
 #+BEGIN_SRC emacs-lisp
