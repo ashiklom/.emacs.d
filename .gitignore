@@ -25,3 +25,4 @@ magithub/*
 configuration.el
 configuration.elc
 init.elc
+abbrev_defs
