@@ -19,6 +19,7 @@
   (add-hook 'company-completion-started-hook 'ans/set-company-maps)
   (add-hook 'company-completion-finished-hook 'ans/unset-company-maps)
   (add-hook 'company-completion-cancelled-hook 'ans/unset-company-maps)
+  (add-to-list 'company-backends 'ans/org-keyword-backend)
   :general
   (general-def
     :states 'insert
@@ -119,8 +120,6 @@ IGNORED are arguments ignored by company."
                          (pcomplete-completions))))
     (ignore-case t)
     (duplicates t)))
-
-(add-to-list 'company-backends 'ans/org-keyword-backend)
 
 (provide 'init-company)
 ;;; init-company ends here
