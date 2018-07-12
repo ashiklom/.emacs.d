@@ -13,6 +13,9 @@
     - [[#dash----list-manipulation][dash -- list manipulation]]
     - [[#custom-libraries][Custom libraries]]
   - [[#native-emacs-settings][Native emacs settings]]
+    - [[#customel-file][custom.el file]]
+    - [[#backups-and-history][Backups and history]]
+    - [[#other-settings][Other settings]]
   - [[#global-variables][Global variables]]
   - [[#text-and-prog-mode-hooks][Text and prog mode hooks]]
   - [[#aesthetics][Aesthetics]]
@@ -149,6 +152,8 @@ Bootstrap the ~use-package~ package manager.
 #+END_SRC
 ** Native emacs settings
 
+*** custom.el file
+   
 Configure the ~custom.el~ file.
 Mostly, I avoid this in favor of ~setq~ settings.
 
@@ -157,30 +162,54 @@ Mostly, I avoid this in favor of ~setq~ settings.
 (load custom-file)
 #+END_SRC
 
-Set up a bunch of settings.
+*** Backups and history
+   
+Create version-controlled backups of all files Emacs touches.
+Save them in "~/.emacs.d/backups".
+    
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
+	delete-old-versions -1		; Don't delete old versions
+	version-control t			; Version control backups
+	make-backup-files t
+	vc-make-backup-files t		; Backup files even if they are version controlled
+	auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t))) ; Save file name changes
+#+END_SRC
+
+*** Other settings
+    
+Sentences should end with a single space, not a double space.
 
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-splash-screen t
-    inhibit-startup-message t
-    inhibit-startup-echo-area-message t
-    show-paren-delay 0
-    abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory)
-    backup-directory-alist (list (cons "." (expand-file-name "backups" user-emacs-directory)))
-    make-backup-files nil
-    auto-save-default nil
-    save-abbrevs 'silent
-    scroll-margin 2
-    scroll-step 1
-    column-number-mode t
-    compilation-scroll-output t)
+(setq sentence-end-double-space nil)
+#+END_SRC
 
-(show-paren-mode 1)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(electric-pair-mode 1)		; auto-close braces, parentheses, etc.
-(blink-cursor-mode -1)
-(global-hl-line-mode)
-(winner-mode)				; Remember window configurations
+Start with a blank scratch buffer.
+No need for startup messages, splash screens, etc.
+
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-splash-screen t
+	inhibit-startup-message t
+	inhibit-startup-echo-area-message t)
+#+END_SRC
+    
+#+BEGIN_SRC emacs-lisp
+  (setq show-paren-delay 0
+	abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory)
+	save-abbrevs 'silent
+	auto-save-default nil
+	scroll-margin 2
+	scroll-step 1
+	column-number-mode t
+	compilation-scroll-output t)
+
+  (show-paren-mode 1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (electric-pair-mode 1)		; auto-close braces, parentheses, etc.
+  (blink-cursor-mode -1)
+  (global-hl-line-mode)
+  (winner-mode)				; Remember window configurations
 #+END_SRC
 
 ** Global variables
