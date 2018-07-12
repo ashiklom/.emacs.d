@@ -4,6 +4,7 @@
 
 * Table of contents                                                     :TOC_3_gh:
 - [[#configuration][Configuration]]
+  - [[#personal-information][Personal information]]
   - [[#package-management][Package management]]
     - [[#core-emacs-package-manager][Core emacs package manager]]
     - [[#use-package][use-package]]
@@ -86,6 +87,13 @@
 
 * Configuration
   
+** Personal information
+
+#+BEGIN_SRC emacs-lisp
+  (setq user-full-name "Alexey Shiklomanov"
+	user-mail-address "alexey.shiklomanov@gmail.com")
+#+END_SRC
+
 ** Package management
 *** Core emacs package manager
   
