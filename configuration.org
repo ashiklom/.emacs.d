@@ -1117,6 +1117,11 @@ IGNORED are arguments ignored by company."
       :keymaps 'org-mode-map
       :prefix "\\"
       "ss" 'eval-region)
+    (general-def
+      :states 'normal
+      :keymaps 'org-mode-map
+      :prefix "\\"
+      "e" 'org-edit-special)
     (ans-leader-def
       :keymaps 'org-mode-map
       :states '(motion normal emacs)
