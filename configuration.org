@@ -22,6 +22,7 @@
     - [[#color-scheme-and-font][Color scheme and font]]
     - [[#diminish][diminish]]
     - [[#rainbow-delimiters][rainbow-delimiters]]
+    - [[#mode-line][Mode line]]
   - [[#keybindings][Keybindings]]
     - [[#general][general]]
     - [[#evil][evil]]
@@ -259,10 +260,10 @@ Related to bibtex references.
 Hide minor modes in modeline.
     
 #+BEGIN_SRC emacs-lisp
-(use-package diminish
-  :ensure t
-  :config
-  (diminish winner-mode))
+  (use-package diminish
+    :ensure t
+    :config
+    (diminish winner-mode))
 #+END_SRC
 
 *** rainbow-delimiters
@@ -271,6 +272,15 @@ Hide minor modes in modeline.
 (use-package rainbow-delimiters
   :ensure t
   :hook ((prog-mode) . rainbow-delimiters-mode))
+#+END_SRC
+
+*** Mode line
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smart-mode-line
+    :ensure t
+    :config
+    (sml/setup))
 #+END_SRC
 ** Keybindings
 *** general
@@ -424,12 +434,13 @@ My leader key is SPACE.
   (use-package evil-org
     :ensure t
     :after org
+    :diminish
     :config
     (add-hook 'org-mode-hook 'evil-org-mode)
     (add-hook 'evil-org-mode-hook 'ans/evil-org-mode-setup)
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
-  
+
   (defun ans/evil-org-mode-setup ()
     "Custom setup for org mode."
     (push '(?* . ("*" . "*")) evil-surround-pairs-alist)
