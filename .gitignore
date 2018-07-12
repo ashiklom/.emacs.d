@@ -21,3 +21,7 @@ magithub/*
 /request
 /undo
 /persp-confs
+
+configuration.el
+configuration.elc
+init.elc
