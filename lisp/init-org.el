@@ -24,7 +24,8 @@
 	   (file "~/Dropbox/Notes/unsorted.org")
 	   "* %? :NOTE:\n%U\n%a\n")))
   (setq org-hide-emphasis-markers nil)	; Toggle with ans/org-toggle-emphasis-markers
-  (setq org-babel-load-languages '((emacs-lisp . t) (R . t)))
+  (setq org-babel-load-languages '((emacs-lisp . t) (R . t))
+	org-src-fontify-natively t)
   (setq org-agenda-files '("~/Dropbox/Notes/")
 	org-agenda-custom-commands
 	'((" " "Agenda"
@@ -199,6 +200,11 @@ TAG is chosen interactively from the global tags completion table."
 
 (use-package org-capture-pop-frame
   :ensure t)
+
+(use-package toc-org
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook 'toc-org-enable))
 
 (provide 'init-org)
 ;;; init-org ends here
