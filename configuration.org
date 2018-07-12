@@ -617,20 +617,12 @@ Function to check if I'm inside of a projectile project.
 *** perspective
 
 #+BEGIN_SRC emacs-lisp
-(use-package perspective
-  :ensure t
-  :commands persp-switch
-  :init
-  (setq persp-mode-prefix-key (kbd "<C-SPC>"))
-  :config
-  (persp-mode)
-  :general
-  (ans-leader-def
-    :states '(motion normal visual)
-    "o" 'persp-switch
-    "[" 'persp-prev
-    "]" 'persp-next))
-
+  (use-package perspective
+    :ensure t
+    :init
+    (setq persp-mode-prefix-key (kbd "<C-SPC>"))
+    :config
+    (persp-mode))
 #+END_SRC
 ** Version control
 *** magit
