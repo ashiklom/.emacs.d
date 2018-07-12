@@ -81,7 +81,6 @@
     - [[#expand-region][expand-region]]
     - [[#fill-function-arguments][fill-function-arguments]]
     - [[#aggressive-indent][aggressive-indent]]
-    - [[#][]]
     - [[#undo-tree][undo-tree]]
     - [[#hl-todo][hl-todo]]
 
@@ -337,7 +336,9 @@ My leader key is SPACE.
     :ensure t
     :after evil
     :config
-    (evilem-default-keybindings "SPC SPC"))
+    (general-def
+      :states '(normal motion visual)
+      "SPC SPC" evilem-map))
 #+END_SRC
 
 **** evil-exchange
