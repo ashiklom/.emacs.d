@@ -76,6 +76,7 @@
     - [[#core-configuration-3][Core configuration]]
     - [[#auctex-latexmk][auctex-latexmk]]
     - [[#helm-bibtex][helm-bibtex]]
+    - [[#ebib][ebib]]
   - [[#editing-tools][Editing tools]]
     - [[#rebox2][rebox2]]
     - [[#flycheck][flycheck]]
@@ -218,14 +219,14 @@ No need for startup messages, splash screens, etc.
 Related to bibtex references. 
    
 #+BEGIN_SRC emacs-lisp
-(defvar ans/reference-dir (file-name-as-directory "~/Dropbox/references")
-  "Root directory for storing my bibliography.")
-(defvar ans/reference-dir-pdfs (concat ans/reference-dir "pdfs")
-  "Subdirectory containing PDF files of papers in my bibliography.")
-(defvar ans/reference-bibfile (concat ans/reference-dir "library.bib")
-  "Full path to my personal bibtex file.")
-(defvar ans/reference-notes (concat ans/reference-dir "notes.org")
-  "Full path to reference-related notes.")
+  (defvar ans/reference-dir (file-name-as-directory "~/Dropbox/references")
+    "Root directory for storing my bibliography.")
+  (defvar ans/reference-dir-pdfs (file-name-as-directory (concat ans/reference-dir "pdfs"))
+    "Subdirectory containing PDF files of papers in my bibliography.")
+  (defvar ans/reference-bibfile (concat ans/reference-dir "library.bib")
+    "Full path to my personal bibtex file.")
+  (defvar ans/reference-notes (concat ans/reference-dir "notes.org")
+    "Full path to reference-related notes.")
 #+END_SRC
 
 ** Text and prog mode hooks
@@ -1292,13 +1293,20 @@ TAG is chosen interactively from the global tags completion table."
 *** org-ref
     
 #+BEGIN_SRC emacs-lisp
-(use-package org-ref
-  :ensure t
-  :init
-  (setq org-ref-bibliography-notes ans/reference-notes
-	org-ref-default-bibliography '(ans/reference-bibfile)
-	org-ref-pdf-directory ans/reference-dir-pdfs))
-
+  (use-package org-ref
+    :ensure t
+    :init
+    (setq org-ref-bibliography-notes ans/reference-notes
+	  org-ref-default-bibliography '(ans/reference-bibfile)
+	  org-ref-pdf-directory ans/reference-dir-pdfs
+	  org-ref-bibtex-hydra-key-binding (kbd "\\\\"))
+    :config
+    (general-def
+      :states 'normal
+      :keymaps 'bibtex-mode-map
+      :prefix "\\"
+      "\\" 'org-ref-bibtex-hydra/body
+      "R" 'crossref-lookup))
 #+END_SRC
 ** yasnippet
    
@@ -1518,6 +1526,30 @@ TAG is chosen interactively from the global tags completion table."
 	bibtex-autokey-titleword-case-convert-function 'downcase)
   :commands helm-bibtex)
 (evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
+#+END_SRC
+*** ebib
+    
+In general, [[helm-bibtex][helm-bibtex]] and [[org-ref]] provide a pretty solid interface for working with references.
+However, it's nice to have a more sophisticated solution for organizing a bibtex file.
+Ebib provides a nice, Zotero-like interface to bib files that is easier to work with than the raw bibfiles.
+Here, I tell Ebib to grab my default, global library, and modify its default keybindings with more evil-friendly ones.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ebib
+    :ensure t
+    :commands ebib
+    :init
+    (add-to-list 'evil-emacs-state-modes 'ebib-index-mode)
+    (setq ebib-preload-bib-files '("~/Dropbox/references/library.bib"))
+    :config
+    (general-def
+      :keymaps 'ebib-index-mode-map
+      :states 'emacs
+      "j" 'ebib-next-entry
+      "k" 'ebib-prev-entry
+      "d" 'ebib-kill-entry
+      "p" 'ebib-yank-entry
+      "SPC" ans-leader-map))
 #+END_SRC
 ** Editing tools
 *** rebox2
