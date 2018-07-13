@@ -722,7 +722,7 @@ Function to check if I'm inside of a projectile project.
     :config
     (pdf-tools-install)
     (general-def
-      :state 'normal
+      :states 'normal
       :keymaps 'pdf-view-mode-map
       "<" 'pdf-history-backward
       ">" 'pdf-history-forward))
@@ -1533,6 +1533,29 @@ TAG is chosen interactively from the global tags completion table."
 	bibtex-autokey-titleword-case-convert-function 'downcase)
   :commands helm-bibtex)
 (evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
+#+END_SRC
+
+Custom function to insert bibtex entry at the end of my ~library.bib~ file.
+
+#+BEGIN_SRC emacs-lisp
+  (general-def
+    :states 'emacs
+    :keymaps 'biblio-selection-mode-map
+    "I" 'ans/biblio-selection-insert-end-of-bibfile)
+
+  (defun ans/biblio--selection-insert-at-end-of-bibfile-callback (bibtex entry)
+    "Add BIBTEX (from ENTRY) to end of library.bib file."
+    (with-current-buffer (find-file-noselect ans/reference-bibfile)
+      (goto-char (point-max))
+      (insert bibtex)
+      (org-ref-clean-bibtex-entry))
+    (message "Inserted bibtex entry for %S."
+	     (biblio--prepare-title (biblio-alist-get 'title entry))))
+
+  (defun ans/biblio-selection-insert-end-of-bibfile ()
+    "Insert BibTeX of current entry at the end of my library.bib file."
+    (interactive)
+    (biblio--selection-forward-bibtex #'ans/biblio--selection-insert-at-end-of-bibfile-callback))
 #+END_SRC
 *** ebib
     
