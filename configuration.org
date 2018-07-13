@@ -1548,7 +1548,8 @@ Custom function to insert bibtex entry at the end of my ~library.bib~ file.
     (with-current-buffer (find-file-noselect ans/reference-bibfile)
       (goto-char (point-max))
       (insert bibtex)
-      (org-ref-clean-bibtex-entry))
+      (org-ref-clean-bibtex-entry)
+      (save-buffer))
     (message "Inserted bibtex entry for %S."
 	     (biblio--prepare-title (biblio-alist-get 'title entry))))
 
