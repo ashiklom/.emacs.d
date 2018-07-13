@@ -1283,8 +1283,11 @@ TAG is chosen interactively from the global tags completion table."
 (evil-ex-define-cmd "now" 'org-journal-new-entry)
 #+END_SRC
 *** org-capture-pop-frame
+    
+Run ~org-capture~ in its own frame.
+This is temporarily disabled because it interferes with ~perspective~ in some edge cases.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package org-capture-pop-frame
   :ensure t)
 #+END_SRC
