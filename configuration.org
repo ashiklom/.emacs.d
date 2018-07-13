@@ -470,102 +470,103 @@ Evaluate lisp at point.
 Other keymaps (need to be sorted and cleaned up).
 
 #+BEGIN_SRC emacs-lisp
-(defun ans/add-evil-maps (keymap)
-  "Add some basic navigation mappings (including hjkl) to KEYMAP."
+  (defun ans/add-evil-maps (keymap)
+    "Add some basic navigation mappings (including hjkl) to KEYMAP."
+    (general-def
+      :keymaps keymap
+      "h" 'evil-backward-char
+      "l" 'evil-forward-char
+      "k" 'evil-previous-visual-line
+      "j" 'evil-next-visual-line
+      "C-u" 'evil-scroll-up
+      "C-d" 'evil-scroll-down
+      "/" 'evil-search-forward
+      "n" 'evil-search-next
+      "N" 'evil-search-previous
+      "C-w C-w" 'ace-window))
+
+  (ans/add-evil-maps 'occur-mode-map)
+
+  ;; (general-def
+  ;;   :keymaps '(override evil-org-mode-map org-mode-map)
+  ;;   "M-h" 'evil-window-left
+  ;;   "M-l" 'evil-window-right
+  ;;   "M-k" 'evil-window-up
+  ;;   "M-j" 'evil-window-down)
+
   (general-def
-    :keymaps keymap
-    "h" 'evil-backward-char
-    "l" 'evil-forward-char
-    "k" 'evil-previous-visual-line
+    :states 'insert
+    "j" (general-key-dispatch 'self-insert-command
+	  :timeout 0.25
+	  "k" 'evil-normal-state)
+    )
+
+  (general-def
+    :states '(motion normal visual)
+    ;; Move by visual lines
     "j" 'evil-next-visual-line
-    "C-u" 'evil-scroll-up
+    "k" 'evil-previous-visual-line
+    "gj" 'evil-next-line
+    "gk" 'evil-previous-line
+    "C-=" 'evil-window-increase-height
+    "C--" 'evil-window-decrease-height
+    "C-+" 'evil-window-increase-width
+    "C-_" 'evil-window-decrease-width
+    "C-0" 'balance-windows
+    "C-)" 'shrink-window-if-larger-than-buffer
     "C-d" 'evil-scroll-down
-    "/" 'evil-search-forward
-    "n" 'evil-search-next
-    "N" 'evil-search-previous
-    "C-w C-w" 'ace-window))
+    "C-u" 'evil-scroll-up
+    )
 
-(ans/add-evil-maps 'occur-mode-map)
+  (general-def
+    :states 'normal
+    "S" 'save-buffer)
 
-;; (general-def
-;;   :keymaps '(override evil-org-mode-map org-mode-map)
-;;   "M-h" 'evil-window-left
-;;   "M-l" 'evil-window-right
-;;   "M-k" 'evil-window-up
-;;   "M-j" 'evil-window-down)
+  (general-def
+    :states '(motion normal)
+    :prefix "C-c C-s"
+    "c" 'slack-channel-select
+    "m" 'slack-im-select
+    "t" 'slack-thread-select
+    "u" 'slack-select-unread-rooms
+    "r" 'slack-select-rooms)
 
-(general-def
-  :states 'insert
-  "j" (general-key-dispatch 'self-insert-command
-	:timeout 0.25
-	"k" 'evil-normal-state)
-  )
-
-(general-def
-  :states '(motion normal visual)
-  ;; Move by visual lines
-  "j" 'evil-next-visual-line
-  "k" 'evil-previous-visual-line
-  "gj" 'evil-next-line
-  "gk" 'evil-previous-line
-  "C-=" 'evil-window-increase-height
-  "C--" 'evil-window-decrease-height
-  "C-+" 'evil-window-increase-width
-  "C-_" 'evil-window-decrease-width
-  "C-0" 'balance-windows
-  "C-)" 'shrink-window-if-larger-than-buffer
-  "C-d" 'evil-scroll-down
-  "C-u" 'evil-scroll-up
-  )
-
-(general-def
-  :states 'normal
-  "S" 'save-buffer)
-
-(general-def
-  :states '(motion normal)
-  :prefix "C-c C-s"
-  "c" 'slack-channel-select
-  "m" 'slack-im-select
-  "t" 'slack-thread-select
-  "u" 'slack-select-unread-rooms
-  "r" 'slack-select-rooms)
-
-(ans-leader-def
-  :states '(motion normal visual emacs)
-  :keymaps 'override
-  "b" 'helm-mini
-  "f" 'helm-find-files
-  "\\" 'evil-window-vsplit
-  "-" 'evil-window-split
-  "+" 'make-frame-command
-  "<up>" 'buf-move-up
-  "<down>" 'buf-move-down
-  "<left>" 'buf-move-left
-  "<right>" 'buf-move-right
-  ":" 'eval-expression
-  "dd" 'dired
-  "dw" 'dired-other-window
-  "df" 'dired-other-frame
-  "x" 'helm-M-x
-  "sv" 'ans--reload-initfile
-  "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
-  "ss" 'delete-trailing-whitespace
-  "'" 'comment-dwim			; Insert right comment
-  "*" 'universal-argument		; Emacs's C-u
-  "C" 'org-capture
-  "Y" 'org-store-link
-  "L" 'org-insert-last-stored-link
-  "vl" 'visual-line-mode
-  "@" 'org-agenda
-  "ww" 'quit-window
-  "wW" 'kill-this-buffer
-  "wd" 'delete-window
-  "wD" 'kill-buffer-and-window
-  "/" 'helm-occur
-  "\"" 'helm-show-kill-ring
-  "mp" 'projectile-compile-project
-  "mm" 'compile)
+  (ans-leader-def
+    :states '(motion normal visual emacs)
+    :keymaps 'override
+    "b" 'helm-mini
+    "f" 'helm-find-files
+    "\\" 'evil-window-vsplit
+    "-" 'evil-window-split
+    "+" 'make-frame-command
+    "^" 'ans/pop-window-into-frame
+    "<up>" 'buf-move-up
+    "<down>" 'buf-move-down
+    "<left>" 'buf-move-left
+    "<right>" 'buf-move-right
+    ":" 'eval-expression
+    "dd" 'dired
+    "dw" 'dired-other-window
+    "df" 'dired-other-frame
+    "x" 'helm-M-x
+    "sv" 'ans--reload-initfile
+    "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
+    "ss" 'delete-trailing-whitespace
+    "'" 'comment-dwim			; Insert right comment
+    "*" 'universal-argument		; Emacs's C-u
+    "C" 'org-capture
+    "Y" 'org-store-link
+    "L" 'org-insert-last-stored-link
+    "vl" 'visual-line-mode
+    "@" 'org-agenda
+    "ww" 'quit-window
+    "wW" 'kill-this-buffer
+    "wd" 'delete-window
+    "wD" 'kill-buffer-and-window
+    "/" 'helm-occur
+    "\"" 'helm-show-kill-ring
+    "mp" 'projectile-compile-project
+    "mm" 'compile)
 #+END_SRC
 ** Buffer and window management
    
@@ -715,11 +716,16 @@ Function to check if I'm inside of a projectile project.
 *** pdf-tools
 
 #+BEGIN_SRC emacs-lisp
-(use-package pdf-tools
-  :ensure t
-  :mode (("\\.pdf\\'" . pdf-view-mode))
-  :config
-  (pdf-tools-install))
+  (use-package pdf-tools
+    :ensure t
+    :mode (("\\.pdf\\'" . pdf-view-mode))
+    :config
+    (pdf-tools-install)
+    (general-def
+      :state 'normal
+      :keymaps 'pdf-view-mode-map
+      "<" 'pdf-history-backward
+      ">" 'pdf-history-forward))
 #+END_SRC
 ** Utility functions
 *** Rename buffer and file
@@ -1297,7 +1303,8 @@ TAG is chosen interactively from the global tags completion table."
     :ensure t
     :init
     (setq org-ref-bibliography-notes ans/reference-notes
-	  org-ref-default-bibliography '(ans/reference-bibfile)
+	  reftex-default-bibliography `(,ans/reference-bibfile)
+	  org-ref-default-bibliography `(,ans/reference-bibfile)
 	  org-ref-pdf-directory ans/reference-dir-pdfs
 	  org-ref-bibtex-hydra-key-binding (kbd "\\\\"))
     :config
