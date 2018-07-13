@@ -1313,10 +1313,7 @@ This is temporarily disabled because it interferes with ~perspective~ in some ed
     :config
     (general-def
       :states 'normal
-      :keymaps 'bibtex-mode-map
-      :prefix "\\"
-      "\\" 'org-ref-bibtex-hydra/body
-      "R" 'crossref-lookup))
+      "\\\\" 'org-ref-bibtex-hydra/body))
 #+END_SRC
 ** yasnippet
    
