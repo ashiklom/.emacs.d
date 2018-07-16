@@ -61,20 +61,25 @@
     - [[#company-quickhelp][company-quickhelp]]
     - [[#custom-backends][Custom backends]]
   - [[#org-mode][Org-mode]]
-    - [[#core-configuration-1][Core configuration]]
-    - [[#custom-functions][Custom functions]]
+    - [[#agenda-files][Agenda files]]
+    - [[#org-capture][Org capture]]
+    - [[#default-to-do-keywords][Default to-do keywords]]
+    - [[#agenda-views][Agenda views]]
+    - [[#formatting-and-aesthetics][Formatting and aesthetics]]
+    - [[#refile][Refile]]
+    - [[#clocking][Clocking]]
+    - [[#custom-structure-templates][Custom structure templates]]
+    - [[#keybindings-1][Keybindings]]
+    - [[#other-custom-functions][Other custom functions]]
     - [[#clocking-functions][Clocking functions]]
-    - [[#org-journal][org-journal]]
-    - [[#org-capture-pop-frame][org-capture-pop-frame]]
-    - [[#toc-org][toc-org]]
-    - [[#org-ref][org-ref]]
+    - [[#extensions][Extensions]]
   - [[#yasnippet][yasnippet]]
   - [[#ess----emacs-speaks-statistics][ESS -- Emacs Speaks Statistics]]
-    - [[#core-configuration-2][Core configuration]]
-    - [[#custom-functions-1][Custom functions]]
+    - [[#core-configuration-1][Core configuration]]
+    - [[#custom-functions][Custom functions]]
     - [[#ox-ravel][ox-ravel]]
   - [[#latex][LaTeX]]
-    - [[#core-configuration-3][Core configuration]]
+    - [[#core-configuration-2][Core configuration]]
     - [[#auctex-latexmk][auctex-latexmk]]
     - [[#helm-bibtex][helm-bibtex]]
     - [[#ebib][ebib]]
@@ -154,7 +159,6 @@ Bootstrap the ~use-package~ package manager.
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 #+END_SRC
 ** Native emacs settings
-
 *** custom.el file
    
 Configure the ~custom.el~ file.
@@ -1090,131 +1094,261 @@ IGNORED are arguments ignored by company."
     (duplicates t)))
 #+END_SRC
 ** Org-mode
-*** Core configuration
-    
+   
+I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I split other aspects of the configuration out into their own blocks.
+   
 #+BEGIN_SRC emacs-lisp
   (use-package org
     :ensure t
-    :mode ("\\.org\\'" . org-mode)
-    :commands (org-mode org-agenda)
-    :init
-    (setq org-todo-keywords
-	  '((sequence "TODO" "NEXT" "|" "DONE" "CANCELED")))
-    (setq org-capture-templates
-	  '(("E" "Emacs config" entry
-	     (file+headline "~/Dropbox/Notes/emacs.org" "Configuration to-do list")
-	     "** TODO %?")
-	    ("e" "Emacs note" entry
-	     (file+headline "~/Dropbox/Notes/emacs.org" "Misc")
-	     "** %?")
-	    ("t" "TODO" entry
-	     (file "~/Dropbox/Notes/unsorted.org")
-	     "* TODO %?\n%U\n%a\n") ; :clock-in t :clock-resume t
-	    ("u" "Miscellaneous note" entry
-	     (file "~/Dropbox/Notes/unsorted.org")
-	     "* %? :NOTE:\n%U\n%a\n")))
-    (setq org-hide-emphasis-markers nil)	; Toggle with ans/org-toggle-emphasis-markers
-    (setq org-babel-load-languages '((emacs-lisp . t) (R . t))
-	  org-src-fontify-natively t)
-    (setq org-agenda-files '("~/Dropbox/Notes/")
-	  org-agenda-custom-commands
-	  '((" " "Agenda"
-	     ((agenda "" nil)
-	      (tags "REFILE"
-		    ((org-agenda-overriding-header "Tasks to Refile")
-		     (org-tags-match-list-sublevels nil)))
-	      (tags-todo "-REFILE-emacs"
-			 ((org-agenda-overriding-header "Other tasks")))
-	      (tags-todo "emacs"
-			 ((org-agenda-overriding-header "Emacs configuration")
-			  (org-agenda-sorting-strategy '(todo-state-down)))))
-	     nil)))
-    (setq org-refile-targets '((nil :maxlevel . 9)
-			       (org-agenda-files :maxlevel . 9))
-	  org-refile-use-outline-path 'file
-	  org-outline-path-complete-in-steps nil
-	  org-refile-allow-creating-parent-nodes 'confirm
-	  org-refile-target-verify-function 'ans/verify-refile-target)
-    (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
-
-    ;; Clocking setup
-    (setq
-     ;; Resume clocking task on clock in if it's already open
-     org-clock-in-resume t
-     ;; Separate drawers for clocking and logs
-     org-drawers '("PROPERTIES" "LOGBOOK")
-     ;; Save clock data and state changes and notes in LOGBOOK drawer
-     org-clock-into-drawer t
-     ;; Remove clocks with 0:00 duration
-     org-clock-out-remove-zero-time-clocks t
-     ;; Clock out when marking a task as DONE
-     org-clock-out-when-done t
-     ;; Save running clock and clock history when exiting emacs; reload on startup
-     org-clock-persist t
-     ;; Do not prompt to resume an active clock
-     org-clock-persist-query-resume nil
-     ;; Auto-clock resolution for finding open clocks
-     org-clock-auto-clock-resolution (quote when-no-clock-is-running)
-     ;; Include current clocking task in clock reports
-     org-clock-report-include-clocking-task t)
-
-    :config
-    (ans/clean-org-agenda-files)
-    (add-to-list 'org-structure-template-alist
-		 '("el" "#+BEGIN_SRC emacs-lisp
-  ?
-  ,#+END_SRC"))
-    ;; Resume clocking task when Emacs is restarted
-    (org-clock-persistence-insinuate)
-
-    :general
-    (general-def
-      :keymaps 'org-mode-map
-      "C-c C-q" 'air-org-set-tags)
-    (general-def
-      :states '(motion normal)
-      :keymaps 'org-mode-map
-      "<backspace>" 'outline-hide-subtree
-      "gt" 'org-todo
-      "gj" 'outline-next-heading
-      "gk" 'outline-previous-heading
-      "g$" 'evil-end-of-line
-      "g%" 'ans/org-realign-tags
-      "go" 'ans/evil-insert-heading-after-current
-      "gO" 'ans/evil-insert-heading)
-    (general-def
-      :states 'visual
-      :keymaps 'org-mode-map
-      :prefix "\\"
-      "ss" 'eval-region)
-    (general-def
-      :states 'normal
-      :keymaps 'org-mode-map
-      :prefix "\\"
-      "e" 'org-edit-special)
-    (ans-leader-def
-      :keymaps 'org-mode-map
-      :states '(motion normal emacs)
-      "#" 'org-update-statistics-cookies
-      "%" 'ans/org-toggle-emphasis-markers)
-    (ans-leader-def
-      :keymaps 'org-mode-map
-      :states '(motion normal visual)
-      "L" 'org-insert-last-stored-link
-      "ss" 'org-schedule
-      "sd" 'org-deadline)
-    (general-def
-      :states '(motion)
-      :keymaps 'calendar-mode-map
-      "h" 'calendar-backward-day
-      "l" 'calendar-forward-day
-      "k" 'calendar-backward-week
-      "j" 'calendar-forward-week
-      "H" 'calendar-backward-month
-      "L" 'calendar-forward-month))
+    :demand t
+    :mode ("\\.org\\'" . org-mode))
 #+END_SRC
 
-*** Custom functions
+*** Agenda files
+    
+    I keep my core org files backed up using Dropbox.
+    
+    #+BEGIN_SRC emacs-lisp
+    (setq org-agenda-files '("~/Dropbox/Notes/"))
+    #+END_SRC
+
+    I have my core org-mode files organized as follows:
+    - unsorted.org :: Unsorted notes that automatically have the ~REFILE~ tag and show up in my custom agenda view. The goal is to keep this file empty.
+    - orgzly.org :: Similar to above, but limited to things I save from the "orgzly" app on my Android phone.
+    - work.org :: Notes related to work. This is broken down as follows:
+      + Projects :: Manuscripts, proposals, etc. that I am working on
+	- Top-level headers for each projects, as well as...
+	- Project ideas :: Random, unstructured ideas for future projects. As these solidify, they should be moved into top-level headers.
+      + Conferences :: Everything related to academic conferences, meetings, workshops, etc.
+      + Job applications :: Notes related to past, present, and future job applications
+      + Opportunities :: Possible places to work, research funding sources, etc.
+      + Teaching :: Notes related to any kind of teaching
+      + Work habits :: Work-related things I should be doing on a regular basis. Most important are reading literature and writing.
+    - computers.org :: Notes and tasks related to programming, software, etc. Small tasks related to "sharpening the knife" (e.g. tweaking configurations) are organized in here.
+      + Organization :: Default TODO for time logging. Also, notes related to how I am organized.
+      + R :: Things related to R programming.
+      + LaTeX :: Things related to writing in LaTeX, including beamer presentations
+      + Emacs :: Things related to my text editor, including configuration to-dos
+      + Unix :: Things related to Unix in general, including shells (bash, zsh), various utilities (awk, grep, ssh), and anything related to Linux configuration.
+      + Miscellaneous programming :: Other stuff related to programming
+    - life.org :: Notes and tasks that are not work-related, organized as follows:
+      - Chores :: Chores that need to get done 
+      - Events :: Upcoming life/personal events
+      - Music :: Things related to my music hobbies
+      - Personal notes :: Random notes-to-self
+      - Personal habits :: Non work-related things I should be doing regularly.
+	   
+    #+BEGIN_SRC emacs-lisp
+      (defun ans/clean-org-agenda-files ()
+	"Remove org agenda files that don't exist."
+	(interactive)
+	(setq org-agenda-files (-filter 'file-exists-p (org-agenda-files))))
+
+      (ans/clean-org-agenda-files)
+
+      ;; Custom source listing all agenda files
+      (defun ans/helm-org-agenda-list-files ()
+	"Helm source listing all current org agenda files."
+	(interactive)
+	(helm :sources (helm-build-sync-source
+			   "Org agenda files"
+			 :candidates (org-agenda-files)
+			 :action '(("Open file" . find-file)))
+	      :buffer "*helm agenda files*"))
+    #+END_SRC
+
+*** Org capture
+
+    #+BEGIN_SRC emacs-lisp
+      (setq org-capture-templates
+	    '(("E" "Emacs config" entry
+	       (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
+	       "** TODO %?")
+	      ("e" "Emacs note" entry
+	       (file+headline "~/Dropbox/Notes/emacs.org" "Emacs")
+	       "** %?")
+	      ("t" "TODO" entry
+	       (file "~/Dropbox/Notes/unsorted.org")
+	       "* TODO %?\n%U\n%a\n")
+	      ("u" "Miscellaneous note" entry
+	       (file "~/Dropbox/Notes/unsorted.org")
+	       "* %? :NOTE:\n%U\n%a\n")))
+    #+END_SRC
+
+**** org-capture-pop-frame
+    
+ Run ~org-capture~ in its own frame.
+ This is temporarily disabled because it interferes with ~perspective~ in some edge cases.
+
+ #+BEGIN_SRC emacs-lisp :tangle no
+ (use-package org-capture-pop-frame
+   :ensure t)
+ #+END_SRC
+
+*** Default to-do keywords
+    
+    All my org files have these to-do keywords by default.
+
+    #+BEGIN_SRC emacs-lisp
+    (setq org-todo-keywords
+	  '((sequence "TODO" "NEXT" "|" "DONE" "CANCELED")))
+    #+END_SRC
+    
+    However, these can be set on a file-specific basis as well via the ~#+TODO~ property.
+
+    #+BEGIN_EXAMPLE
+    #+TODO: TODO FEEDBACK VERIFY | DONE CANCELLED
+    #+END_EXAMPLE
+    
+*** Agenda views
+    
+    #+BEGIN_SRC emacs-lisp
+      (setq org-agenda-custom-commands
+	    '((" " "Agenda"
+	       ((agenda "" nil)
+		(tags "REFILE"
+		      ((org-agenda-overriding-header "Tasks to Refile")
+		       (org-tags-match-list-sublevels nil)))
+		(tags-todo "-REFILE-emacs"
+			   ((org-agenda-overriding-header "Other tasks")))
+		(tags-todo "emacs"
+			   ((org-agenda-overriding-header "Emacs configuration")
+			    (org-agenda-sorting-strategy '(todo-state-down)))))
+	       nil)))
+    #+END_SRC
+
+*** Formatting and aesthetics
+    
+    Show emphasis markers by default, but also quickly toggle them with a custom function.
+    
+    #+BEGIN_SRC emacs-lisp
+      (setq org-hide-emphasis-markers nil)
+
+      (defun ans/org-toggle-emphasis-markers ()
+	"Toggle the display of org emphasis markers."
+	(interactive)
+	(if org-hide-emphasis-markers
+	    (setq org-hide-emphasis-markers nil)
+	  (setq org-hide-emphasis-markers t))
+	(font-lock-flush))
+    #+END_SRC
+    
+    Automatically fontify source code, and edit source code in the current window (rather than opening a new one).
+
+    #+BEGIN_SRC emacs-lisp
+    (setq org-babel-load-languages '((emacs-lisp . t) (R . t))
+	  org-src-fontify-natively t
+	  org-src-window-setup 'current-window)
+    #+END_SRC
+    
+    By default, hide line numbers in org-mode buffers.
+
+    #+BEGIN_SRC emacs-lisp
+    (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
+    #+END_SRC
+
+*** Refile
+    
+    #+BEGIN_SRC emacs-lisp
+      (setq org-refile-targets '((nil :maxlevel . 9)
+				 (org-agenda-files :maxlevel . 9))
+	    org-refile-use-outline-path 'file
+	    org-outline-path-complete-in-steps nil
+	    org-refile-allow-creating-parent-nodes 'confirm
+	    org-refile-target-verify-function 'ans/verify-refile-target)
+
+      (defun ans/verify-refile-target ()
+	"Exclude TODO keywords with a done state from refile targets."
+	(not (member (nth 2 (org-heading-components)) org-done-keywords)))
+    #+END_SRC
+    
+*** Clocking
+    
+    Use the clocking settings from "Organize your life in plain text".
+    
+    #+BEGIN_SRC emacs-lisp
+      (org-clock-persistence-insinuate)
+
+      (setq
+       ;; Resume clocking task on clock in if it's already open
+       org-clock-in-resume t
+       ;; Separate drawers for clocking and logs
+       org-drawers '("PROPERTIES" "LOGBOOK")
+       ;; Save clock data and state changes and notes in LOGBOOK drawer
+       org-clock-into-drawer t
+       ;; Remove clocks with 0:00 duration
+       org-clock-out-remove-zero-time-clocks t
+       ;; Clock out when marking a task as DONE
+       org-clock-out-when-done t
+       ;; Save running clock and clock history when exiting emacs; reload on startup
+       org-clock-persist t
+       ;; Do not prompt to resume an active clock
+       org-clock-persist-query-resume nil
+       ;; Auto-clock resolution for finding open clocks
+       org-clock-auto-clock-resolution (quote when-no-clock-is-running)
+       ;; Include current clocking task in clock reports
+       org-clock-report-include-clocking-task t)
+    #+END_SRC
+
+*** Custom structure templates
+    
+These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
+    
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'org-structure-template-alist
+		   '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+    #+END_SRC
+    
+*** Keybindings
+    
+    #+BEGIN_SRC emacs-lisp
+      (general-def
+	:keymaps 'org-mode-map
+	"C-c C-q" 'org-set-tags)
+      (general-def
+	:states '(motion normal)
+	:keymaps 'org-mode-map
+	"<backspace>" 'outline-hide-subtree
+	"gt" 'org-todo
+	"gj" 'outline-next-heading
+	"gk" 'outline-previous-heading
+	"g$" 'evil-end-of-line
+	"g%" 'ans/org-realign-tags
+	"go" 'ans/evil-insert-heading-after-current
+	"gO" 'ans/evil-insert-heading)
+      (general-def
+	:states 'visual
+	:keymaps 'org-mode-map
+	:prefix "\\"
+	"ss" 'eval-region)
+      (general-def
+	:states 'normal
+	:keymaps 'org-mode-map
+	:prefix "\\"
+	"e" 'org-edit-special)
+      (ans-leader-def
+	:keymaps 'org-mode-map
+	:states '(motion normal emacs)
+	"#" 'org-update-statistics-cookies
+	"%" 'ans/org-toggle-emphasis-markers)
+      (ans-leader-def
+	:keymaps 'org-mode-map
+	:states '(motion normal visual)
+	"L" 'org-insert-last-stored-link
+	"ss" 'org-schedule
+	"sd" 'org-deadline)
+      (general-def
+	:states '(motion)
+	:keymaps 'calendar-mode-map
+	"h" 'calendar-backward-day
+	"l" 'calendar-forward-day
+	"k" 'calendar-backward-week
+	"j" 'calendar-forward-week
+	"H" 'calendar-backward-month
+	"L" 'calendar-forward-month)
+      #+END_SRC
+
+*** Other custom functions
 
 #+BEGIN_SRC emacs-lisp
 (defun ans/evil-insert-heading ()
@@ -1229,10 +1363,6 @@ IGNORED are arguments ignored by company."
   (org-insert-heading-respect-content)
   (evil-insert 1))
 
-(defun ans/verify-refile-target ()
-  "Exclude TODO keywords with a done state from refile targets."
-  (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-  
 (defun ans/org-realign-tags ()
   "Right-align org mode tags in current buffer."
   (interactive)
@@ -1279,28 +1409,7 @@ TAG is chosen interactively from the global tags completion table."
                 nil)))
     (air--org-swap-tags new)))
     
-(defun ans/clean-org-agenda-files ()
-  "Remove org agenda files that don't exist."
-  (interactive)
-  (setq org-agenda-files (-filter 'file-exists-p (org-agenda-files))))
 
-;; Custom source listing all agenda files
-(defun ans/helm-org-agenda-list-files ()
-  "Helm source listing all current org agenda files."
-  (interactive)
-  (helm :sources (helm-build-sync-source
-		     "Org agenda files"
-		   :candidates (org-agenda-files)
-		   :action '(("Open file" . find-file)))
-	:buffer "*helm agenda files*"))
-
-(defun ans/org-toggle-emphasis-markers ()
-  "Toggle the display of org emphasis markers."
-  (interactive)
-  (if org-hide-emphasis-markers
-      (setq org-hide-emphasis-markers nil)
-    (setq org-hide-emphasis-markers t))
-  (font-lock-flush))
 #+END_SRC
 
 *** Clocking functions
@@ -1355,50 +1464,42 @@ Clock into a default task ("organization").
       (org-clock-in '(16))))
 #+END_SRC
 
-*** org-journal
+*** Extensions
+**** org-journal
 
-#+BEGIN_SRC emacs-lisp
-(use-package org-journal
-  :ensure t
-  :init
-  (setq org-journal-dir "~/Dropbox/Notes/journal"
-	org-journal-file-format "%Y-%m-%d"
-	org-journal-enable-agenda-integration t))
-(evil-ex-define-cmd "now" 'org-journal-new-entry)
-#+END_SRC
-*** org-capture-pop-frame
+ #+BEGIN_SRC emacs-lisp
+ (use-package org-journal
+   :ensure t
+   :init
+   (setq org-journal-dir "~/Dropbox/Notes/journal"
+	 org-journal-file-format "%Y-%m-%d"
+	 org-journal-enable-agenda-integration t))
+ (evil-ex-define-cmd "now" 'org-journal-new-entry)
+ #+END_SRC
+**** toc-org
     
-Run ~org-capture~ in its own frame.
-This is temporarily disabled because it interferes with ~perspective~ in some edge cases.
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package org-capture-pop-frame
-  :ensure t)
-#+END_SRC
-*** toc-org
+ #+BEGIN_SRC emacs-lisp
+ (use-package toc-org
+   :ensure t
+   :config
+   (add-hook 'org-mode-hook 'toc-org-enable))
+ #+END_SRC
+**** org-ref
     
-#+BEGIN_SRC emacs-lisp
-(use-package toc-org
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook 'toc-org-enable))
-#+END_SRC
-*** org-ref
-    
-#+BEGIN_SRC emacs-lisp
-  (use-package org-ref
-    :ensure t
-    :init
-    (setq org-ref-bibliography-notes ans/reference-notes
-	  reftex-default-bibliography `(,ans/reference-bibfile)
-	  org-ref-default-bibliography `(,ans/reference-bibfile)
-	  org-ref-pdf-directory ans/reference-dir-pdfs
-	  org-ref-bibtex-hydra-key-binding (kbd "\\\\"))
-    :config
-    (general-def
-      :states 'normal
-      "\\\\" 'org-ref-bibtex-hydra/body))
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp
+   (use-package org-ref
+     :ensure t
+     :init
+     (setq org-ref-bibliography-notes ans/reference-notes
+	   reftex-default-bibliography `(,ans/reference-bibfile)
+	   org-ref-default-bibliography `(,ans/reference-bibfile)
+	   org-ref-pdf-directory ans/reference-dir-pdfs
+	   org-ref-bibtex-hydra-key-binding (kbd "\\\\"))
+     :config
+     (general-def
+       :states 'normal
+       "\\\\" 'org-ref-bibtex-hydra/body))
+ #+END_SRC
 ** yasnippet
    
 #+BEGIN_SRC emacs-lisp
