@@ -72,7 +72,9 @@
     - [[#keybindings-1][Keybindings]]
     - [[#other-custom-functions][Other custom functions]]
     - [[#clocking-functions][Clocking functions]]
-    - [[#extensions][Extensions]]
+    - [[#org-journal][org-journal]]
+    - [[#toc-org][toc-org]]
+    - [[#org-ref][org-ref]]
   - [[#yasnippet][yasnippet]]
   - [[#ess----emacs-speaks-statistics][ESS -- Emacs Speaks Statistics]]
     - [[#core-configuration-1][Core configuration]]
@@ -1464,45 +1466,58 @@ Clock into a default task ("organization").
       (org-clock-in '(16))))
 #+END_SRC
 
-*** Extensions
-**** org-journal
+*** org-journal
 
- #+BEGIN_SRC emacs-lisp
- (use-package org-journal
-   :ensure t
-   :init
-   (setq org-journal-dir "~/Dropbox/Notes/journal"
-	 org-journal-file-format "%Y-%m-%d"
-	 org-journal-enable-agenda-integration t))
- (evil-ex-define-cmd "now" 'org-journal-new-entry)
- #+END_SRC
-**** toc-org
+#+BEGIN_SRC emacs-lisp
+(use-package org-journal
+  :ensure t
+  :init
+  (setq org-journal-dir "~/Dropbox/Notes/journal"
+	org-journal-file-format "%Y-%m-%d"
+	org-journal-enable-agenda-integration t))
+(evil-ex-define-cmd "now" 'org-journal-new-entry)
+#+END_SRC
+*** toc-org
     
- #+BEGIN_SRC emacs-lisp
- (use-package toc-org
-   :ensure t
-   :config
-   (add-hook 'org-mode-hook 'toc-org-enable))
- #+END_SRC
-**** org-ref
+#+BEGIN_SRC emacs-lisp
+(use-package toc-org
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook 'toc-org-enable))
+#+END_SRC
+*** org-ref
     
- #+BEGIN_SRC emacs-lisp
-   (use-package org-ref
-     :ensure t
-     :init
-     (setq org-ref-bibliography-notes ans/reference-notes
-	   reftex-default-bibliography `(,ans/reference-bibfile)
-	   org-ref-default-bibliography `(,ans/reference-bibfile)
-	   org-ref-pdf-directory ans/reference-dir-pdfs
-	   org-ref-bibtex-hydra-key-binding (kbd "\\\\"))
-     :config
-     (general-def
-       :states 'normal
-       "\\\\" 'org-ref-bibtex-hydra/body))
- #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+  (use-package org-ref
+    :ensure t
+    :init
+    (setq org-ref-bibliography-notes ans/reference-notes
+	  reftex-default-bibliography `(,ans/reference-bibfile)
+	  org-ref-default-bibliography `(,ans/reference-bibfile)
+	  org-ref-pdf-directory ans/reference-dir-pdfs
+	  org-ref-bibtex-hydra-key-binding (kbd "\\\\")
+	  org-ref-note-title-format "** TODO %2a %y - %T
+   :PROPERTIES:
+    :Custom_ID: %k
+    :AUTHOR: %9a
+    :FULL_TITLE: %t
+    :JOURNAL: %j
+    :YEAR: %y
+    :VOLUME: %v
+    :PAGES: %p
+    :DOI: %D
+    :URL: %U
+   :END:
+
+  ")
+    :config
+    (general-def
+      :states 'normal
+      "\\\\" 'org-ref-bibtex-hydra/body))
+    #+END_SRC
 ** yasnippet
    
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :ensure t
   :demand
@@ -1525,12 +1540,12 @@ Clock into a default task ("organization").
     "un" 'yas-new-snippet
     "ue" 'yas-visit-snippet-file)
   )
-#+END_SRC
+   #+END_SRC
 ** ESS -- Emacs Speaks Statistics
    
 *** Core configuration
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package ess
   :ensure t
   :mode ("\\.[rR]\\'" . r-mode)
@@ -1604,11 +1619,11 @@ Clock into a default task ("organization").
   (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
 
 (add-hook 'inferior-ess-mode-hook 'ans/inferior-ess-mode-setup)
-#+END_SRC
+    #+END_SRC
 
 *** Custom functions
     
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (defun ans/rmarkdown-render ()
   "Render the current R markdown document."
   (interactive)
@@ -1653,19 +1668,19 @@ Clock into a default task ("organization").
     (er/mark-symbol)
     (ess-eval-region (point) (mark) nil)
     (deactivate-mark)))
-#+END_SRC
+    #+END_SRC
 
 
 *** ox-ravel
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 ;; ox-ravel -- Better R integration into org mode
 ; (require 'ox-ravel)
-#+END_SRC
+    #+END_SRC
 ** LaTeX
 *** Core configuration
     
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package tex
   :defer t
   :ensure auctex
@@ -1688,10 +1703,10 @@ Clock into a default task ("organization").
   ;; Use the "default" vim paragraph definition
   (setq paragraph-start "\f\\|[ 	]*$")
   (setq paragraph-separate "[ 	\f]*$"))
-#+END_SRC
+    #+END_SRC
 *** auctex-latexmk
     
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package auctex-latexmk
   :ensure t
   :after tex
@@ -1699,58 +1714,69 @@ Clock into a default task ("organization").
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
   :config
   (auctex-latexmk-setup))
-#+END_SRC
+    #+END_SRC
 *** helm-bibtex
     
-#+BEGIN_SRC emacs-lisp
-(use-package helm-bibtex
-  :ensure t
-  :init
-  (setq bibtex-completion-bibliography ans/reference-bibfile
-	bibtex-completion-library-path ans/reference-dir-pdfs
-	bibtex-completion-notes-path ans/reference-notes
-	bibtex-autokey-name-case-convert-function 'downcase
-	bibtex-autokey-name-year-separator "_"
-	bibtex-autokey-year-title-separator "_"
-	bibtex-autokey-year-length 4
-	bibtex-autokey-titlewords 1
-	bibtex-autokey-titleword-length nil
-	bibtex-autokey-titleword-case-convert-function 'downcase)
-  :commands helm-bibtex)
-(evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm-bibtex
+	:ensure t
+	:init
+	(setq bibtex-completion-bibliography ans/reference-bibfile
+	      bibtex-completion-library-path ans/reference-dir-pdfs
+	      bibtex-completion-notes-path ans/reference-notes
+	      bibtex-autokey-name-case-convert-function 'downcase
+	      bibtex-autokey-name-year-separator "_"
+	      bibtex-autokey-year-title-separator "_"
+	      bibtex-autokey-year-length 4
+	      bibtex-autokey-titlewords 1
+	      bibtex-autokey-titleword-length nil
+	      bibtex-autokey-titleword-case-convert-function 'downcase)
+	:commands helm-bibtex
+	:config
+	(helm-delete-action-from-source "Edit notes" helm-source-bibtex)
+	(helm-add-action-to-source "Edit notes" 'ans/org-ref-notes-function helm-source-bibtex 7))
+      (evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
+    #+END_SRC
 
-Custom function to insert bibtex entry at the end of my ~library.bib~ file.
+    Redefine ~bibtex-completion-fallback-candidates~ so it doesn't include "Create new entry" (which I never use).
 
-#+BEGIN_SRC emacs-lisp
-  (general-def
-    :states 'emacs
-    :keymaps 'biblio-selection-mode-map
-    "I" 'ans/biblio-selection-insert-end-of-bibfile)
+    #+BEGIN_SRC emacs-lisp
+      (defun bibtex-completion-fallback-candidates ()
+	"Completion candidates if no entry is found."
+	bibtex-completion-fallback-options)
+    #+END_SRC
 
-  (defun ans/biblio--selection-insert-at-end-of-bibfile-callback (bibtex entry)
-    "Add BIBTEX (from ENTRY) to end of library.bib file."
-    (with-current-buffer (find-file-noselect ans/reference-bibfile)
-      (goto-char (point-max))
-      (insert bibtex)
-      (org-ref-clean-bibtex-entry)
-      (save-buffer))
-    (message "Inserted bibtex entry for %S."
-	     (biblio--prepare-title (biblio-alist-get 'title entry))))
+    Custom function to insert bibtex entry at the end of my ~library.bib~ file.
 
-  (defun ans/biblio-selection-insert-end-of-bibfile ()
-    "Insert BibTeX of current entry at the end of my library.bib file."
-    (interactive)
-    (biblio--selection-forward-bibtex #'ans/biblio--selection-insert-at-end-of-bibfile-callback))
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (general-def
+	:states 'emacs
+	:keymaps 'biblio-selection-mode-map
+	"I" 'ans/biblio-selection-insert-end-of-bibfile)
+
+      (defun ans/biblio--selection-insert-at-end-of-bibfile-callback (bibtex entry)
+	"Add BIBTEX (from ENTRY) to end of library.bib file."
+	(with-current-buffer (find-file-noselect ans/reference-bibfile)
+	  (goto-char (point-max))
+	  (insert bibtex)
+	  (org-ref-clean-bibtex-entry)
+	  (save-buffer))
+	(message "Inserted bibtex entry for %S."
+		 (biblio--prepare-title (biblio-alist-get 'title entry))))
+
+      (defun ans/biblio-selection-insert-end-of-bibfile ()
+	"Insert BibTeX of current entry at the end of my library.bib file."
+	(interactive)
+	(biblio--selection-forward-bibtex #'ans/biblio--selection-insert-at-end-of-bibfile-callback))
+    #+END_SRC
 *** ebib
     
-In general, [[helm-bibtex][helm-bibtex]] and [[org-ref]] provide a pretty solid interface for working with references.
-However, it's nice to have a more sophisticated solution for organizing a bibtex file.
-Ebib provides a nice, Zotero-like interface to bib files that is easier to work with than the raw bibfiles.
-Here, I tell Ebib to grab my default, global library, and modify its default keybindings with more evil-friendly ones.
+    In general, [[helm-bibtex][helm-bibtex]] and [[org-ref]] provide a pretty solid interface for working with references.
+    However, it's nice to have a more sophisticated solution for organizing a bibtex file.
+    Ebib provides a nice, Zotero-like interface to bib files that is easier to work with than the raw bibfiles.
+    Here, I tell Ebib to grab my default, global library, and modify its default keybindings with more evil-friendly ones.
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (use-package ebib
     :ensure t
     :commands ebib
@@ -1766,13 +1792,13 @@ Here, I tell Ebib to grab my default, global library, and modify its default key
       "d" 'ebib-kill-entry
       "p" 'ebib-yank-entry
       "SPC" ans-leader-map))
-#+END_SRC
+    #+END_SRC
 ** Editing tools
 *** rebox2
     
-Edit comment boxes.
+    Edit comment boxes.
     
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package rebox2
   :ensure t
   :general
@@ -1784,10 +1810,10 @@ Edit comment boxes.
   (add-to-list 'rebox-language-character-alist '(7 . "!"))
   (setq rebox-regexp-start (vconcat rebox-regexp-start '("^[ \t]*!+")))
   (rebox-register-all-templates))
-#+END_SRC
+    #+END_SRC
 *** flycheck
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :ensure t
   :diminish
@@ -1802,18 +1828,18 @@ Edit comment boxes.
     :states '(motion normal)
     "!" 'flycheck-list-errors)
   )
-#+END_SRC
+    #+END_SRC
 *** simpleclip
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package simpleclip
   :ensure t
   :config
   (simpleclip-mode 1))
-#+END_SRC
+    #+END_SRC
 *** smartparens
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package smartparens
   :ensure t
   :config
@@ -1823,27 +1849,27 @@ Edit comment boxes.
     :states 'insert
     "M-e" 'sp-forward-slurp-sexp
     "M-w" 'sp-forward-barf-sexp))
-#+END_SRC
+    #+END_SRC
 *** edit-server
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 ;; For editing text fields in the browser
 (use-package edit-server
   :ensure t
   :config
   (edit-server-start))
-#+END_SRC
+    #+END_SRC
 *** adaptive-wrap
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package adaptive-wrap
   :ensure t
   :diminish
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
-#+END_SRC
+    #+END_SRC
 *** expand-region
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package expand-region
   :ensure t
   :init
@@ -1852,10 +1878,10 @@ Edit comment boxes.
   (general-def
     :states 'motion
     "z." 'er/expand-region))
-#+END_SRC
+    #+END_SRC
 *** fill-function-arguments
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package fill-function-arguments
   :quelpa (fill-function-arguments
 	   :fetcher github
@@ -1864,10 +1890,10 @@ Edit comment boxes.
   (general-def
     :states 'normal
     "gs" 'fill-function-arguments-dwim))
-#+END_SRC
+    #+END_SRC
 *** aggressive-indent
     
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (use-package aggressive-indent
     :ensure t
     :hook (prog-mode . aggressive-indent-mode)
@@ -1876,24 +1902,24 @@ Edit comment boxes.
     (ans-leader-def
       :states 'normal
       "I" 'aggressive-indent-mode))
-#+END_SRC
+    #+END_SRC
 *** undo-tree
     
-NOTE: This is temporarily disabled.
+    NOTE: This is temporarily disabled.
 
-#+BEGIN_SRC emacs-lisp :tangle no
+    #+BEGIN_SRC emacs-lisp :tangle no
 (use-package undo-tree
   :ensure t
   :diminish
   :init
   (setq undo-tree-history-directory-alist `(("." . "~/.emacs.d/undo"))
-  	undo-tree-auto-save-history t)
+	undo-tree-auto-save-history t)
   :config
   (global-undo-tree-mode))
-#+END_SRC
+    #+END_SRC
 *** hl-todo
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package hl-todo
   :ensure t
   :config
@@ -1905,4 +1931,13 @@ NOTE: This is temporarily disabled.
   (ans-leader-def
     :states 'normal
     "t" 'hl-todo-hydra/body))
-#+END_SRC
+    #+END_SRC
+
+    Function to use ~org-ref~ for notes rather than bibtex defaults.
+
+    #+BEGIN_SRC emacs-lisp
+  (defun ans/org-ref-notes-function (candidates)
+    "Helm bibtex completion function to insert notes for marked CANDIDATES."
+    (let ((key (helm-marked-candidates)))
+      (funcall org-ref-notes-function (car key))))
+    #+END_SRC
