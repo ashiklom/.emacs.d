@@ -63,6 +63,7 @@
   - [[#org-mode][Org-mode]]
     - [[#core-configuration-1][Core configuration]]
     - [[#custom-functions][Custom functions]]
+    - [[#clocking-functions][Clocking functions]]
     - [[#org-journal][org-journal]]
     - [[#org-capture-pop-frame][org-capture-pop-frame]]
     - [[#toc-org][toc-org]]
@@ -1135,12 +1136,37 @@ IGNORED are arguments ignored by company."
 	  org-refile-allow-creating-parent-nodes 'confirm
 	  org-refile-target-verify-function 'ans/verify-refile-target)
     (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
+
+    ;; Clocking setup
+    (setq
+     ;; Resume clocking task on clock in if it's already open
+     org-clock-in-resume t
+     ;; Separate drawers for clocking and logs
+     org-drawers '("PROPERTIES" "LOGBOOK")
+     ;; Save clock data and state changes and notes in LOGBOOK drawer
+     org-clock-into-drawer t
+     ;; Remove clocks with 0:00 duration
+     org-clock-out-remove-zero-time-clocks t
+     ;; Clock out when marking a task as DONE
+     org-clock-out-when-done t
+     ;; Save running clock and clock history when exiting emacs; reload on startup
+     org-clock-persist t
+     ;; Do not prompt to resume an active clock
+     org-clock-persist-query-resume nil
+     ;; Auto-clock resolution for finding open clocks
+     org-clock-auto-clock-resolution (quote when-no-clock-is-running)
+     ;; Include current clocking task in clock reports
+     org-clock-report-include-clocking-task t)
+
     :config
     (ans/clean-org-agenda-files)
     (add-to-list 'org-structure-template-alist
 		 '("el" "#+BEGIN_SRC emacs-lisp
   ?
   ,#+END_SRC"))
+    ;; Resume clocking task when Emacs is restarted
+    (org-clock-persistence-insinuate)
+
     :general
     (general-def
       :keymaps 'org-mode-map
@@ -1276,6 +1302,59 @@ TAG is chosen interactively from the global tags completion table."
     (setq org-hide-emphasis-markers t))
   (font-lock-flush))
 #+END_SRC
+
+*** Clocking functions
+
+Clock into a default task ("organization").
+
+#+BEGIN_SRC emacs-lisp
+  (defun ans/punch-in ()
+    "Start clocking, and set default task to Organization."
+    (interactive)
+    (setq ans/keep-clock-running t)
+    (ans/clock-in-organization-task))
+
+  (defun ans/punch-out ()
+    "End all clocking."
+    (interactive)
+    (setq ans/keep-clock-running nil)
+    (when (org-clock-is-active)
+      (org-clock-out))
+    (org-agenda-remove-restriction-lock))
+
+  (defun ans/clock-out-maybe ()
+    "Clock parent task, or clock out."
+    (when (and ans/keep-clock-running
+	       (not org-clock-clocking-in)
+	       (marker-buffer org-clock-default-task)
+	       (not org-clock-resolving-clocks-due-to-idleness))
+      (ans/clock-in-parent-task)))
+
+  (defun ans/clock-in-parent-task ()
+    "Move point to parent task (if any) and clock in.
+  Otherwise, clock in the default task."
+    (let ((parent-task))
+      (save-excursion
+	(save-restriction
+	  (widen)
+	  (while (and (not parent-task) (org-up-heading-safe))
+	    (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+	      (setq parent-task (point))))
+	  (if parent-task
+	      (org-with-point-at parent-task
+		(org-clock-in))
+	    (when ans/keep-clock-running
+	      (ans/clock-in-organization-task)))))))
+
+  ;; Default clocking task ("organization") ID
+  (defvar ans/organization-task-id "b86713a1-f9db-47c5-860f-6a2aecfec6c9")
+  (defun ans/clock-in-organization-task ()
+    "Clock in the default organization task."
+    (interactive)
+    (org-with-point-at (org-id-find ans/organization-task-id 'marker)
+      (org-clock-in '(16))))
+#+END_SRC
+
 *** org-journal
 
 #+BEGIN_SRC emacs-lisp
