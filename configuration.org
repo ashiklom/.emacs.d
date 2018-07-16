@@ -630,12 +630,17 @@ Function to check if I'm inside of a projectile project.
 *** magit
 
 #+BEGIN_SRC emacs-lisp
-(use-package magit
-  :ensure t
-  :general
-  (ans-leader-def
-    :states 'normal
-    "g s" 'magit-status))
+  (use-package magit
+    :ensure t
+    :general
+    (ans-leader-def
+      :states 'normal
+      "g s" 'magit-status)
+    :config
+    (general-def
+      :states 'normal
+      :keymaps 'magit-status-mode
+      "gd" 'magit-diff-toggle-refine-hunk))
 #+END_SRC
 *** magithub
 
