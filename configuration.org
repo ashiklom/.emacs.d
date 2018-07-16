@@ -62,9 +62,9 @@
     - [[#custom-backends][Custom backends]]
   - [[#org-mode][Org-mode]]
     - [[#agenda-files][Agenda files]]
+    - [[#agenda-views][Agenda views]]
     - [[#org-capture][Org capture]]
     - [[#default-to-do-keywords][Default to-do keywords]]
-    - [[#agenda-views][Agenda views]]
     - [[#formatting-and-aesthetics][Formatting and aesthetics]]
     - [[#refile][Refile]]
     - [[#clocking][Clocking]]
@@ -1111,7 +1111,7 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
     I keep my core org files backed up using Dropbox.
     
     #+BEGIN_SRC emacs-lisp
-    (setq org-agenda-files '("~/Dropbox/Notes/"))
+      (setq org-agenda-files '("~/Dropbox/Notes/" "~/Dropbox/references/notes.org"))
     #+END_SRC
 
     I have my core org-mode files organized as follows:
@@ -1159,6 +1159,33 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 	      :buffer "*helm agenda files*"))
     #+END_SRC
 
+*** Agenda views
+    
+    Exclude the following tags from inheritance.
+    This will make it easier to exclude top level headers from Agenda views.
+    
+    #+BEGIN_SRC emacs-lisp
+      (setq org-tags-exclude-from-inheritance '("_project" "_organize"))
+    #+END_SRC
+    
+    #+BEGIN_SRC emacs-lisp
+      (setq org-agenda-custom-commands
+	    '((" " "Agenda"
+	       ((agenda "" nil)
+		(tags "REFILE"
+		      ((org-agenda-overriding-header "Notes to Refile")
+		       (org-tags-match-list-sublevels nil)))
+		(tags-todo "-REFILE-config-reading_list-_project-_organization"
+			   ((org-agenda-overriding-header "Other tasks"))))
+	       nil)
+	      ("r" "Reading list" todo "TODO"
+	       ((org-agenda-files '("~/Dropbox/references/notes.org"))
+		(org-agenda-sorting-strategy '(todo-state-down))))
+	      ("c" "Configuration" todo "TODO"
+	       ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
+		(org-agenda-sorting-strategy '(todo-state-down))))))
+    #+END_SRC
+
 *** Org capture
 
     #+BEGIN_SRC emacs-lisp
@@ -1202,23 +1229,6 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
     #+TODO: TODO FEEDBACK VERIFY | DONE CANCELLED
     #+END_EXAMPLE
     
-*** Agenda views
-    
-    #+BEGIN_SRC emacs-lisp
-      (setq org-agenda-custom-commands
-	    '((" " "Agenda"
-	       ((agenda "" nil)
-		(tags "REFILE"
-		      ((org-agenda-overriding-header "Tasks to Refile")
-		       (org-tags-match-list-sublevels nil)))
-		(tags-todo "-REFILE-emacs"
-			   ((org-agenda-overriding-header "Other tasks")))
-		(tags-todo "emacs"
-			   ((org-agenda-overriding-header "Emacs configuration")
-			    (org-agenda-sorting-strategy '(todo-state-down)))))
-	       nil)))
-    #+END_SRC
-
 *** Formatting and aesthetics
     
     Show emphasis markers by default, but also quickly toggle them with a custom function.
