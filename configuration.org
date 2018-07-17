@@ -1,6 +1,6 @@
 #+TITLE: My Emacs dotfiles
 #+AUTHOR: Alexey Shiklomanov
-#+PROPERTY: header-args :tangle yes
+#+PROPERTY: header-args :tangle yes :results silent
 
 * Table of contents                                                     :TOC_3_gh:
 - [[#configuration][Configuration]]
@@ -191,7 +191,7 @@ Save them in "~/.emacs.d/backups".
 Sentences should end with a single space, not a double space.
 
 #+BEGIN_SRC emacs-lisp
-(setq sentence-end-double-space nil)
+  (setq sentence-end-double-space nil)
 #+END_SRC
 
 Start with a blank scratch buffer.
@@ -205,13 +205,13 @@ No need for startup messages, splash screens, etc.
     
 #+BEGIN_SRC emacs-lisp
   (setq show-paren-delay 0
-	abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory)
-	save-abbrevs 'silent
-	auto-save-default nil
-	scroll-margin 2
-	scroll-step 1
-	column-number-mode t
-	compilation-scroll-output t)
+        abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory)
+        save-abbrevs 'silent
+        auto-save-default nil
+        scroll-margin 2
+        scroll-step 1
+        column-number-mode t
+        compilation-scroll-output t)
 
   (show-paren-mode 1)
   (tool-bar-mode -1)
@@ -647,7 +647,7 @@ Function to check if I'm inside of a projectile project.
     :config
     (general-def
       :states 'normal
-      :keymaps 'magit-status-mode
+      :keymaps 'magit-status-mode-map
       "gd" 'magit-diff-toggle-refine-hunk))
 #+END_SRC
 *** magithub
@@ -1217,73 +1217,82 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 
 *** Default to-do keywords
     
-    All my org files have these to-do keywords by default.
+All my org files have these to-do keywords by default.
 
-    #+BEGIN_SRC emacs-lisp
-    (setq org-todo-keywords
-	  '((sequence "TODO" "NEXT" "|" "DONE" "CANCELED")))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq org-todo-keywords
+        '((sequence "TODO" "NEXT" "|" "DONE" "CANCELED")))
+#+END_SRC
     
-    However, these can be set on a file-specific basis as well via the ~#+TODO~ property.
+However, these can be set on a file-specific basis as well via the ~#+TODO~ property.
 
-    #+BEGIN_EXAMPLE
-    #+TODO: TODO FEEDBACK VERIFY | DONE CANCELLED
-    #+END_EXAMPLE
-    
+#+BEGIN_EXAMPLE
+#+TODO: TODO FEEDBACK VERIFY | DONE CANCELLED
+#+END_EXAMPLE
+
 *** Formatting and aesthetics
     
-    Show emphasis markers by default, but also quickly toggle them with a custom function.
+Show emphasis markers by default, but also quickly toggle them with a custom function.
     
-    #+BEGIN_SRC emacs-lisp
-      (setq org-hide-emphasis-markers nil)
+#+BEGIN_SRC emacs-lisp
+  (setq org-hide-emphasis-markers nil)
 
-      (defun ans/org-toggle-emphasis-markers ()
-	"Toggle the display of org emphasis markers."
-	(interactive)
-	(if org-hide-emphasis-markers
-	    (setq org-hide-emphasis-markers nil)
-	  (setq org-hide-emphasis-markers t))
-	(font-lock-flush))
-    #+END_SRC
+  (defun ans/org-toggle-emphasis-markers ()
+    "Toggle the display of org emphasis markers."
+    (interactive)
+    (if org-hide-emphasis-markers
+        (setq org-hide-emphasis-markers nil)
+      (setq org-hide-emphasis-markers t))
+    (font-lock-flush))
+#+END_SRC
     
-    By default, hide line numbers in org-mode buffers.
+By default, hide line numbers in org-mode buffers.
 
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
     (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
-    #+END_SRC
+#+END_SRC
+
+By default, use org-mode indentation.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-startup-indented t)
+#+END_SRC
+
+Automatically re-indent a source code block.
+
+#+BEGIN_SRC emacs-lisp
+  (defun ans/indent-org-source-block ()
+    "Re-indent an org mode source code block."
+    (interactive)
+    (when (org-in-src-block-p)
+      (org-edit-special)
+      (indent-region (point-min) (point-max))
+      (org-edit-src-exit)))
+#+END_SRC
 
 *** Source code (babel)
     
-    Automatically fontify source code, and edit source code in the current window (rather than opening a new one).
+Automatically fontify source code, and edit source code in the current window (rather than opening a new one).
 
-    #+BEGIN_SRC emacs-lisp
-    (setq org-babel-load-languages '((emacs-lisp . t) (R . t))
-	  org-src-fontify-natively t
-	  org-src-window-setup 'current-window)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq org-babel-load-languages '((emacs-lisp . t) (R . t))
+        org-src-fontify-natively t
+        org-src-window-setup 'current-window)
+  (set-face-attribute 'org-block nil :foreground nil :background "Gray15")
+  (set-face-attribute 'org-block-begin-line nil :background "Gray15")
+#+END_SRC
     
-    Don't prompt for confirmation on babel evaluation.
+Don't prompt for confirmation on babel evaluation.
 
-    #+BEGIN_SRC emacs-lisp
-      (setq org-confirm-babel-evaluate nil)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+END_SRC
     
-    Set some language-specific default settings.
-
-    #+BEGIN_SRC emacs-lisp
-      (add-to-list 'org-babel-default-header-args:R
-		   '(:session . "*org-R*"))
-    #+END_SRC
+Set some language-specific default settings.
     
-    Keybindings for babel.
-
-    #+BEGIN_SRC emacs-lisp
-      (general-def
-	:states '(normal visual)
-	:keymaps 'org-mode-map
-	:prefix "\\"
-	"k" 'org-export-dispatch)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defvar org-babel-default-header-args:R '((:session . "*org-R*")))
+#+END_SRC
 
 *** Refile
     
@@ -1341,51 +1350,62 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     
     #+BEGIN_SRC emacs-lisp
       (general-def
-	:keymaps 'org-mode-map
-	"C-c C-q" 'org-set-tags)
+        :keymaps 'org-mode-map
+        "C-c C-q" 'org-set-tags
+        "M-l" 'evil-org->
+        "M-L" 'org-do-demote
+        "M-h" 'evil-org-<
+        "M-H" 'org-do-promote)
       (general-def
-	:states '(motion normal)
-	:keymaps 'org-mode-map
-	"<backspace>" 'outline-hide-subtree
-	"gt" 'org-todo
-	"gj" 'outline-next-heading
-	"gk" 'outline-previous-heading
-	"g$" 'evil-end-of-line
-	"g%" 'ans/org-realign-tags
-	"go" 'ans/evil-insert-heading-after-current
-	"gO" 'ans/evil-insert-heading)
+        :states '(motion normal)
+        :keymaps 'org-mode-map
+        "<backspace>" 'outline-hide-subtree
+        "gt" 'org-todo
+        "gj" 'outline-next-heading
+        "gk" 'outline-previous-heading
+        "g$" 'evil-end-of-line
+        "g%" 'ans/org-realign-tags
+        "go" 'ans/evil-insert-heading-after-current
+        "gO" 'ans/evil-insert-heading)
       (general-def
-	:states 'visual
-	:keymaps 'org-mode-map
-	:prefix "\\"
-	"ss" 'eval-region)
+        :states 'visual
+        :keymaps 'org-mode-map
+        :prefix "\\"
+        "ss" 'eval-region)
       (general-def
-	:states 'normal
-	:keymaps 'org-mode-map
-	:prefix "\\"
-	"e" 'org-edit-special)
+        :states 'normal
+        :keymaps 'org-mode-map
+        :prefix "\\"
+        "e" 'org-edit-special
+        "k" 'org-export-dispatch
+        "RET" 'org-ctrl-c-ctrl-c
+        "=" 'ans/indent-org-source-block)
+      (general-def
+        :states 'insert
+        :keymaps 'org-mode-map
+        "C-=" '(lambda () (interactive)(insert "#+")))
       (ans-leader-def
-	:keymaps 'org-mode-map
-	:states '(motion normal emacs)
-	"#" 'org-update-statistics-cookies
-	"%" 'ans/org-toggle-emphasis-markers)
+        :states '(motion normal emacs)
+        :keymaps 'org-mode-map
+        "#" 'org-update-statistics-cookies
+        "%" 'ans/org-toggle-emphasis-markers)
       (ans-leader-def
-	:keymaps 'org-mode-map
-	:states '(motion normal visual)
-	"L" 'org-insert-last-stored-link
-	"ss" 'org-schedule
-	"sd" 'org-deadline)
+        :states '(motion normal visual)
+        :keymaps 'org-mode-map
+        "L" 'org-insert-last-stored-link
+        "ss" 'org-schedule
+        "sd" 'org-deadline)
       (general-def
-	:states '(motion)
-	:keymaps 'calendar-mode-map
-	"h" 'calendar-backward-day
-	"l" 'calendar-forward-day
-	"k" 'calendar-backward-week
-	"j" 'calendar-forward-week
-	"H" 'calendar-backward-month
-	"L" 'calendar-forward-month)
+        :states '(motion)
+        :keymaps 'calendar-mode-map
+        "h" 'calendar-backward-day
+        "l" 'calendar-forward-day
+        "k" 'calendar-backward-week
+        "j" 'calendar-forward-week
+        "H" 'calendar-backward-month
+        "L" 'calendar-forward-month)
       #+END_SRC
-
+      
 *** Other custom functions
 
 #+BEGIN_SRC emacs-lisp
