@@ -66,6 +66,7 @@
     - [[#org-capture][Org capture]]
     - [[#default-to-do-keywords][Default to-do keywords]]
     - [[#formatting-and-aesthetics][Formatting and aesthetics]]
+    - [[#source-code-babel][Source code (babel)]]
     - [[#refile][Refile]]
     - [[#clocking][Clocking]]
     - [[#custom-structure-templates][Custom structure templates]]
@@ -1245,6 +1246,14 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 	(font-lock-flush))
     #+END_SRC
     
+    By default, hide line numbers in org-mode buffers.
+
+    #+BEGIN_SRC emacs-lisp
+    (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
+    #+END_SRC
+
+*** Source code (babel)
+    
     Automatically fontify source code, and edit source code in the current window (rather than opening a new one).
 
     #+BEGIN_SRC emacs-lisp
@@ -1253,10 +1262,27 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 	  org-src-window-setup 'current-window)
     #+END_SRC
     
-    By default, hide line numbers in org-mode buffers.
+    Don't prompt for confirmation on babel evaluation.
 
     #+BEGIN_SRC emacs-lisp
-    (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
+      (setq org-confirm-babel-evaluate nil)
+    #+END_SRC
+    
+    Set some language-specific default settings.
+
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'org-babel-default-header-args:R
+		   '(:session . "*org-R*"))
+    #+END_SRC
+    
+    Keybindings for babel.
+
+    #+BEGIN_SRC emacs-lisp
+      (general-def
+	:states '(normal visual)
+	:keymaps 'org-mode-map
+	:prefix "\\"
+	"k" 'org-export-dispatch)
     #+END_SRC
 
 *** Refile
