@@ -1277,9 +1277,13 @@ Automatically fontify source code, and edit source code in the current window (r
 #+BEGIN_SRC emacs-lisp
   (setq org-babel-load-languages '((emacs-lisp . t) (R . t))
         org-src-fontify-natively t
+        org-src-tab-acts-natively t
         org-src-window-setup 'current-window)
   (set-face-attribute 'org-block nil :foreground nil :background "Gray15")
   (set-face-attribute 'org-block-begin-line nil :background "Gray15")
+
+  (with-eval-after-load 'org
+    (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t) (R . t))))
 #+END_SRC
     
 Don't prompt for confirmation on babel evaluation.
@@ -1343,19 +1347,22 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     
     #+BEGIN_SRC emacs-lisp
       (add-to-list 'org-structure-template-alist
-		   '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+                   '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+      (add-to-list 'org-structure-template-alist
+                   '("p" ":PROPERTIES:\n?\n:END:"))
     #+END_SRC
     
 *** Keybindings
     
     #+BEGIN_SRC emacs-lisp
       (general-def
+        :states '(normal insert)
         :keymaps 'org-mode-map
         "C-c C-q" 'org-set-tags
-        "M-l" 'evil-org->
-        "M-L" 'org-do-demote
-        "M-h" 'evil-org-<
-        "M-H" 'org-do-promote)
+        "M-l" 'org-metaright
+        "M-S-l" 'org-demote-subtree
+        "M-h" 'org-metaleft
+        "M-S-l" 'org-promote-subtree)
       (general-def
         :states '(motion normal)
         :keymaps 'org-mode-map
