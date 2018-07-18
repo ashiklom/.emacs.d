@@ -3,113 +3,124 @@
 #+PROPERTY: header-args :tangle yes :results silent
 
 * Table of contents                                                     :TOC_3_gh:
-- [[#configuration][Configuration]]
-  - [[#personal-information][Personal information]]
-  - [[#package-management][Package management]]
-    - [[#core-emacs-package-manager][Core emacs package manager]]
-    - [[#use-package][use-package]]
-    - [[#quelpa][quelpa]]
-  - [[#lisp-libraries][Lisp libraries]]
-    - [[#dash----list-manipulation][dash -- list manipulation]]
-    - [[#custom-libraries][Custom libraries]]
-  - [[#native-emacs-settings][Native emacs settings]]
-    - [[#customel-file][custom.el file]]
-    - [[#backups-and-history][Backups and history]]
-    - [[#other-settings][Other settings]]
-  - [[#global-variables][Global variables]]
-  - [[#text-and-prog-mode-hooks][Text and prog mode hooks]]
-  - [[#aesthetics][Aesthetics]]
-    - [[#color-scheme-and-font][Color scheme and font]]
-    - [[#diminish][diminish]]
-    - [[#rainbow-delimiters][rainbow-delimiters]]
-    - [[#mode-line][Mode line]]
-  - [[#keybindings][Keybindings]]
-    - [[#general][general]]
-    - [[#evil][evil]]
-    - [[#evil-extensions][Evil extensions]]
-    - [[#global-keybindings][Global keybindings]]
-  - [[#buffer-and-window-management][Buffer and window management]]
-    - [[#ace-window][ace-window]]
-    - [[#buffer-move][buffer-move]]
-    - [[#dired-single][dired-single]]
-    - [[#projectile][projectile]]
-    - [[#perspective][perspective]]
-  - [[#version-control][Version control]]
-    - [[#magit][magit]]
-    - [[#magithub][magithub]]
-  - [[#filetype-modes][Filetype modes]]
-    - [[#markdown-mode][markdown-mode]]
-    - [[#pdf-tools][pdf-tools]]
-  - [[#utility-functions][Utility functions]]
-    - [[#rename-buffer-and-file][Rename buffer and file]]
-    - [[#delete-buffer-and-file][Delete buffer and file]]
-    - [[#switch-to-most-recently-used-buffer][Switch to most recently used buffer]]
-    - [[#reload-init-file][Reload init file]]
-    - [[#edit-init-file][Edit init file]]
-    - [[#toggle-minimized-window][Toggle "minimized" window]]
-    - [[#pop-window-into-own-frame][Pop window into own frame]]
-  - [[#helm][Helm]]
-    - [[#split-windows-for-helm][Split windows for helm]]
-    - [[#helm-ag][helm-ag]]
-    - [[#helm-projectile][helm-projectile]]
-    - [[#helm-org-rifle][helm-org-rifle]]
-    - [[#helm-swoop][helm-swoop]]
-    - [[#helm-descbinds][helm-descbinds]]
-  - [[#company][Company]]
-    - [[#core-configuration][Core configuration]]
-    - [[#complete-and-continue-function][Complete and continue function]]
-    - [[#company-quickhelp][company-quickhelp]]
-    - [[#custom-backends][Custom backends]]
-  - [[#org-mode][Org-mode]]
-    - [[#agenda-files][Agenda files]]
-    - [[#agenda-views][Agenda views]]
-    - [[#org-capture][Org capture]]
-    - [[#default-to-do-keywords][Default to-do keywords]]
-    - [[#formatting-and-aesthetics][Formatting and aesthetics]]
-    - [[#source-code-babel][Source code (babel)]]
-    - [[#refile][Refile]]
-    - [[#clocking][Clocking]]
-    - [[#custom-structure-templates][Custom structure templates]]
-    - [[#keybindings-1][Keybindings]]
-    - [[#other-custom-functions][Other custom functions]]
-    - [[#clocking-functions][Clocking functions]]
-    - [[#org-journal][org-journal]]
-    - [[#toc-org][toc-org]]
-    - [[#org-ref][org-ref]]
-  - [[#yasnippet][yasnippet]]
-  - [[#ess----emacs-speaks-statistics][ESS -- Emacs Speaks Statistics]]
-    - [[#core-configuration-1][Core configuration]]
-    - [[#custom-functions][Custom functions]]
-    - [[#ox-ravel][ox-ravel]]
-  - [[#latex][LaTeX]]
-    - [[#core-configuration-2][Core configuration]]
-    - [[#auctex-latexmk][auctex-latexmk]]
-    - [[#helm-bibtex][helm-bibtex]]
-    - [[#ebib][ebib]]
-  - [[#editing-tools][Editing tools]]
-    - [[#rebox2][rebox2]]
-    - [[#flycheck][flycheck]]
-    - [[#simpleclip][simpleclip]]
-    - [[#smartparens][smartparens]]
-    - [[#edit-server][edit-server]]
-    - [[#adaptive-wrap][adaptive-wrap]]
-    - [[#expand-region][expand-region]]
-    - [[#fill-function-arguments][fill-function-arguments]]
-    - [[#aggressive-indent][aggressive-indent]]
-    - [[#undo-tree][undo-tree]]
-    - [[#hl-todo][hl-todo]]
+- [[#personal-information][Personal information]]
+- [[#package-management][Package management]]
+  - [[#core-emacs-package-manager][Core emacs package manager]]
+  - [[#use-package][use-package]]
+  - [[#quelpa][quelpa]]
+- [[#lisp-libraries][Lisp libraries]]
+  - [[#dash----list-manipulation][dash -- list manipulation]]
+  - [[#custom-libraries][Custom libraries]]
+- [[#native-emacs-settings][Native emacs settings]]
+  - [[#customel-file][custom.el file]]
+  - [[#backups-and-history][Backups and history]]
+  - [[#other-settings][Other settings]]
+- [[#global-variables][Global variables]]
+- [[#text-and-prog-mode-hooks][Text and prog mode hooks]]
+- [[#aesthetics][Aesthetics]]
+  - [[#color-scheme-and-font][Color scheme and font]]
+  - [[#diminish][diminish]]
+  - [[#rainbow-delimiters][rainbow-delimiters]]
+  - [[#mode-line][Mode line]]
+- [[#keybindings][Keybindings]]
+  - [[#general][general]]
+  - [[#evil][evil]]
+  - [[#evil-extensions][Evil extensions]]
+    - [[#evil-collection][evil-collection]]
+    - [[#evil-surround][evil-surround]]
+    - [[#evil-embrace][evil-embrace]]
+    - [[#evil-indent-textobject][evil-indent-textobject]]
+    - [[#evil-nerd-commenter][evil-nerd-commenter]]
+    - [[#evil-easymotion][evil-easymotion]]
+    - [[#evil-exchange][evil-exchange]]
+    - [[#evil-numbers][evil-numbers]]
+    - [[#evil-magit][evil-magit]]
+    - [[#evil-org][evil-org]]
+    - [[#evil-latex-textobjects][evil-latex-textobjects]]
+  - [[#global-keybindings][Global keybindings]]
+- [[#buffer-and-window-management][Buffer and window management]]
+  - [[#ace-window][ace-window]]
+  - [[#buffer-move][buffer-move]]
+  - [[#dired-single][dired-single]]
+  - [[#projectile][projectile]]
+  - [[#perspective][perspective]]
+- [[#version-control][Version control]]
+  - [[#magit][magit]]
+  - [[#magithub][magithub]]
+- [[#filetype-modes][Filetype modes]]
+  - [[#markdown-mode][markdown-mode]]
+  - [[#pdf-tools][pdf-tools]]
+- [[#utility-functions][Utility functions]]
+  - [[#rename-buffer-and-file][Rename buffer and file]]
+  - [[#delete-buffer-and-file][Delete buffer and file]]
+  - [[#switch-to-most-recently-used-buffer][Switch to most recently used buffer]]
+  - [[#reload-init-file][Reload init file]]
+  - [[#edit-init-file][Edit init file]]
+  - [[#toggle-minimized-window][Toggle "minimized" window]]
+  - [[#pop-window-into-own-frame][Pop window into own frame]]
+- [[#helm][Helm]]
+  - [[#split-windows-for-helm][Split windows for helm]]
+  - [[#helm-ag][helm-ag]]
+  - [[#helm-projectile][helm-projectile]]
+  - [[#helm-org-rifle][helm-org-rifle]]
+  - [[#helm-swoop][helm-swoop]]
+  - [[#helm-descbinds][helm-descbinds]]
+- [[#company][Company]]
+  - [[#core-configuration][Core configuration]]
+  - [[#complete-and-continue-function][Complete and continue function]]
+  - [[#company-quickhelp][company-quickhelp]]
+  - [[#custom-backends][Custom backends]]
+    - [[#complete-inside-directory-or-projectile-project][Complete inside directory or projectile project]]
+    - [[#org-keywords][Org keywords]]
+- [[#org-mode][Org-mode]]
+  - [[#agenda-files][Agenda files]]
+  - [[#agenda-views][Agenda views]]
+  - [[#org-capture][Org capture]]
+    - [[#org-capture-pop-frame][org-capture-pop-frame]]
+  - [[#default-to-do-keywords][Default to-do keywords]]
+  - [[#formatting-and-aesthetics][Formatting and aesthetics]]
+  - [[#source-code-babel][Source code (babel)]]
+  - [[#refile][Refile]]
+  - [[#clocking][Clocking]]
+  - [[#custom-structure-templates][Custom structure templates]]
+  - [[#keybindings-1][Keybindings]]
+  - [[#other-custom-functions][Other custom functions]]
+  - [[#clocking-functions][Clocking functions]]
+  - [[#org-journal][org-journal]]
+  - [[#toc-org][toc-org]]
+  - [[#org-ref][org-ref]]
+- [[#yasnippet][yasnippet]]
+- [[#ess----emacs-speaks-statistics][ESS -- Emacs Speaks Statistics]]
+  - [[#core-configuration-1][Core configuration]]
+  - [[#custom-functions][Custom functions]]
+  - [[#ox-ravel][ox-ravel]]
+- [[#latex][LaTeX]]
+  - [[#core-configuration-2][Core configuration]]
+  - [[#auctex-latexmk][auctex-latexmk]]
+  - [[#helm-bibtex][helm-bibtex]]
+  - [[#ebib][ebib]]
+- [[#editing-tools][Editing tools]]
+  - [[#rebox2][rebox2]]
+  - [[#flycheck][flycheck]]
+  - [[#simpleclip][simpleclip]]
+  - [[#smartparens][smartparens]]
+  - [[#edit-server][edit-server]]
+  - [[#adaptive-wrap][adaptive-wrap]]
+  - [[#expand-region][expand-region]]
+  - [[#fill-function-arguments][fill-function-arguments]]
+  - [[#aggressive-indent][aggressive-indent]]
+  - [[#undo-tree][undo-tree]]
+  - [[#hl-todo][hl-todo]]
 
-* Configuration
-  
-** Personal information
+* Personal information
 
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Alexey Shiklomanov"
 	user-mail-address "alexey.shiklomanov@gmail.com")
 #+END_SRC
 
-** Package management
-*** Core emacs package manager
+* Package management
+** Core emacs package manager
   
  Load Emacs's internal package manager and tell it where to look for packages.
 
@@ -126,7 +137,7 @@
      (package-initialize))
  #+END_SRC
 
-*** use-package
+** use-package
 
 Bootstrap the ~use-package~ package manager.
 
@@ -137,7 +148,7 @@ Bootstrap the ~use-package~ package manager.
  (eval-when-compile (require 'use-package))
  #+END_SRC
 
-*** quelpa
+** quelpa
    
  For installing packages from source (e.g. GitHub).
 
@@ -150,19 +161,19 @@ Bootstrap the ~use-package~ package manager.
  #+END_SRC
 
  Also,
-** Lisp libraries
-*** dash -- list manipulation
+* Lisp libraries
+** dash -- list manipulation
 
 #+BEGIN_SRC emacs-lisp
 (use-package dash :ensure t)
 #+END_SRC
-*** Custom libraries
+** Custom libraries
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 #+END_SRC
-** Native emacs settings
-*** custom.el file
+* Native emacs settings
+** custom.el file
    
 Configure the ~custom.el~ file.
 Mostly, I avoid this in favor of ~setq~ settings.
@@ -172,7 +183,7 @@ Mostly, I avoid this in favor of ~setq~ settings.
 (load custom-file)
 #+END_SRC
 
-*** Backups and history
+** Backups and history
    
 Create version-controlled backups of all files Emacs touches.
 Save them in "~/.emacs.d/backups".
@@ -186,7 +197,7 @@ Save them in "~/.emacs.d/backups".
 	auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t))) ; Save file name changes
 #+END_SRC
 
-*** Other settings
+** Other settings
     
 Sentences should end with a single space, not a double space.
 
@@ -222,7 +233,7 @@ No need for startup messages, splash screens, etc.
   (winner-mode)				; Remember window configurations
 #+END_SRC
 
-** Global variables
+* Global variables
   
 Related to bibtex references. 
    
@@ -237,7 +248,7 @@ Related to bibtex references.
     "Full path to reference-related notes.")
 #+END_SRC
 
-** Text and prog mode hooks
+* Text and prog mode hooks
    
 #+BEGIN_SRC emacs-lisp
 (defun ans-prog-mode-setup ()
@@ -254,8 +265,8 @@ Related to bibtex references.
 (add-hook 'text-mode-hook #'ans-text-mode-setup)
 #+END_SRC
 
-** Aesthetics
-*** Color scheme and font
+* Aesthetics
+** Color scheme and font
    
 #+BEGIN_SRC emacs-lisp
 (use-package color-theme-sanityinc-tomorrow
@@ -264,7 +275,7 @@ Related to bibtex references.
 (set-face-attribute 'default nil :font "Input Mono Narrow-12")
 #+END_SRC
 
-*** diminish
+** diminish
     
 Hide minor modes in modeline.
     
@@ -275,7 +286,7 @@ Hide minor modes in modeline.
     (diminish winner-mode))
 #+END_SRC
 
-*** rainbow-delimiters
+** rainbow-delimiters
 
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-delimiters
@@ -283,7 +294,7 @@ Hide minor modes in modeline.
   :hook ((prog-mode) . rainbow-delimiters-mode))
 #+END_SRC
 
-*** Mode line
+** Mode line
 
 #+BEGIN_SRC emacs-lisp
   (use-package smart-mode-line
@@ -291,8 +302,8 @@ Hide minor modes in modeline.
     :config
     (sml/setup))
 #+END_SRC
-** Keybindings
-*** general
+* Keybindings
+** general
     
 #+BEGIN_SRC emacs-lisp
 (use-package general
@@ -324,7 +335,7 @@ My leader key is SPACE.
   :prefix-map 'ans-leader-map)
 #+END_SRC
 
-*** evil
+** evil
 #+BEGIN_SRC emacs-lisp
 (use-package evil
   :ensure t
@@ -335,8 +346,8 @@ My leader key is SPACE.
   (evil-mode)
   (defalias #'forward-evil-word #'forward-evil-symbol))
 #+END_SRC
-*** Evil extensions
-**** evil-collection
+** Evil extensions
+*** evil-collection
 #+BEGIN_SRC emacs-lisp
   (use-package evil-collection
     :ensure t
@@ -347,7 +358,7 @@ My leader key is SPACE.
     (setq evil-collection-mode-list (remove 'company evil-collection-mode-list))
     (evil-collection-init))
 #+END_SRC
-**** evil-surround
+*** evil-surround
      
 #+BEGIN_SRC emacs-lisp
   (use-package evil-surround
@@ -356,7 +367,7 @@ My leader key is SPACE.
     :config
     (global-evil-surround-mode))
 #+END_SRC
-**** evil-embrace
+*** evil-embrace
 #+BEGIN_SRC emacs-lisp
   (use-package evil-embrace
     :ensure t
@@ -369,7 +380,7 @@ My leader key is SPACE.
     (add-hook 'LaTeX-mode-hook 'embrace-LaTeX-mode-hook))
 #+END_SRC
 
-**** evil-indent-textobject
+*** evil-indent-textobject
      
 #+BEGIN_SRC emacs-lisp
   (use-package evil-indent-textobject
@@ -377,7 +388,7 @@ My leader key is SPACE.
     :after evil)
 #+END_SRC
 
-**** evil-nerd-commenter
+*** evil-nerd-commenter
      
 #+BEGIN_SRC emacs-lisp
   (use-package evil-nerd-commenter
@@ -388,7 +399,7 @@ My leader key is SPACE.
       ";" 'evilnc-comment-or-uncomment-lines))
 #+END_SRC
 
-**** evil-easymotion
+*** evil-easymotion
      
 #+BEGIN_SRC emacs-lisp
   (use-package evil-easymotion
@@ -400,7 +411,7 @@ My leader key is SPACE.
       "SPC SPC" evilem-map))
 #+END_SRC
 
-**** evil-exchange
+*** evil-exchange
      
 #+BEGIN_SRC emacs-lisp
   (use-package evil-exchange
@@ -411,7 +422,7 @@ My leader key is SPACE.
     (evil-exchange-install))
 #+END_SRC
 
-**** evil-numbers
+*** evil-numbers
      
 #+BEGIN_SRC emacs-lisp
   (use-package evil-numbers
@@ -429,7 +440,7 @@ My leader key is SPACE.
       "C-a" 'evil-numbers-hydra/body))
 #+END_SRC
 
-**** evil-magit
+*** evil-magit
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil-magit
@@ -437,7 +448,7 @@ My leader key is SPACE.
     :after magit)
 #+END_SRC
 
-**** evil-org
+*** evil-org
      
 #+BEGIN_SRC emacs-lisp
   (use-package evil-org
@@ -457,14 +468,14 @@ My leader key is SPACE.
     (evil-org-set-key-theme '(navigation insert textobjects calendar)))
 #+END_SRC
 
-**** evil-latex-textobjects
+*** evil-latex-textobjects
 
 #+BEGIN_SRC emacs-lisp
   (use-package evil-latex-textobjects
     :quelpa (evil-latex-textobjects :fetcher github :repo "hpdeifel/evil-latex-textobjects")
     :hook (LaTeX-mode-hook . turn-on-evil-latex-textobjects-mode))
 #+END_SRC
-*** Global keybindings
+** Global keybindings
     
 Evaluate lisp at point.    
 
@@ -576,11 +587,11 @@ Other keymaps (need to be sorted and cleaned up).
     "mp" 'projectile-compile-project
     "mm" 'compile)
 #+END_SRC
-** Buffer and window management
+* Buffer and window management
    
 #+BEGIN_SRC emacs-lisp
 #+END_SRC
-*** ace-window
+** ace-window
     
 #+BEGIN_SRC emacs-lisp
 (use-package ace-window
@@ -591,14 +602,14 @@ Other keymaps (need to be sorted and cleaned up).
   :general
   (general-def "M-o" 'ace-window))
 #+END_SRC
-*** buffer-move
+** buffer-move
     
 Swap buffer positions.
 
 #+BEGIN_SRC emacs-lisp
 (use-package buffer-move :ensure t)
 #+END_SRC
-*** dired-single
+** dired-single
     
 #+BEGIN_SRC emacs-lisp
 (use-package dired-single
@@ -609,7 +620,7 @@ Swap buffer positions.
     "RET" 'dired-single-buffer
     "^" (lambda () (interactive) (dired-single-buffer ".."))))
 #+END_SRC
-*** projectile
+** projectile
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :ensure t
@@ -624,7 +635,7 @@ Function to check if I'm inside of a projectile project.
   "Check if current buffer is in a projectile project."
   (ignore-errors (projectile-project-root)))
 #+END_SRC
-*** perspective
+** perspective
 
 #+BEGIN_SRC emacs-lisp
   (use-package perspective
@@ -634,8 +645,8 @@ Function to check if I'm inside of a projectile project.
     :config
     (persp-mode))
 #+END_SRC
-** Version control
-*** magit
+* Version control
+** magit
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
@@ -650,7 +661,7 @@ Function to check if I'm inside of a projectile project.
       :keymaps 'magit-status-mode-map
       "gd" 'magit-diff-toggle-refine-hunk))
 #+END_SRC
-*** magithub
+** magithub
 
 #+BEGIN_SRC emacs-lisp
 (use-package magithub
@@ -666,8 +677,8 @@ Function to check if I'm inside of a projectile project.
     :states 'normal
     "gu" 'magithub-dashboard-show-read-notifications-toggle))
 #+END_SRC
-** Filetype modes
-*** markdown-mode
+* Filetype modes
+** markdown-mode
 
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
@@ -726,7 +737,7 @@ Function to check if I'm inside of a projectile project.
 ;;    ("\\.Rmd" . poly-markdown+r-mode)
 ;;    ("\\.md" . poly-markdown-mode)))
 #+END_SRC
-*** pdf-tools
+** pdf-tools
 
 #+BEGIN_SRC emacs-lisp
   (use-package pdf-tools
@@ -740,8 +751,8 @@ Function to check if I'm inside of a projectile project.
       "<" 'pdf-history-backward
       ">" 'pdf-history-forward))
 #+END_SRC
-** Utility functions
-*** Rename buffer and file
+* Utility functions
+** Rename buffer and file
 
 #+BEGIN_SRC emacs-lisp
 (defun rename-this-buffer-and-file ()
@@ -763,7 +774,7 @@ Function to check if I'm inside of a projectile project.
 	       
 (evil-ex-define-cmd "rename" 'rename-this-buffer-and-file)
 #+END_SRC
-*** Delete buffer and file
+** Delete buffer and file
     
 #+BEGIN_SRC emacs-lisp
 (defun ans/delete-file-and-buffer ()
@@ -778,7 +789,7 @@ Function to check if I'm inside of a projectile project.
 	
 (evil-ex-define-cmd "dkill" 'ans/delete-file-and-buffer)
 #+END_SRC
-*** Switch to most recently used buffer
+** Switch to most recently used buffer
     
 #+BEGIN_SRC emacs-lisp
 (defun ans-switch-to-mru-buffer ()
@@ -786,7 +797,7 @@ Function to check if I'm inside of a projectile project.
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 #+END_SRC
-*** Reload init file
+** Reload init file
 
 #+BEGIN_SRC emacs-lisp
 (defun ans--reload-initfile ()
@@ -794,7 +805,7 @@ Function to check if I'm inside of a projectile project.
   (interactive)
   (load-file (expand-file-name "init.el" user-emacs-directory)))
 #+END_SRC
-*** Edit init file
+** Edit init file
     
 #+BEGIN_SRC emacs-lisp
 (defun ans--edit-initfile ()
@@ -802,7 +813,7 @@ Function to check if I'm inside of a projectile project.
   (interactive)
   (find-file (expand-file-name "init.el" user-emacs-directory)))
 #+END_SRC
-*** Toggle "minimized" window
+** Toggle "minimized" window
     
 #+BEGIN_SRC emacs-lisp
 (defvar ans-window-minimized '()
@@ -820,7 +831,7 @@ See `ans-toggle-minimize'.")
 	   (message "Window minimized."))
     ))
 #+END_SRC
-*** Pop window into own frame
+** Pop window into own frame
     
 #+BEGIN_SRC emacs-lisp
 (defun ans/pop-window-into-frame ()
@@ -831,7 +842,7 @@ See `ans-toggle-minimize'.")
       (delete-window))
     (display-buffer-pop-up-frame buffer nil)))
 #+END_SRC
-** Helm
+* Helm
 
 Core helm configuration.
 
@@ -874,7 +885,7 @@ Core helm configuration.
     "C-l" 'helm-yank-selection)
   )
 #+END_SRC
-*** Split windows for helm
+** Split windows for helm
     
 #+BEGIN_SRC emacs-lisp
 (defun ans/hsplit-frame ()
@@ -887,14 +898,14 @@ Core helm configuration.
   (evil-window-bottom-right)
   (switch-to-buffer buffer))
 #+END_SRC
-*** helm-ag
+** helm-ag
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-ag
   :ensure t
   :after helm)
 #+END_SRC
-*** helm-projectile
+** helm-projectile
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-projectile
@@ -916,7 +927,7 @@ Core helm configuration.
     "rg" (general-predicate-dispatch 'helm-ag
 	   (ans/in-project-p) 'helm-projectile-ag)))
 #+END_SRC
-*** helm-org-rifle
+** helm-org-rifle
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-org-rifle
@@ -927,7 +938,7 @@ Core helm configuration.
     "a" 'helm-org-rifle-agenda-files
     "A" 'ans/helm-org-agenda-list-files))
 #+END_SRC
-*** helm-swoop
+** helm-swoop
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-swoop
@@ -942,7 +953,7 @@ Core helm configuration.
     "ip" 'helm-multi-swoop-projectile
     "i0" 'helm-swoop-back-to-last-point))
 #+END_SRC
-*** helm-descbinds
+** helm-descbinds
     
 #+BEGIN_SRC emacs-lisp
 (use-package helm-descbinds
@@ -951,9 +962,9 @@ Core helm configuration.
   :config
   (helm-descbinds-mode))
 #+END_SRC
-** Company
+* Company
    
-*** Core configuration
+** Core configuration
 
 #+BEGIN_SRC emacs-lisp
   (use-package company
@@ -1019,7 +1030,7 @@ Additional functions needed to make ~company-quickhelp~ respect my keybindings.
       "C-l" 'ans-company-complete-continue))
 #+END_SRC
 
-*** Complete and continue function
+** Complete and continue function
     
 #+BEGIN_SRC emacs-lisp
 (defun ans-company-complete-continue ()
@@ -1030,7 +1041,7 @@ This makes repeat completions easier (e.g. when completing long file paths)."
   (company-complete))
 #+END_SRC
 
-*** company-quickhelp
+** company-quickhelp
 
 #+BEGIN_SRC emacs-lisp
 (use-package company-quickhelp
@@ -1043,9 +1054,9 @@ This makes repeat completions easier (e.g. when completing long file paths)."
 
 Functions 
 
-*** Custom backends
+** Custom backends
 
-**** Complete inside directory or projectile project
+*** Complete inside directory or projectile project
 
 #+BEGIN_SRC emacs-lisp
 (defun ans/directory-completion-candidates (prefix)
@@ -1078,7 +1089,7 @@ IGNORED are arguments ignored by company."
       (ans/directory-completion-candidates arg)))))
 #+END_SRC
 
-**** Org keywords
+*** Org keywords
 
 #+BEGIN_SRC emacs-lisp
 (defun ans/org-keyword-backend (command &optional arg &rest ignored)
@@ -1096,7 +1107,7 @@ IGNORED are arguments ignored by company."
     (ignore-case t)
     (duplicates t)))
 #+END_SRC
-** Org-mode
+* Org-mode
    
 I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I split other aspects of the configuration out into their own blocks.
    
@@ -1107,7 +1118,7 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
     :mode ("\\.org\\'" . org-mode))
 #+END_SRC
 
-*** Agenda files
+** Agenda files
     
     I keep my core org files backed up using Dropbox.
     
@@ -1160,7 +1171,7 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 	      :buffer "*helm agenda files*"))
     #+END_SRC
 
-*** Agenda views
+** Agenda views
     
     Exclude the following tags from inheritance.
     This will make it easier to exclude top level headers from Agenda views.
@@ -1187,25 +1198,27 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 		(org-agenda-sorting-strategy '(todo-state-down))))))
     #+END_SRC
 
-*** Org capture
+** Org capture
 
     #+BEGIN_SRC emacs-lisp
       (setq org-capture-templates
-	    '(("E" "Emacs config" entry
-	       (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
-	       "** TODO %?")
-	      ("e" "Emacs note" entry
-	       (file+headline "~/Dropbox/Notes/emacs.org" "Emacs")
-	       "** %?")
-	      ("t" "TODO" entry
-	       (file "~/Dropbox/Notes/unsorted.org")
-	       "* TODO %?\n%U\n%a\n")
-	      ("u" "Miscellaneous note" entry
-	       (file "~/Dropbox/Notes/unsorted.org")
-	       "* %? :NOTE:\n%U\n%a\n")))
+            '(("E" "Emacs config" entry
+               (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
+               "** TODO %?")
+              ("e" "Emacs note" entry
+               (file+headline "~/Dropbox/Notes/emacs.org" "Emacs")
+               "** %?")
+              ("t" "TODO" entry
+               (file "~/Dropbox/Notes/unsorted.org")
+               "* TODO %?\n%U\n%a\n")
+              ("u" "Miscellaneous note" entry
+               (file "~/Dropbox/Notes/unsorted.org")
+               "* %? :NOTE:\n%U\n%a\n")
+              ("m" "Meeting" entry (file "~/Dropbox/Notes/unsorted.org")
+               "* Meeting with %? \n%U" :clock-in t :clock-resume t)))
     #+END_SRC
 
-**** org-capture-pop-frame
+*** org-capture-pop-frame
     
  Run ~org-capture~ in its own frame.
  This is temporarily disabled because it interferes with ~perspective~ in some edge cases.
@@ -1215,7 +1228,7 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
    :ensure t)
  #+END_SRC
 
-*** Default to-do keywords
+** Default to-do keywords
     
 All my org files have these to-do keywords by default.
 
@@ -1230,7 +1243,7 @@ However, these can be set on a file-specific basis as well via the ~#+TODO~ prop
 #+TODO: TODO FEEDBACK VERIFY | DONE CANCELLED
 #+END_EXAMPLE
 
-*** Formatting and aesthetics
+** Formatting and aesthetics
     
 Show emphasis markers by default, but also quickly toggle them with a custom function.
     
@@ -1270,7 +1283,7 @@ Automatically re-indent a source code block.
       (org-edit-src-exit)))
 #+END_SRC
 
-*** Source code (babel)
+** Source code (babel)
     
 Automatically fontify source code, and edit source code in the current window (rather than opening a new one).
 
@@ -1298,7 +1311,7 @@ Set some language-specific default settings.
   (defvar org-babel-default-header-args:R '((:session . "*org-R*")))
 #+END_SRC
 
-*** Refile
+** Refile
     
     #+BEGIN_SRC emacs-lisp
       (setq org-refile-targets '((nil :maxlevel . 9)
@@ -1313,7 +1326,7 @@ Set some language-specific default settings.
 	(not (member (nth 2 (org-heading-components)) org-done-keywords)))
     #+END_SRC
     
-*** Clocking
+** Clocking
     
     Use the clocking settings from "Organize your life in plain text".
     
@@ -1341,7 +1354,7 @@ Set some language-specific default settings.
        org-clock-report-include-clocking-task t)
     #+END_SRC
 
-*** Custom structure templates
+** Custom structure templates
     
 These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     
@@ -1352,7 +1365,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
                    '("p" ":PROPERTIES:\n?\n:END:"))
     #+END_SRC
     
-*** Keybindings
+** Keybindings
     
     #+BEGIN_SRC emacs-lisp
       (general-def
@@ -1413,7 +1426,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
         "L" 'calendar-forward-month)
       #+END_SRC
       
-*** Other custom functions
+** Other custom functions
 
 #+BEGIN_SRC emacs-lisp
 (defun ans/evil-insert-heading ()
@@ -1477,7 +1490,7 @@ TAG is chosen interactively from the global tags completion table."
 
 #+END_SRC
 
-*** Clocking functions
+** Clocking functions
 
 Clock into a default task ("organization").
 
@@ -1529,7 +1542,7 @@ Clock into a default task ("organization").
       (org-clock-in '(16))))
 #+END_SRC
 
-*** org-journal
+** org-journal
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-journal
@@ -1540,7 +1553,7 @@ Clock into a default task ("organization").
 	org-journal-enable-agenda-integration t))
 (evil-ex-define-cmd "now" 'org-journal-new-entry)
 #+END_SRC
-*** toc-org
+** toc-org
     
 #+BEGIN_SRC emacs-lisp
 (use-package toc-org
@@ -1548,7 +1561,7 @@ Clock into a default task ("organization").
   :config
   (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
-*** org-ref
+** org-ref
     
     #+BEGIN_SRC emacs-lisp
       (use-package org-ref
@@ -1578,7 +1591,7 @@ Clock into a default task ("organization").
           :states 'normal
           "\\\\" 'org-ref-bibtex-hydra/body))
     #+END_SRC
-** yasnippet
+* yasnippet
    
    #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
@@ -1604,87 +1617,88 @@ Clock into a default task ("organization").
     "ue" 'yas-visit-snippet-file)
   )
    #+END_SRC
-** ESS -- Emacs Speaks Statistics
+* ESS -- Emacs Speaks Statistics
    
-*** Core configuration
+** Core configuration
 
     #+BEGIN_SRC emacs-lisp
-(use-package ess
-  :ensure t
-  :mode ("\\.[rR]\\'" . r-mode)
-  :init
-  (setq comint-move-point-for-output t)	; Scroll R buffer on output
-  (setq ess-ask-for-ess-directory nil
-	ess-directory-function 'ans-r-file-here
-	ess-default-style 'RStudio
-	ess-use-company t
-	ess-eval-visibly 'nowait)
-  :config
-  (require 'ess-rutils)
-  (add-to-list 'ess-R-font-lock-keywords
-	       '(ess-fl-keyword:fun-calls . t) t)
-  (ans/add-evil-maps 'ess-help-mode-map)
-  :general
-  (general-def
-    :keymaps 'ess-mode-map
-    :states 'normal
-    :prefix "\\"
-    "r f" 'ans-start-R
-    "r q" 'ans-quit-R
-    "l" 'ess-eval-line
-    "d" 'ess-eval-line-and-step
-    "f f" 'ess-eval-function
-    "p p" 'ess-eval-paragraph
-    "p d" 'ess-eval-paragraph-and-step
-    "a a" 'ess-eval-buffer
-    "a d" 'ess-eval-buffer-from-here-to-end
-    "a s" 'ess-eval-buffer-from-beg-to-here
-    "r h" 'ess-display-help-on-object
-    "v i" 'ess-r-devtools-install-package
-    "v d" 'ess-r-devtools-document-package
-    "v l" 'ess-r-devtools-load-package
-    "r o" 'ess-rutils-objs
-    "r p" 'ans/ess-eval-symbol
-    "k r" 'ans/rmarkdown-render)
-  (general-def
-    :states 'visual
-    :keymaps 'ess-mode-map
-    :prefix "\\"
-    "s s" 'ess-eval-region)
-  (general-def
-    :states 'insert
-    :keymaps 'inferior-ess-mode-map
-    "_" 'self-insert-command
-    "M--" 'ess-insert-S-assign)
-  (general-def
-    :states 'insert
-    :keymaps 'ess-mode-map
-    "_" 'self-insert-command
-    "M-m" (lambda() (interactive)(insert " %>%"))
-    "M--" 'ess-insert-S-assign
-    "C-c" (lambda() (interactive)(insert "#'")))
-  (general-def
-    :keymaps 'ess-help-mode-map
-    :states 'emacs
-    "SPC" 'ans-leader-command)
-  (general-def
-    :keymaps 'ess-help-mode-map
-    :states 'emacs
-    :prefix "\\"
-    "r h" 'ess-display-help-on-object)
-  (general-def
-    :keymaps 'ess-rdired-mode-map
-    "j" 'ess-rdired-next-line
-    "k" 'ess-rdired-previous-line))
+      (use-package ess
+        :ensure t
+        :mode ("\\.[rR]\\'" . r-mode)
+        :init
+        (setq comint-move-point-for-output t)	; Scroll R buffer on output
+        (setq ess-ask-for-ess-directory nil
+              ess-directory-function 'ans-r-file-here
+              ess-default-style 'RStudio
+              ess-use-company t
+              ess-eval-visibly 'nowait)
+        :config
+        (require 'ess-rutils)
+        (add-to-list 'ess-R-font-lock-keywords
+                     '(ess-fl-keyword:fun-calls . t) t)
+        (ans/add-evil-maps 'ess-help-mode-map)
+        :general
+        (general-def
+          :keymaps 'ess-mode-map
+          :states 'normal
+          :prefix "\\"
+          "r f" 'ans-start-R
+          "r q" 'ans-quit-R
+          "l" 'ess-eval-line
+          "d" 'ess-eval-line-and-step
+          "f f" 'ess-eval-function
+          "p p" 'ess-eval-paragraph
+          "p d" 'ess-eval-paragraph-and-step
+          "a a" 'ess-eval-buffer
+          "a d" 'ess-eval-buffer-from-here-to-end
+          "a s" 'ess-eval-buffer-from-beg-to-here
+          "r h" 'ess-display-help-on-object
+          "v i" 'ess-r-devtools-install-package
+          "v d" 'ess-r-devtools-document-package
+          "v l" 'ess-r-devtools-load-package
+          "v t" 'ess-r-devtools-test-package
+          "r o" 'ess-rutils-objs
+          "r p" 'ans/ess-eval-symbol
+          "k r" 'ans/rmarkdown-render)
+        (general-def
+          :states 'visual
+          :keymaps 'ess-mode-map
+          :prefix "\\"
+          "s s" 'ess-eval-region)
+        (general-def
+          :states 'insert
+          :keymaps 'inferior-ess-mode-map
+          "_" 'self-insert-command
+          "M--" 'ess-insert-S-assign)
+        (general-def
+          :states 'insert
+          :keymaps 'ess-mode-map
+          "_" 'self-insert-command
+          "M-m" (lambda() (interactive)(insert " %>%"))
+          "M--" 'ess-insert-S-assign
+          "C-c" (lambda() (interactive)(insert "#'")))
+        (general-def
+          :keymaps 'ess-help-mode-map
+          :states 'emacs
+          "SPC" 'ans-leader-command)
+        (general-def
+          :keymaps 'ess-help-mode-map
+          :states 'emacs
+          :prefix "\\"
+          "r h" 'ess-display-help-on-object)
+        (general-def
+          :keymaps 'ess-rdired-mode-map
+          "j" 'ess-rdired-next-line
+          "k" 'ess-rdired-previous-line))
     
-(defun ans/inferior-ess-mode-setup ()
-  "My custom configuration for inferior-ess-mode."
-  (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
+      (defun ans/inferior-ess-mode-setup ()
+        "My custom configuration for inferior-ess-mode."
+        (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
 
-(add-hook 'inferior-ess-mode-hook 'ans/inferior-ess-mode-setup)
+      (add-hook 'inferior-ess-mode-hook 'ans/inferior-ess-mode-setup)
     #+END_SRC
 
-*** Custom functions
+** Custom functions
     
     #+BEGIN_SRC emacs-lisp
 (defun ans/rmarkdown-render ()
@@ -1734,14 +1748,14 @@ Clock into a default task ("organization").
     #+END_SRC
 
 
-*** ox-ravel
+** ox-ravel
 
     #+BEGIN_SRC emacs-lisp
 ;; ox-ravel -- Better R integration into org mode
 ; (require 'ox-ravel)
     #+END_SRC
-** LaTeX
-*** Core configuration
+* LaTeX
+** Core configuration
     
     #+BEGIN_SRC emacs-lisp
 (use-package tex
@@ -1767,7 +1781,7 @@ Clock into a default task ("organization").
   (setq paragraph-start "\f\\|[ 	]*$")
   (setq paragraph-separate "[ 	\f]*$"))
     #+END_SRC
-*** auctex-latexmk
+** auctex-latexmk
     
     #+BEGIN_SRC emacs-lisp
 (use-package auctex-latexmk
@@ -1778,7 +1792,7 @@ Clock into a default task ("organization").
   :config
   (auctex-latexmk-setup))
     #+END_SRC
-*** helm-bibtex
+** helm-bibtex
     
     #+BEGIN_SRC emacs-lisp
       (use-package helm-bibtex
@@ -1832,7 +1846,7 @@ Clock into a default task ("organization").
 	(interactive)
 	(biblio--selection-forward-bibtex #'ans/biblio--selection-insert-at-end-of-bibfile-callback))
     #+END_SRC
-*** ebib
+** ebib
     
     In general, [[helm-bibtex][helm-bibtex]] and [[org-ref]] provide a pretty solid interface for working with references.
     However, it's nice to have a more sophisticated solution for organizing a bibtex file.
@@ -1856,8 +1870,8 @@ Clock into a default task ("organization").
       "p" 'ebib-yank-entry
       "SPC" ans-leader-map))
     #+END_SRC
-** Editing tools
-*** rebox2
+* Editing tools
+** rebox2
     
     Edit comment boxes.
     
@@ -1874,7 +1888,7 @@ Clock into a default task ("organization").
   (setq rebox-regexp-start (vconcat rebox-regexp-start '("^[ \t]*!+")))
   (rebox-register-all-templates))
     #+END_SRC
-*** flycheck
+** flycheck
 
     #+BEGIN_SRC emacs-lisp
 (use-package flycheck
@@ -1892,7 +1906,7 @@ Clock into a default task ("organization").
     "!" 'flycheck-list-errors)
   )
     #+END_SRC
-*** simpleclip
+** simpleclip
 
     #+BEGIN_SRC emacs-lisp
 (use-package simpleclip
@@ -1900,7 +1914,7 @@ Clock into a default task ("organization").
   :config
   (simpleclip-mode 1))
     #+END_SRC
-*** smartparens
+** smartparens
 
     #+BEGIN_SRC emacs-lisp
 (use-package smartparens
@@ -1913,7 +1927,7 @@ Clock into a default task ("organization").
     "M-e" 'sp-forward-slurp-sexp
     "M-w" 'sp-forward-barf-sexp))
     #+END_SRC
-*** edit-server
+** edit-server
 
     #+BEGIN_SRC emacs-lisp
 ;; For editing text fields in the browser
@@ -1922,7 +1936,7 @@ Clock into a default task ("organization").
   :config
   (edit-server-start))
     #+END_SRC
-*** adaptive-wrap
+** adaptive-wrap
 
     #+BEGIN_SRC emacs-lisp
 (use-package adaptive-wrap
@@ -1930,7 +1944,7 @@ Clock into a default task ("organization").
   :diminish
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
     #+END_SRC
-*** expand-region
+** expand-region
 
     #+BEGIN_SRC emacs-lisp
 (use-package expand-region
@@ -1942,7 +1956,7 @@ Clock into a default task ("organization").
     :states 'motion
     "z." 'er/expand-region))
     #+END_SRC
-*** fill-function-arguments
+** fill-function-arguments
 
     #+BEGIN_SRC emacs-lisp
 (use-package fill-function-arguments
@@ -1954,7 +1968,7 @@ Clock into a default task ("organization").
     :states 'normal
     "gs" 'fill-function-arguments-dwim))
     #+END_SRC
-*** aggressive-indent
+** aggressive-indent
     
     #+BEGIN_SRC emacs-lisp
   (use-package aggressive-indent
@@ -1966,7 +1980,7 @@ Clock into a default task ("organization").
       :states 'normal
       "I" 'aggressive-indent-mode))
     #+END_SRC
-*** undo-tree
+** undo-tree
     
     NOTE: This is temporarily disabled.
 
@@ -1980,7 +1994,7 @@ Clock into a default task ("organization").
   :config
   (global-undo-tree-mode))
     #+END_SRC
-*** hl-todo
+** hl-todo
 
     #+BEGIN_SRC emacs-lisp
 (use-package hl-todo
