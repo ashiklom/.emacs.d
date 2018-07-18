@@ -1551,32 +1551,32 @@ Clock into a default task ("organization").
 *** org-ref
     
     #+BEGIN_SRC emacs-lisp
-  (use-package org-ref
-    :ensure t
-    :init
-    (setq org-ref-bibliography-notes ans/reference-notes
-	  reftex-default-bibliography `(,ans/reference-bibfile)
-	  org-ref-default-bibliography `(,ans/reference-bibfile)
-	  org-ref-pdf-directory ans/reference-dir-pdfs
-	  org-ref-bibtex-hydra-key-binding (kbd "\\\\")
-	  org-ref-note-title-format "** TODO %2a %y - %T
-   :PROPERTIES:
-    :Custom_ID: %k
-    :AUTHOR: %9a
-    :FULL_TITLE: %t
-    :JOURNAL: %j
-    :YEAR: %y
-    :VOLUME: %v
-    :PAGES: %p
-    :DOI: %D
-    :URL: %U
-   :END:
+      (use-package org-ref
+        :ensure t
+        :init
+        (setq org-ref-bibliography-notes ans/reference-notes
+              reftex-default-bibliography `(,ans/reference-bibfile)
+              org-ref-default-bibliography `(,ans/reference-bibfile)
+              org-ref-pdf-directory ans/reference-dir-pdfs
+              org-ref-bibtex-hydra-key-binding nil
+              org-ref-note-title-format "** TODO %2a %y - %T
+             :PROPERTIES:
+              :Custom_ID: %k
+              :AUTHOR: %9a
+              :FULL_TITLE: %t
+              :JOURNAL: %j
+              :YEAR: %y
+              :VOLUME: %v
+              :PAGES: %p
+              :DOI: %D
+              :URL: %U
+             :END:
 
-  ")
-    :config
-    (general-def
-      :states 'normal
-      "\\\\" 'org-ref-bibtex-hydra/body))
+            ")
+        :config
+        (general-def
+          :states 'normal
+          "\\\\" 'org-ref-bibtex-hydra/body))
     #+END_SRC
 ** yasnippet
    
