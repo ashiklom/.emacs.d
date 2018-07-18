@@ -1166,7 +1166,7 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
     This will make it easier to exclude top level headers from Agenda views.
     
     #+BEGIN_SRC emacs-lisp
-      (setq org-tags-exclude-from-inheritance '("_project" "_organize"))
+      (setq org-tags-exclude-from-inheritance '("_project" "_organize" "_habit"))
     #+END_SRC
     
     #+BEGIN_SRC emacs-lisp
@@ -1176,7 +1176,7 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 		(tags "REFILE"
 		      ((org-agenda-overriding-header "Notes to Refile")
 		       (org-tags-match-list-sublevels nil)))
-		(tags-todo "-REFILE-config-reading_list-_project-_organization"
+		(tags-todo "-REFILE-config-reading_list-_project-_organization-_habit"
 			   ((org-agenda-overriding-header "Other tasks"))))
 	       nil)
 	      ("r" "Reading list" todo "TODO"
