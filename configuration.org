@@ -503,8 +503,25 @@ Other keymaps (need to be sorted and cleaned up).
     "/" 'helm-occur
     "\"" 'helm-show-kill-ring
     "mp" 'projectile-compile-project
-    "mm" 'compile)
+    "mm" 'compile
+    "h" 'ans/clock-hydra/body)
 #+END_SRC
+*** Clocking hydra
+
+Hydra for clocking into and out of tasks.
+
+#+BEGIN_SRC emacs-lisp
+  (defhydra ans/clock-hydra (:exit t)
+    "Clocking commands."
+    ("RET" org-clock-in "Clock in")
+    ("DEL" org-clock-out "Clock out")
+    ("+" ans/punch-in "Punch in")
+    ("-" ans/punch-out "Punch out")
+    ("g" org-clock-goto "Go to current clock")
+    ("l" org-clock-in-last "Go to most recent clock")
+    ("h" (lambda () (interactive) (org-clock-in-last 4)) "Clock from history"))
+#+END_SRC
+
 * Buffer and window management
    
 ** ace-window
