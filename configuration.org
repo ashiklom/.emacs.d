@@ -369,7 +369,8 @@ My leader key is SPACE.
 #+BEGIN_SRC emacs-lisp
   (use-package evil-latex-textobjects
     :quelpa (evil-latex-textobjects :fetcher github :repo "hpdeifel/evil-latex-textobjects")
-    :hook (LaTeX-mode-hook . turn-on-evil-latex-textobjects-mode))
+    :config
+    (add-hook 'LaTeX-mode-hook 'turn-on-evil-latex-textobjects-mode))
 #+END_SRC
 
 *** evil-matchit
