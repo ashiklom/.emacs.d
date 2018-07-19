@@ -104,6 +104,7 @@
   - [[#flycheck][flycheck]]
   - [[#simpleclip][simpleclip]]
   - [[#smartparens][smartparens]]
+  - [[#lispyville][lispyville]]
   - [[#edit-server][edit-server]]
   - [[#adaptive-wrap][adaptive-wrap]]
   - [[#expand-region][expand-region]]
@@ -1938,6 +1939,13 @@ Edit comment boxes.
     (interactive)
     (sp-forward-slurp-sexp)
     (sp-end-of-sexp))
+#+END_SRC
+** lispyville
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lispyville
+    :ensure t
+    :hook (lisp-mode . lispyville-mode))
 #+END_SRC
 
 ** edit-server
