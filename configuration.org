@@ -1401,7 +1401,8 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     :keymaps 'org-mode-map
     "L" 'org-insert-last-stored-link
     "ss" 'org-schedule
-    "sd" 'org-deadline)
+    "sd" 'org-deadline
+    "/" 'helm-org-rifle-current-buffer)
   (general-def
     :states '(motion)
     :keymaps 'calendar-mode-map
