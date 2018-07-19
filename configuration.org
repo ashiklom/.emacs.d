@@ -103,14 +103,23 @@ No need for startup messages, splash screens, etc.
 	inhibit-startup-message t
 	inhibit-startup-echo-area-message t)
 #+END_SRC
-    
+
+Scroll conservatively, like vim does.
+~scroll-margin~ is the guaranteed number of lines displayed above or below a cursor.
+~scroll-conservatively~ determines how aggressively to auto-scroll.
+Auto-scrolling in Emacs scrolls the buffer until the cursor is at the center of the screen, which is pretty distracting.
+At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll one line at a time).
+
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-margin 2
+        scroll-conservatively 101)
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (setq show-paren-delay 0
         abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory)
         save-abbrevs 'silent
         auto-save-default nil
-        scroll-margin 2
-        scroll-step 1
         column-number-mode t
         compilation-scroll-output t)
 
