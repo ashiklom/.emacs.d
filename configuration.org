@@ -437,8 +437,7 @@ Other keymaps (need to be sorted and cleaned up).
       "C-d" 'evil-scroll-down
       "/" 'evil-search-forward
       "n" 'evil-search-next
-      "N" 'evil-search-previous
-      "C-w C-w" 'ace-window))
+      "N" 'evil-search-previous))
 
   (ans/add-evil-maps 'occur-mode-map)
 
