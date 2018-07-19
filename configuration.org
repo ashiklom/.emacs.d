@@ -514,19 +514,11 @@ Other keymaps (need to be sorted and cleaned up).
 
   (ans/add-evil-maps 'occur-mode-map)
 
-  ;; (general-def
-  ;;   :keymaps '(override evil-org-mode-map org-mode-map)
-  ;;   "M-h" 'evil-window-left
-  ;;   "M-l" 'evil-window-right
-  ;;   "M-k" 'evil-window-up
-  ;;   "M-j" 'evil-window-down)
-
   (general-def
     :states 'insert
     "j" (general-key-dispatch 'self-insert-command
-	  :timeout 0.25
-	  "k" 'evil-normal-state)
-    )
+          :timeout 0.25
+          "k" 'evil-normal-state))
 
   (general-def
     :states '(motion normal visual)
@@ -542,21 +534,11 @@ Other keymaps (need to be sorted and cleaned up).
     "C-0" 'balance-windows
     "C-)" 'shrink-window-if-larger-than-buffer
     "C-d" 'evil-scroll-down
-    "C-u" 'evil-scroll-up
-    )
+    "C-u" 'evil-scroll-up)
 
   (general-def
     :states 'normal
     "S" 'save-buffer)
-
-  (general-def
-    :states '(motion normal)
-    :prefix "C-c C-s"
-    "c" 'slack-channel-select
-    "m" 'slack-im-select
-    "t" 'slack-thread-select
-    "u" 'slack-select-unread-rooms
-    "r" 'slack-select-rooms)
 
   (ans-leader-def
     :states '(motion normal visual emacs)
@@ -1388,6 +1370,10 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
         :states '(motion normal)
         :keymaps 'org-mode-map
         "<backspace>" 'outline-hide-subtree
+        "{" 'org-up-element
+        "}" 'org-down-element
+        "g]" 'evil-forward-paragraph
+        "g[" 'evil-backward-paragraph
         "gt" 'org-todo
         "g$" 'evil-end-of-line
         "g%" 'ans/org-realign-tags
@@ -1619,15 +1605,13 @@ Clock into a default task ("organization").
   ;; Use something like this if you don't want snippets globally:
   ;; (yas-reload-all)
   ;; (add-hook 'prog-mode-hook #'yas-minor-mode)
-  :general
   (general-def
     :keymaps 'yas-minor-mode-map
     "<escape>" 'yas-exit-snippet)
   (ans-leader-def
     :states '(motion normal)
     "un" 'yas-new-snippet
-    "ue" 'yas-visit-snippet-file)
-  )
+    "ue" 'yas-visit-snippet-file))
    #+END_SRC
 * ESS -- Emacs Speaks Statistics
    

@@ -60,8 +60,17 @@
     "ic" 'slack-channel-select
     "im" 'slack-im-select)
   (add-hook 'slack-message-buffer-mode-hook 'ans/slack-message-mode-config)
-  (add-hook 'slack-thread-message-buffer-mode-hook 'ans/slack-message-mode-config)
-  )
+  (add-hook 'slack-thread-message-buffer-mode-hook 'ans/slack-message-mode-config))
+
+(general-def
+  :states '(motion normal)
+  :prefix "C-c C-s"
+  "c" 'slack-channel-select
+  "m" 'slack-im-select
+  "t" 'slack-thread-select
+  "u" 'slack-select-unread-rooms
+  "r" 'slack-select-rooms)
+
 
 (defun ans/slack-message-mode-config ()
   "Custom configuration for slack message buffer mode."
