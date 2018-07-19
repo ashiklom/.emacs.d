@@ -1348,8 +1348,7 @@ Clock into a default task ("organization").
     (interactive)
     (setq ans/keep-clock-running nil)
     (when (org-clock-is-active)
-      (org-clock-out))
-    (org-agenda-remove-restriction-lock))
+      (org-clock-out)))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -1596,7 +1595,7 @@ TAG is chosen interactively from the global tags completion table."
     ("g" org-clock-goto "Go to current clock")
     ("l" org-clock-in-last "Go to most recent clock")
     ("h" (lambda () (interactive) (org-clock-in-last 4)) "Clock from history")
-    ("T" org-clock-report "Insert clock report"))
+    ("r" org-clock-report "Insert clock report"))
 #+END_SRC
 
 * yasnippet
