@@ -1196,6 +1196,13 @@ Automatically re-indent a source code block.
       (org-edit-src-exit)))
 #+END_SRC
 
+Don't reposition the screen when expanding an outline.
+Note that the cursor can be repositioned at the center of the screen with =zz=.
+
+#+BEGIN_SRC emacs-lisp
+  (remove-hook 'org-cycle-hook #'org-optimize-window-after-visibility-change)
+#+END_SRC
+
 ** Source code (babel)
     
 Automatically fontify source code, and edit source code in the current window (rather than opening a new one).
