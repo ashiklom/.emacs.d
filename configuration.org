@@ -1389,8 +1389,6 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
         :keymaps 'org-mode-map
         "<backspace>" 'outline-hide-subtree
         "gt" 'org-todo
-        "gj" 'outline-next-heading
-        "gk" 'outline-previous-heading
         "g$" 'evil-end-of-line
         "g%" 'ans/org-realign-tags
         "go" 'ans/evil-insert-heading-after-current
@@ -1407,7 +1405,8 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
         "e" 'org-edit-special
         "k" 'org-export-dispatch
         "RET" 'org-ctrl-c-ctrl-c
-        "=" 'ans/indent-org-source-block)
+        "=" 'ans/indent-org-source-block
+        "TAB" 'ans/org-hide-all-except-current)
       (general-def
         :states 'insert
         :keymaps 'org-mode-map
@@ -1495,7 +1494,12 @@ TAG is chosen interactively from the global tags completion table."
                 nil)))
     (air--org-swap-tags new)))
     
-
+(defun ans/org-hide-all-except-current ()
+  "Close all subtrees outside of the current view."
+  (interactive)
+  (save-excursion
+    (org-global-cycle))
+  (org-cycle))
 #+END_SRC
 
 ** Clocking functions
