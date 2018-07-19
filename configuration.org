@@ -384,10 +384,12 @@ My leader key is SPACE.
 
 *** evil-matchit
 
+Temporarily disable this.
+
 Supercharges =%= to jump between other stuff as well (e.g. if-else statements).
 I also tried to expand it to R, but it doesn't currently work.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package evil-matchit
     :ensure t
     :after evil
