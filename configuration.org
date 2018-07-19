@@ -129,6 +129,7 @@ At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll o
   (blink-cursor-mode -1)
   (global-hl-line-mode)
   (winner-mode)				; Remember window configurations
+  (electric-pair-mode 1)
 #+END_SRC
 
 * Global variables
@@ -1076,7 +1077,7 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 	      ("r" "Reading list" todo "TODO"
 	       ((org-agenda-files '("~/Dropbox/references/notes.org"))
 		(org-agenda-sorting-strategy '(todo-state-down))))
-	      ("c" "Configuration" tags-todo "-_organization"
+	      ("c" "Configuration" tags-todo "-_organization-_project"
 	       ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
 		(org-agenda-sorting-strategy '(todo-state-down))))))
     #+END_SRC
@@ -1326,6 +1327,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     "M-S-l" 'org-demote-subtree
     "M-h" 'org-metaleft
     "M-S-l" 'org-promote-subtree)
+
   (general-def
     :states '(motion normal)
     :keymaps 'org-mode-map
@@ -1339,11 +1341,13 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     "g%" 'ans/org-realign-tags
     "go" 'ans/evil-insert-heading-after-current
     "gO" 'ans/evil-insert-heading)
+
   (general-def
     :states 'visual
     :keymaps 'org-mode-map
     :prefix "\\"
     "ss" 'eval-region)
+
   (general-def
     :states 'normal
     :keymaps 'org-mode-map
@@ -1353,6 +1357,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     "RET" 'org-ctrl-c-ctrl-c
     "=" 'ans/indent-org-source-block
     "TAB" 'ans/org-hide-all-except-current)
+
   (general-def
     :states 'insert
     :keymaps 'org-mode-map
@@ -1361,11 +1366,13 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     "C--" 'org-toggle-item
     "C-." 'org-cycle-list-bullet
     "C-," '(lambda () (interactive) (org-cycle-list-bullet 'previous)))
+
   (ans-leader-def
     :states '(motion normal emacs)
     :keymaps 'org-mode-map
     "#" 'org-update-statistics-cookies
     "%" 'ans/org-toggle-emphasis-markers)
+
   (ans-leader-def
     :states '(motion normal visual)
     :keymaps 'org-mode-map
@@ -1373,6 +1380,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     "ss" 'org-schedule
     "sd" 'org-deadline
     "/" 'helm-org-rifle-current-buffer)
+
   (general-def
     :states '(motion)
     :keymaps 'calendar-mode-map
