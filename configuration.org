@@ -371,6 +371,33 @@ My leader key is SPACE.
     :quelpa (evil-latex-textobjects :fetcher github :repo "hpdeifel/evil-latex-textobjects")
     :hook (LaTeX-mode-hook . turn-on-evil-latex-textobjects-mode))
 #+END_SRC
+
+*** evil-matchit
+
+Supercharges =%= to jump between other stuff as well (e.g. if-else statements).
+I also tried to expand it to R, but it doesn't currently work.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-matchit
+    :ensure t
+    :after evil
+    :config
+    (global-evil-matchit-mode 1)
+    (require 'evil-matchit-sdk)
+    (defvar ans/evilmi-r-match-tags
+      '(("if" "else if" "else")
+        ("function" "return" ())
+        (("for" "while") ("break") ())))
+    (defun ans/evilmi-r-get-tag ()
+      (evilmi-sdk-get-tag ans/evilmi-r-match-tags
+                          evilmi-sdk-extract-keyword-howtos))
+    (defun ans/evilmi-r-jump (rlt num)
+      (evilmi-sdk-jump rlt
+                       num
+                       ans/evilmi-r-match-tags
+                       evilmi-sdk-extract-keyword-howtos))
+    (plist-put evilmi-plugins 'r-mode '((ans/evilmi-r-get-tag ans/evilmi-r-jump))))
+#+END_SRC
 ** Global keybindings
     
 Evaluate lisp at point.    
@@ -467,8 +494,6 @@ Other keymaps (need to be sorted and cleaned up).
 #+END_SRC
 * Buffer and window management
    
-#+BEGIN_SRC emacs-lisp
-#+END_SRC
 ** ace-window
     
 #+BEGIN_SRC emacs-lisp
