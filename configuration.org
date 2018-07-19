@@ -1945,7 +1945,7 @@ Edit comment boxes.
 #+BEGIN_SRC emacs-lisp
   (use-package lispyville
     :ensure t
-    :hook (lisp-mode . lispyville-mode))
+    :hook ((lisp-mode emacs-lisp-mode) . lispyville-mode))
 #+END_SRC
 
 ** edit-server
