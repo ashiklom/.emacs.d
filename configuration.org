@@ -19,6 +19,7 @@
 - [[#text-and-prog-mode-hooks][Text and prog mode hooks]]
 - [[#aesthetics][Aesthetics]]
   - [[#color-scheme-and-font][Color scheme and font]]
+  - [[#cursor-type][Cursor type]]
   - [[#diminish][diminish]]
   - [[#rainbow-delimiters][rainbow-delimiters]]
   - [[#mode-line][Mode line]]
@@ -274,7 +275,14 @@ Related to bibtex references.
 (color-theme-sanityinc-tomorrow-night)
 (set-face-attribute 'default nil :font "Input Mono Narrow-12")
 #+END_SRC
+** Cursor type
 
+Don't show cursor in non-selected window. 
+This is mostly to avoid annoying visual artifacts of a hollow box cursor.
+
+#+BEGIN_SRC emacs-lisp
+  (setq cursor-in-non-selected-windows nil)
+#+END_SRC
 ** diminish
     
 Hide minor modes in modeline.
