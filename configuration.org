@@ -1106,7 +1106,7 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 	      ("r" "Reading list" todo "TODO"
 	       ((org-agenda-files '("~/Dropbox/references/notes.org"))
 		(org-agenda-sorting-strategy '(todo-state-down))))
-	      ("c" "Configuration" todo "TODO"
+	      ("c" "Configuration" tags-todo "-_organization"
 	       ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
 		(org-agenda-sorting-strategy '(todo-state-down))))))
     #+END_SRC
