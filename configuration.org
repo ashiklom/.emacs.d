@@ -1114,20 +1114,22 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
     
     #+BEGIN_SRC emacs-lisp
       (setq org-agenda-custom-commands
-	    '((" " "Agenda"
-	       ((agenda "" nil)
-		(tags "REFILE"
-		      ((org-agenda-overriding-header "Notes to Refile")
-		       (org-tags-match-list-sublevels nil)))
-		(tags-todo "-REFILE-config-reading_list-_project-_organization-_habit"
-			   ((org-agenda-overriding-header "Other tasks"))))
-	       nil)
-	      ("r" "Reading list" todo "TODO"
-	       ((org-agenda-files '("~/Dropbox/references/notes.org"))
-		(org-agenda-sorting-strategy '(todo-state-down))))
-	      ("c" "Configuration" tags-todo "-_organization-_project"
-	       ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
-		(org-agenda-sorting-strategy '(todo-state-down))))))
+            '((" " "Agenda"
+               ((agenda "" nil)
+                (tags "REFILE"
+                      ((org-agenda-overriding-header "Notes to Refile")
+                       (org-tags-match-list-sublevels nil)))
+                (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit"
+                           ((org-agenda-overriding-header "Other tasks"))))
+               nil)
+              ("r" "Reading list" todo "TODO"
+               ((org-agenda-files '("~/Dropbox/references/notes.org"))
+                (org-agenda-sorting-strategy '(todo-state-down))))
+              ("c" "Configuration" tags-todo "-_organization-_project"
+               ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
+                (org-agenda-sorting-strategy '(todo-state-down))))
+              ("p" "Projects" tags-todo "_project"
+               ((org-agenda-sorting-strategy '(todo-state-down))))))
     #+END_SRC
 
 ** Org capture
@@ -1321,6 +1323,13 @@ When clocking out of a task, automatically clock into the parent task
               (ans/clock-in-organization-task)))))))
 
   (add-hook 'org-clock-out-hook #'ans/clock-out-maybe 'append)
+#+END_SRC
+
+Default settings for a clocktable.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-clock-clocktable-default-properties
+        '(:maxlevel 4 :scope agenda :block today))
 #+END_SRC
 
 *** Clocking functions
