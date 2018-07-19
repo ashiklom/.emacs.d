@@ -472,14 +472,6 @@ Other keymaps (need to be sorted and cleaned up).
     :keymaps 'override
     "b" 'helm-mini
     "f" 'helm-find-files
-    "\\" 'evil-window-vsplit
-    "-" 'evil-window-split
-    "+" 'make-frame-command
-    "^" 'ans/pop-window-into-frame
-    "<up>" 'buf-move-up
-    "<down>" 'buf-move-down
-    "<left>" 'buf-move-left
-    "<right>" 'buf-move-right
     ":" 'eval-expression
     "dd" 'dired
     "dw" 'dired-other-window
@@ -490,37 +482,81 @@ Other keymaps (need to be sorted and cleaned up).
     "ss" 'delete-trailing-whitespace
     "'" 'comment-dwim			; Insert right comment
     "*" 'universal-argument		; Emacs's C-u
-    "C" 'org-capture
-    "Y" 'org-store-link
-    "L" 'org-insert-last-stored-link
     "vl" 'visual-line-mode
-    "@" 'org-agenda
-    "ww" 'quit-window
-    "wW" 'kill-this-buffer
-    "wd" 'delete-window
-    "wD" 'kill-buffer-and-window
     "/" 'helm-occur
     "\"" 'helm-show-kill-ring
-    "mp" 'projectile-compile-project
     "mm" 'compile
-    "h" 'ans/clock-hydra/body)
+    "w"  'ans/buffer-window-hydra/body
+    "p" 'ans/projectile-hydra/body
+    "h" 'ans/help-hydra/body
+    "o" 'ans/org-mode-hydra/body)
 #+END_SRC
-*** Clocking hydra
 
-Hydra for clocking into and out of tasks.
+*** Hydra for emacs help
 
 #+BEGIN_SRC emacs-lisp
-  (defhydra ans/clock-hydra (:exit t)
-    "Clocking commands."
-    ("RET" org-clock-in "Clock in")
-    ("DEL" org-clock-out "Clock out")
-    ("+" ans/punch-in "Punch in")
-    ("-" ans/punch-out "Punch out")
-    ("g" org-clock-goto "Go to current clock")
-    ("l" org-clock-in-last "Go to most recent clock")
-    ("h" (lambda () (interactive) (org-clock-in-last 4)) "Clock from history"))
+  (defhydra ans/help-hydra (:exit t)
+    "Emacs help."
+    ("v" describe-variable "Variable")
+    ("V" (describe-variable (variable-at-point)))
+    ("f" describe-function "Function")
+    ("F" (describe-function (function-called-at-point)))
+    ("k" describe-key "Key")
+    ("b" describe-bindings "Bindings")
+    ("P" describe-package "Package")
+    ("a" apropos-command "Apropos command")
+    ("A" (let ((current-pre	fix-arg '(4))) (call-interactively 'apropos-command)) "Apropos all")
+    ("m" describe-mode "Mode")
+    ("M" (describe-variable current-major-mode) "Major mode")
+    ("i" helm-info "Helm info"))
 #+END_SRC
+*** Hydra for projectile
 
+#+BEGIN_SRC emacs-lisp
+  (defhydra ans/projectile-hydra (:exit t)
+    "Projectile"
+    ("p" helm-projectile "Helm projectile")
+    ("o" projectile-switch-project "Switch project")
+    ("f" helm-projectile-find-file "Find file")
+    ("F" helm-projectile-find-file-in-known-projects "Find file in known projects")
+    ("d" projectile-dired "Dired")
+    ("D" projectile-dired-other-window "Dired other window")
+    ("r" helm-projectile-recentf "Recent file")
+    ("c" projectile-compile-project "Compile")
+    ("e" projectile-run-eshell "Eshell")
+    ("g" helm-projectile-ag "Ag search")
+    ("E" projectile-edit-dir-locals "Edit dir-locals")
+    ("Q" projectile-kill-buffers "Kill buffers")
+    ("!" projectile-commander))
+#+END_SRC
+*** Hydra for buffer and window operations
+
+#+BEGIN_SRC emacs-lisp
+  (defhydra ans/buffer-window-hydra (:exit t :hint nil)
+    "
+  Buffers: _w_:quit _W_:kill    Windows: _d_elete  _D_elete and kill    Frames: _f_:pop _F_:new     Split: _\\_:vert  _-_:horiz
+  Switch:  _h__j__k__l_    Move: _H__J__K__L_    Misc: _r_evert   _s_ave as   _z_:undo   _Z_:redo"
+    ("w" quit-window)
+    ("W" kill-this-buffer)
+    ("d" delete-window)
+    ("D" kill-buffer-and-window)
+    ("f" ans/pop-window-into-frame)
+    ("F" make-frame-command)
+    ("r" revert-buffer)
+    ("s" write-file)
+    ("\\" evil-window-vsplit)
+    ("-" evil-window-split)
+    ("j" windmove-down)
+    ("h" windmove-left)
+    ("k" windmove-up)
+    ("l" windmove-right)
+    ("J" buf-move-down)
+    ("H" buf-move-left)
+    ("K" buf-move-up)
+    ("L" buf-move-right)
+    ("z" winner-undo)
+    ("Z" winner-redo))
+#+END_SRC
 * Buffer and window management
    
 ** ace-window
@@ -830,13 +866,9 @@ Core helm configuration.
 ** helm-org-rifle
 
 #+BEGIN_SRC emacs-lisp
-(use-package helm-org-rifle
-  :ensure t
-  :general
-  (ans-leader-def
-    :states 'normal
-    "a" 'helm-org-rifle-agenda-files
-    "A" 'ans/helm-org-agenda-list-files))
+  (use-package helm-org-rifle
+    :ensure t
+    :commands helm-org-rifle-agenda-files)
 #+END_SRC
 ** helm-swoop
 
@@ -1342,7 +1374,8 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     "M-l" 'org-metaright
     "M-S-l" 'org-demote-subtree
     "M-h" 'org-metaleft
-    "M-S-l" 'org-promote-subtree)
+    "M-S-l" 'org-promote-subtree
+    "<C-M-return>" 'org-insert-subheading)
 
   (general-def
     :states '(motion normal)
@@ -1392,7 +1425,6 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   (ans-leader-def
     :states '(motion normal visual)
     :keymaps 'org-mode-map
-    "L" 'org-insert-last-stored-link
     "ss" 'org-schedule
     "sd" 'org-deadline
     "/" 'helm-org-rifle-current-buffer)
@@ -1526,6 +1558,38 @@ TAG is chosen interactively from the global tags completion table."
           :states 'normal
           "\\\\" 'org-ref-bibtex-hydra/body))
     #+END_SRC
+    
+** Hydra for org mode tasks
+
+#+BEGIN_SRC emacs-lisp
+  (defhydra ans/org-mode-hydra (:exit t)
+    "Org mode"
+    ("a" org-agenda "Agenda")
+    ("o" org-capture "Capture")
+    ("r" org-refile "Refile")
+    ("s" helm-org-rifle-agenda-files "Search")
+    ("f" ans/helm-org-agenda-list-files "List agenda files")
+    ("l" org-store-link "Store link")
+    ("L" org-insert-last-stored-link "Insert stored link")
+    ("c" ans/clock-hydra/body "Clocking")
+    ("S" org-save-all-org-buffers "Save all buffers")
+    ("!" org-reload "Reload")
+    ("SPC" org-ctrl-c-ctrl-c "C-c"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defhydra ans/clock-hydra (:exit t)
+    "Clocking commands."
+    ("RET" org-clock-in "Clock in")
+    ("DEL" org-clock-out "Clock out")
+    ("+" ans/punch-in "Punch in")
+    ("-" ans/punch-out "Punch out")
+    ("g" org-clock-goto "Go to current clock")
+    ("l" org-clock-in-last "Go to most recent clock")
+    ("h" (lambda () (interactive) (org-clock-in-last 4)) "Clock from history")
+    ("T" org-clock-report "Insert clock report"))
+#+END_SRC
+
 * yasnippet
    
    #+BEGIN_SRC emacs-lisp
