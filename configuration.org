@@ -227,7 +227,6 @@ No need for startup messages, splash screens, etc.
   (show-paren-mode 1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
-  (electric-pair-mode 1)		; auto-close braces, parentheses, etc.
   (blink-cursor-mode -1)
   (global-hl-line-mode)
   (winner-mode)				; Remember window configurations
@@ -1873,104 +1872,118 @@ Clock into a default task ("organization").
 * Editing tools
 ** rebox2
     
-    Edit comment boxes.
+Edit comment boxes.
     
-    #+BEGIN_SRC emacs-lisp
-(use-package rebox2
-  :ensure t
-  :general
-  (general-def
-    :states 'normal
-    "gR" 'rebox-mode
-    "gr" 'rebox-dwim)
-  :config
-  (add-to-list 'rebox-language-character-alist '(7 . "!"))
-  (setq rebox-regexp-start (vconcat rebox-regexp-start '("^[ \t]*!+")))
-  (rebox-register-all-templates))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package rebox2
+    :ensure t
+    :general
+    (general-def
+      :states 'normal
+      "gR" 'rebox-mode
+      "gr" 'rebox-dwim)
+    :config
+    (add-to-list 'rebox-language-character-alist '(7 . "!"))
+    (setq rebox-regexp-start (vconcat rebox-regexp-start '("^[ \t]*!+")))
+    (rebox-register-all-templates))
+#+END_SRC
 ** flycheck
 
-    #+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :ensure t
-  :diminish
-  :config
-  (global-flycheck-mode)
-  (general-def
-    :states '(motion normal)
-    "]a" 'flycheck-next-error
-    "[a" 'flycheck-previous-error
-    "]A" 'flycheck-first-error)
-  (ans-leader-def
-    :states '(motion normal)
-    "!" 'flycheck-list-errors)
-  )
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :diminish
+    :config
+    (global-flycheck-mode)
+    (general-def
+      :states '(motion normal)
+      "]a" 'flycheck-next-error
+      "[a" 'flycheck-previous-error
+      "]A" 'flycheck-first-error)
+    (ans-leader-def
+      :states '(motion normal)
+      "!" 'flycheck-list-errors)
+    )
+#+END_SRC
 ** simpleclip
 
-    #+BEGIN_SRC emacs-lisp
-(use-package simpleclip
-  :ensure t
-  :config
-  (simpleclip-mode 1))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package simpleclip
+    :ensure t
+    :config
+    (simpleclip-mode 1))
+#+END_SRC
 ** smartparens
 
-    #+BEGIN_SRC emacs-lisp
-(use-package smartparens
-  :ensure t
-  :config
-  (require 'smartparens-config)
-  :general
-  (general-def
-    :states 'insert
-    "M-e" 'sp-forward-slurp-sexp
-    "M-w" 'sp-forward-barf-sexp))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+    :ensure t
+    :config
+    (require 'smartparens-config)
+    (general-def
+      :states 'insert
+      "M-e" 'ans/sp-slurp-and-end
+      "M-w" 'sp-forward-barf-sexp)
+    (general-def
+      :states '(motion normal visual insert)
+      "M-]" 'sp-end-of-sexp
+      "M-[" 'sp-beginning-of-sexp
+      "M-." 'sp-next-sexp
+      "M-," 'sp-backward-sexp))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun ans/sp-slurp-and-end ()
+    "Slurp up sexp and move to its end."
+    (interactive)
+    (sp-forward-slurp-sexp)
+    (sp-end-of-sexp))
+#+END_SRC
+
 ** edit-server
 
-    #+BEGIN_SRC emacs-lisp
-;; For editing text fields in the browser
-(use-package edit-server
-  :ensure t
-  :config
-  (edit-server-start))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  ;; For editing text fields in the browser
+  (use-package edit-server
+    :ensure t
+    :config
+    (edit-server-start))
+#+END_SRC
 ** adaptive-wrap
 
-    #+BEGIN_SRC emacs-lisp
-(use-package adaptive-wrap
-  :ensure t
-  :diminish
-  :hook (visual-line-mode . adaptive-wrap-prefix-mode))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package adaptive-wrap
+    :ensure t
+    :diminish
+    :hook (visual-line-mode . adaptive-wrap-prefix-mode))
+#+END_SRC
 ** expand-region
 
-    #+BEGIN_SRC emacs-lisp
-(use-package expand-region
-  :ensure t
-  :init
-  (setq expand-region-contract-fast-key ",")
-  :general
-  (general-def
-    :states 'motion
-    "z." 'er/expand-region))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :ensure t
+    :init
+    (setq expand-region-contract-fast-key ",")
+    :general
+    (general-def
+      :states 'motion
+      "z." 'er/expand-region))
+#+END_SRC
 ** fill-function-arguments
 
-    #+BEGIN_SRC emacs-lisp
-(use-package fill-function-arguments
-  :quelpa (fill-function-arguments
-	   :fetcher github
-	   :repo "davidshepherd7/fill-function-arguments")
-  :general
-  (general-def
-    :states 'normal
-    "gs" 'fill-function-arguments-dwim))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package fill-function-arguments
+    :quelpa (fill-function-arguments
+             :fetcher github
+             :repo "davidshepherd7/fill-function-arguments")
+    :general
+    (general-def
+      :states 'normal
+      "gs" 'fill-function-arguments-dwim))
+#+END_SRC
 ** aggressive-indent
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package aggressive-indent
     :ensure t
     :hook (prog-mode . aggressive-indent-mode)
@@ -1979,42 +1992,43 @@ Clock into a default task ("organization").
     (ans-leader-def
       :states 'normal
       "I" 'aggressive-indent-mode))
-    #+END_SRC
+#+END_SRC
 ** undo-tree
     
-    NOTE: This is temporarily disabled.
+NOTE: This is temporarily disabled.
 
-    #+BEGIN_SRC emacs-lisp :tangle no
-(use-package undo-tree
-  :ensure t
-  :diminish
-  :init
-  (setq undo-tree-history-directory-alist `(("." . "~/.emacs.d/undo"))
-	undo-tree-auto-save-history t)
-  :config
-  (global-undo-tree-mode))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package undo-tree
+    :ensure t
+    :diminish
+    :init
+    (setq undo-tree-history-directory-alist `(("." . "~/.emacs.d/undo"))
+          undo-tree-auto-save-history t)
+    :config
+    (global-undo-tree-mode))
+#+END_SRC
 ** hl-todo
 
-    #+BEGIN_SRC emacs-lisp
-(use-package hl-todo
-  :ensure t
-  :config
-  (global-hl-todo-mode)
-  (defhydra hl-todo-hydra ()
-    "Browse todo tags."
-    ("n" hl-todo-next "Next")
-    ("p" hl-todo-previous "Previous"))
-  (ans-leader-def
-    :states 'normal
-    "t" 'hl-todo-hydra/body))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package hl-todo
+    :ensure t
+    :config
+    (global-hl-todo-mode)
+    (defhydra hl-todo-hydra ()
+      "Browse todo tags."
+      ("n" hl-todo-next "Next")
+      ("p" hl-todo-previous "Previous"))
+    (ans-leader-def
+      :states 'normal
+      "t" 'hl-todo-hydra/body))
+#+END_SRC
 
-    Function to use ~org-ref~ for notes rather than bibtex defaults.
+Function to use ~org-ref~ for notes rather than bibtex defaults.
 
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (defun ans/org-ref-notes-function (candidates)
     "Helm bibtex completion function to insert notes for marked CANDIDATES."
     (let ((key (helm-marked-candidates)))
       (funcall org-ref-notes-function (car key))))
-    #+END_SRC
+#+END_SRC
+
