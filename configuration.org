@@ -496,7 +496,7 @@ Other keymaps (need to be sorted and cleaned up).
   (defhydra ans/projectile-hydra (:exit t)
     "Projectile"
     ("p" helm-projectile "Helm projectile")
-    ("o" projectile-switch-project "Switch project")
+    ("o" helm-projectile-switch-project "Switch project")
     ("f" helm-projectile-find-file "Find file")
     ("F" helm-projectile-find-file-in-known-projects "Find file in known projects")
     ("d" projectile-dired "Dired")
