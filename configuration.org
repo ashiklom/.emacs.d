@@ -882,6 +882,18 @@ Core helm configuration.
   :config
   (helm-descbinds-mode))
 #+END_SRC
+** helm-unicode
+
+For easier unicode entry.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-unicode
+    :ensure t
+    :general
+    (general-def
+      :states 'insert
+      "C-u" 'helm-unicode))
+#+END_SRC
 * Company
    
 ** Core configuration
