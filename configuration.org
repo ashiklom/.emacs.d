@@ -181,17 +181,28 @@ This is mostly to avoid annoying visual artifacts of a hollow box cursor.
 #+BEGIN_SRC emacs-lisp
   (setq cursor-in-non-selected-windows nil)
 #+END_SRC
-** diminish
-    
-Hide minor modes in modeline.
-    
+** delight
+
+Customize how major and minor modes appear in the modeline.
+
 #+BEGIN_SRC emacs-lisp
-  (use-package diminish
+  (use-package delight
     :ensure t
     :config
-    (diminish winner-mode))
+    (delight '((lispyville-mode nil lispyville)
+               (yas-minor-mode nil yasnippet)
+               (helm-mode nil helm)
+               (company-mode nil company)
+               (company-quickhelp-mode nil company-quickhelp)
+               (evil-org-mode nil evil-org)
+               (flycheck-mode nil flycheck)
+               (flyspell-mode " sp" flyspell)
+               (adaptive-wrap-prefix-mode " ↪" adaptive-wrap)
+               (aggressive-indent-mode " ➠" aggressive-indent)
+               (undo-tree-mode nil undo-tree)
+               (eldoc-mode nil eldoc)
+               (winner-mode nil winner))))
 #+END_SRC
-
 ** rainbow-delimiters
 
 #+BEGIN_SRC emacs-lisp
@@ -323,7 +334,6 @@ My leader key is SPACE.
   (use-package evil-exchange
     :ensure t
     :after evil
-    :diminish
     :config
     (evil-exchange-install))
 #+END_SRC
@@ -334,7 +344,6 @@ My leader key is SPACE.
   (use-package evil-numbers
     :ensure t
     :after evil
-    :diminish
     :init
     (defhydra evil-numbers-hydra ()
       "Increment or decrement numbers."
@@ -765,7 +774,6 @@ Core helm configuration.
 #+BEGIN_SRC emacs-lisp
 (use-package helm
   :ensure t
-  :diminish helm-mode
   :demand
   :init
   (require 'helm-config)
@@ -877,7 +885,6 @@ Core helm configuration.
   (use-package company
     :ensure t
     :commands (global-company-mode company-complete ans/directory-file-backend)
-    :diminish 'company-mode
     :init
     (setq company-selection-wrap-around t)
     (setq company-idle-delay nil)
@@ -953,7 +960,6 @@ This makes repeat completions easier (e.g. when completing long file paths)."
 #+BEGIN_SRC emacs-lisp
 (use-package company-quickhelp
   :ensure t
-  :diminish 'company-quickhelp-mode
   :after company
   :config
   (company-quickhelp-mode))
@@ -1441,7 +1447,6 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   (use-package evil-org
     :ensure t
     :after org
-    :diminish
     :config
     (add-hook 'org-mode-hook 'evil-org-mode)
     (add-hook 'evil-org-mode-hook 'ans/evil-org-mode-setup)
@@ -1655,7 +1660,6 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 (use-package yasnippet
   :ensure t
   :demand
-  :diminish
   :init
   (setq yas-snippet-dirs '("~/.emacs.d/snippets"
 			   "~/.emacs.d/remote-snippets"))
@@ -1949,7 +1953,6 @@ Edit comment boxes.
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :ensure t
-    :diminish
     :config
     (global-flycheck-mode)
     (general-def
@@ -2018,7 +2021,6 @@ Edit comment boxes.
 #+BEGIN_SRC emacs-lisp
   (use-package adaptive-wrap
     :ensure t
-    :diminish
     :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 #+END_SRC
 ** expand-region
@@ -2064,7 +2066,6 @@ NOTE: This is temporarily disabled.
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package undo-tree
     :ensure t
-    :diminish
     :init
     (setq undo-tree-history-directory-alist `(("." . "~/.emacs.d/undo"))
           undo-tree-auto-save-history t)
