@@ -1169,10 +1169,15 @@ Show emphasis markers by default, but also quickly toggle them with a custom fun
     (font-lock-flush))
 #+END_SRC
     
-By default, hide line numbers in org-mode buffers.
+By default, hide line numbers in org-mode buffers, and disable adaptive prefix mode.
 
 #+BEGIN_SRC emacs-lisp
-    (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
+  (defun ans/org-mode-settings ()
+    "Custom settings for org mode."
+    (linum-mode -1)
+    (adaptive-wrap-prefix-mode -1))
+
+  (add-hook 'org-mode-hook 'ans/org-mode-settings)
 #+END_SRC
 
 By default, use org-mode indentation.
