@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: import into function
+# key: imf
+# --
+import::from($0, .into = "")
