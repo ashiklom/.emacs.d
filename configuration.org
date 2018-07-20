@@ -198,7 +198,7 @@ Customize how major and minor modes appear in the modeline.
                (org-indent-mode nil org-indent)
                (flycheck-mode " 🐛" flycheck)
                (flyspell-mode " 𝐀𝐁𝐂" flyspell)
-               (visual-line-mode "↩" simple)
+               (visual-line-mode " ↩" simple)
                (adaptive-wrap-prefix-mode " ⥱" adaptive-wrap)
                (aggressive-indent-mode " ➠" aggressive-indent)
                (auto-revert-mode " ↻" autorevert)
@@ -1290,7 +1290,9 @@ Use the clocking settings from "Organize your life in plain text".
    ;; Auto-clock resolution for finding open clocks
    org-clock-auto-clock-resolution (quote when-no-clock-is-running)
    ;; Include current clocking task in clock reports
-   org-clock-report-include-clocking-task t)
+   org-clock-report-include-clocking-task t
+   ;; Mode line configuration
+   org-clock-mode-line-total 'current)
 #+END_SRC
 
 When clocking out of a task, automatically clock into the parent task
