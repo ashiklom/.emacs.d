@@ -354,26 +354,6 @@ My leader key is SPACE.
     :after magit)
 #+END_SRC
 
-*** evil-org
-     
-#+BEGIN_SRC emacs-lisp
-  (use-package evil-org
-    :ensure t
-    :after org
-    :diminish
-    :config
-    (add-hook 'org-mode-hook 'evil-org-mode)
-    (add-hook 'evil-org-mode-hook 'ans/evil-org-mode-setup)
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys))
-
-  (defun ans/evil-org-mode-setup ()
-    "Custom setup for org mode."
-    (push '(?* . ("*" . "*")) evil-surround-pairs-alist)
-    (push '(?/ . ("/" . "/")) evil-surround-pairs-alist)
-    (evil-org-set-key-theme '(navigation insert textobjects calendar)))
-#+END_SRC
-
 *** evil-latex-textobjects
 
 #+BEGIN_SRC emacs-lisp
@@ -1115,7 +1095,8 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
                       ((org-agenda-overriding-header "Notes to Refile")
                        (org-tags-match-list-sublevels nil)))
                 (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit"
-                           ((org-agenda-overriding-header "Other tasks"))))
+                           ((org-agenda-overriding-header "Other tasks")
+                            (org-agenda-prefix-format " %i %-12:c %l"))))
                nil)
               ("r" "Reading list" todo "TODO"
                ((org-agenda-files '("~/Dropbox/references/notes.org"))
@@ -1217,6 +1198,12 @@ Note that the cursor can be repositioned at the center of the screen with =zz=.
 
 #+BEGIN_SRC emacs-lisp
   (remove-hook 'org-cycle-hook #'org-optimize-window-after-visibility-change)
+#+END_SRC
+
+End of line should ignore tags.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-special-ctrl-a/e t)
 #+END_SRC
 
 ** Source code (babel)
@@ -1443,73 +1430,93 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     "L" 'calendar-forward-month)
 #+END_SRC
       
+*** evil-org
+     
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-org
+    :ensure t
+    :after org
+    :diminish
+    :config
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (add-hook 'evil-org-mode-hook 'ans/evil-org-mode-setup)
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
+
+  (defun ans/evil-org-mode-setup ()
+    "Custom setup for org mode."
+    (push '(?* . ("*" . "*")) evil-surround-pairs-alist)
+    (push '(?/ . ("/" . "/")) evil-surround-pairs-alist)
+    (evil-org-set-key-theme '(navigation insert textobjects calendar)))
+#+END_SRC
+
 ** Other custom functions
 
 #+BEGIN_SRC emacs-lisp
-(defun ans/evil-insert-heading ()
-  "Insert heading before point and enter insert mode."
-  (interactive)
-  (org-insert-heading)
-  (evil-insert 1))
+  (defun ans/evil-insert-heading ()
+    "Insert heading before point and enter insert mode."
+    (interactive)
+    (org-insert-heading)
+    (evil-insert 1))
 
-(defun ans/evil-insert-heading-after-current ()
-  "Insert heading after point and enter insert mode."
-  (interactive)
-  (org-insert-heading-respect-content)
-  (evil-insert 1))
+  (defun ans/evil-insert-heading-after-current ()
+    "Insert heading after point and enter insert mode."
+    (interactive)
+    (org-insert-heading-respect-content)
+    (evil-insert 1))
 
-(defun ans/org-realign-tags ()
-  "Right-align org mode tags in current buffer."
-  (interactive)
-  (org-set-tags nil t))
+  (defun ans/org-realign-tags ()
+    "Right-align org mode tags in current buffer."
+    (interactive)
+    (org-set-tags nil t))
   
-(defun air--org-swap-tags (tags)
-  "Replace any tags on the current headline with TAGS.
+  (defun air--org-swap-tags (tags)
+    "Replace any tags on the current headline with TAGS.
 
-The assumption is that TAGS will be a string conforming to Org Mode's
-tag format specifications, or nil to remove all tags."
-  (let ((old-tags (org-get-tags-string))
-        (tags (if tags
-                  (concat " " tags)
-                "")))
-    (save-excursion
-      (beginning-of-line)
-      (re-search-forward
-       (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
-       (line-end-position) t)
-      (replace-match tags)
-      (org-set-tags t))))
+  The assumption is that TAGS will be a string conforming to Org Mode's
+  tag format specifications, or nil to remove all tags."
+    (let ((old-tags (org-get-tags-string))
+          (tags (if tags
+                    (concat " " tags)
+                  "")))
+      (save-excursion
+        (beginning-of-line)
+        (re-search-forward
+         (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
+         (line-end-position) t)
+        (replace-match tags)
+        (org-set-tags t))))
 
-(defun air-org-set-tags (tag)
-  "Add TAG if it is not in the list of tags, remove it otherwise.
+  (defun air-org-set-tags (tag)
+    "Add TAG if it is not in the list of tags, remove it otherwise.
 
-TAG is chosen interactively from the global tags completion table."
-  (interactive
-   (list (let ((org-last-tags-completion-table
-                (if (derived-mode-p 'org-mode)
-                    (org-uniquify
-                     (delq nil (append (org-get-buffer-tags)
-                                       (org-global-tags-completion-table))))
-                  (org-global-tags-completion-table))))
-           (completing-read
-            "Tag: " 'org-tags-completion-function nil nil nil
-            'org-tags-history))))
-  (let* ((cur-list (org-get-tags))
-         (new-tags (mapconcat 'identity
-                              (if (member tag cur-list)
-                                  (delete tag cur-list)
-                                (append cur-list (list tag)))
-                              ":"))
-         (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
-                nil)))
-    (air--org-swap-tags new)))
+  TAG is chosen interactively from the global tags completion table."
+    (interactive
+     (list (let ((org-last-tags-completion-table
+                  (if (derived-mode-p 'org-mode)
+                      (org-uniquify
+                       (delq nil (append (org-get-buffer-tags)
+                                         (org-global-tags-completion-table))))
+                    (org-global-tags-completion-table))))
+             (completing-read
+              "Tag: " 'org-tags-completion-function nil nil nil
+              'org-tags-history))))
+    (let* ((cur-list (org-get-tags))
+           (new-tags (mapconcat 'identity
+                                (if (member tag cur-list)
+                                    (delete tag cur-list)
+                                  (append cur-list (list tag)))
+                                ":"))
+           (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
+                  nil)))
+      (air--org-swap-tags new)))
     
-(defun ans/org-hide-all-except-current ()
-  "Close all subtrees outside of the current view."
-  (interactive)
-  (save-excursion
-    (org-global-cycle))
-  (org-cycle))
+  (defun ans/org-hide-all-except-current ()
+    "Close all subtrees outside of the current view."
+    (interactive)
+    (save-excursion
+      (org-global-cycle))
+    (org-cycle))
 
   (defun ans/org-agenda-mode-p ()
     "Boolean to check if currently in agenda mode."
@@ -1596,7 +1603,7 @@ TAG is chosen interactively from the global tags completion table."
   (defhydra ans/clock-hydra (:exit t)
     "Clocking commands."
     ("RET" org-clock-in "Clock in")
-    ("DEL" org-clock-out "Clock out")
+    ("<backspace>" org-clock-out "Clock out")
     ("+" ans/punch-in "Punch in")
     ("-" ans/punch-out "Punch out")
     ("g" org-clock-goto "Go to current clock")
