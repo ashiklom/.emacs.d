@@ -853,11 +853,6 @@ Core helm configuration.
 	projectile-switch-project-action 'helm-projectile)
   :config
   (helm-projectile-on)
-  :general
-  (ans-leader-def
-    :states 'normal
-    "p" 'helm-projectile
-    "P" 'helm-projectile-switch-project)
   (ans-leader-def
     :states '(motion normal)
     "rg" (general-predicate-dispatch 'helm-ag
