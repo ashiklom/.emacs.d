@@ -1590,6 +1590,10 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     ("f" ans/helm-org-agenda-list-files "List agenda files")
     ("l" org-store-link "Store link")
     ("L" org-insert-last-stored-link "Insert stored link")
+    ("n" org-narrow-to-subtree "Toggle narrow")
+    ("0" widen "Widen")
+    ("e" org-edit-special "Edit special")
+    ("E" org-export-dispatch "Export")
     ("c" ans/clock-hydra/body "Clocking")
     ("t" ans/org-scheduling-hydra/body "Scheduling")
     ("S" org-save-all-org-buffers "Save all buffers")
@@ -1602,6 +1606,13 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     (if (ans/org-agenda-mode-p)
         (org-agenda-refile)
       (org-refile)))
+
+  (defun ans/org-toggle-narrow ()
+    "Narrow if widened, otherwise widen."
+    (interactive)
+    (if (buffer-narrowed-p)
+        (widen)
+      (org-narrow-to-subtree)))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
