@@ -195,10 +195,13 @@ Customize how major and minor modes appear in the modeline.
                (company-mode nil company)
                (company-quickhelp-mode nil company-quickhelp)
                (evil-org-mode nil evil-org)
-               (flycheck-mode nil flycheck)
-               (flyspell-mode " sp" flyspell)
-               (adaptive-wrap-prefix-mode " ↪" adaptive-wrap)
+               (org-indent-mode nil org-indent)
+               (flycheck-mode " 🐛" flycheck)
+               (flyspell-mode " 𝐀𝐁𝐂" flyspell)
+               (visual-line-mode "↩" simple)
+               (adaptive-wrap-prefix-mode " ⥱" adaptive-wrap)
                (aggressive-indent-mode " ➠" aggressive-indent)
+               (auto-revert-mode " ↻" autorevert)
                (undo-tree-mode nil undo-tree)
                (eldoc-mode nil eldoc)
                (winner-mode nil winner))))
@@ -579,10 +582,12 @@ Swap buffer positions.
 #+END_SRC
 ** projectile
 #+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :ensure t
-  :config
-  (projectile-mode))
+  (use-package projectile
+    :ensure t
+    :init
+    (setq projectile-mode-line '(:eval (format " 🕮%s🕮" (projectile-project-name))))
+    :config
+    (projectile-mode))
 #+END_SRC
 
 Function to check if I'm inside of a projectile project.
