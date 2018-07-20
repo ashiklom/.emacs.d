@@ -1348,7 +1348,8 @@ Clock into a default task ("organization").
     (interactive)
     (setq ans/keep-clock-running nil)
     (when (org-clock-is-active)
-      (org-clock-out)))
+      (org-clock-out))
+    (org-agenda-remove-restriction-lock))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -1608,6 +1609,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     ("E" org-export-dispatch "Export")
     ("c" ans/clock-hydra/body "Clocking")
     ("t" ans/org-scheduling-hydra/body "Scheduling")
+    ("T" org-babel-tangle "Tangle")
     ("S" org-save-all-org-buffers "Save all buffers")
     ("!" org-reload "Reload")
     ("SPC" org-ctrl-c-ctrl-c "C-c"))
