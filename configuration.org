@@ -1590,7 +1590,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     ("f" ans/helm-org-agenda-list-files "List agenda files")
     ("l" org-store-link "Store link")
     ("L" org-insert-last-stored-link "Insert stored link")
-    ("n" org-narrow-to-subtree "Toggle narrow")
+    ("n" ans/org-toggle-narrow "Toggle narrow")
     ("0" widen "Widen")
     ("e" org-edit-special "Edit special")
     ("E" org-export-dispatch "Export")
