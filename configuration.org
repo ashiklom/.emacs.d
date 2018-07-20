@@ -1510,6 +1510,10 @@ TAG is chosen interactively from the global tags completion table."
   (save-excursion
     (org-global-cycle))
   (org-cycle))
+
+  (defun ans/org-agenda-mode-p ()
+    "Boolean to check if currently in agenda mode."
+    (equal major-mode 'org-agenda-mode))
 #+END_SRC
 
 ** org-journal
@@ -1569,15 +1573,23 @@ TAG is chosen interactively from the global tags completion table."
     "Org mode"
     ("a" org-agenda "Agenda")
     ("o" org-capture "Capture")
-    ("r" org-refile "Refile")
+    ("r" ans/org-refile-aware "Refile")
     ("s" helm-org-rifle-agenda-files "Search")
     ("f" ans/helm-org-agenda-list-files "List agenda files")
     ("l" org-store-link "Store link")
     ("L" org-insert-last-stored-link "Insert stored link")
     ("c" ans/clock-hydra/body "Clocking")
+    ("t" ans/org-scheduling-hydra/body "Scheduling")
     ("S" org-save-all-org-buffers "Save all buffers")
     ("!" org-reload "Reload")
     ("SPC" org-ctrl-c-ctrl-c "C-c"))
+
+  (defun ans/org-refile-aware ()
+    "Context-aware org refile."
+    (interactive)
+    (if (ans/org-agenda-mode-p)
+        (org-agenda-refile)
+      (org-refile)))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -1591,6 +1603,27 @@ TAG is chosen interactively from the global tags completion table."
     ("l" org-clock-in-last "Go to most recent clock")
     ("h" (lambda () (interactive) (org-clock-in-last 4)) "Clock from history")
     ("r" org-clock-report "Insert clock report"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defhydra ans/org-scheduling-hydra (:exit t)
+    "Deadlines and scheduling."
+    ("d" ans/org-deadline-aware "Deadline")
+    ("s" ans/org-schedule-aware "Schedule"))
+
+  (defun ans/org-deadline-aware ()
+    "Context-aware org-deadline."
+    (interactive)
+    (if (ans/org-agenda-mode-p)
+        (call-interactively 'org-agenda-deadline)
+      (org-deadline)))
+
+  (defun ans/org-schedule-aware ()
+    "Context-aware org-schedule."
+    (interactive)
+    (if (ans/org-agenda-mode-p)
+        (call-interactively 'org-agenda-schedule)
+      (org-schedule)))
 #+END_SRC
 
 * yasnippet
