@@ -2249,4 +2249,26 @@ Function to use ~org-ref~ for notes rather than bibtex defaults.
     (let ((key (helm-marked-candidates)))
       (funcall org-ref-notes-function (car key))))
 #+END_SRC
+** dumb-jump
 
+Quickly jump to definitions based on regular expression search (not tags or anything more robust).
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dumb-jump
+    :ensure t
+    :init
+    (setq dumb-jump-selector 'helm)
+    (setq dumb-jump-force-searcher 'ag)
+    :general
+    (general-def
+      :states 'normal
+      "gd" 'dumb-jump-go
+      "gD" 'ans/dumb-jump-hydra/body))
+
+  (defhydra ans/dumb-jump-hydra (:exit t)
+    "Dumb jump."
+    ("d" dumb-jump-go "Go")
+    ("D" evil-goto-definition "Evil goto def")
+    ("o" dumb-jump-go-other-window "Other window")
+    ("b" dumb-jump-back "Back"))
+#+END_SRC
