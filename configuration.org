@@ -123,9 +123,9 @@ At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll o
         column-number-mode t
         compilation-scroll-output t)
 
+  (show-paren-mode 1)
   (set-face-attribute 'show-paren-match nil :foreground nil :background "dim gray")
 
-  (show-paren-mode 1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (blink-cursor-mode -1)
@@ -1829,7 +1829,6 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     (ess-eval-region (point) (mark) nil)
     (deactivate-mark)))
     #+END_SRC
-
 
 ** ox-ravel
 
