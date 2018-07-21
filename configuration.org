@@ -1141,7 +1141,7 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
                (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
                "** TODO %?")
               ("e" "Emacs note" entry
-               (file+headline "~/Dropbox/Notes/emacs.org" "Emacs")
+               (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
                "** %?")
               ("t" "TODO" entry
                (file "~/Dropbox/Notes/unsorted.org")
