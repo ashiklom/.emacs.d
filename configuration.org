@@ -1835,6 +1835,136 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 ;; ox-ravel -- Better R integration into org mode
 ; (require 'ox-ravel)
     #+END_SRC
+
+** Custom imports functions (WIP)
+:PROPERTIES:
+:header-args: :tangle no :eval no
+:END:
+
+Parse, and quickly add to, ~import::from(package, function, ...)~ lists.
+This was a nice opportunity to play with some more serious Lisp coding.
+
+The general idea is that a script or function will have an imports list that looks something like:
+
+#+BEGIN_SRC R
+  # begin imports
+  import::from(dplyr, select, mutate, bind_rows, .into = "")
+  import::from(tidyr, gather, spread, .into = "")
+  # end imports
+#+END_SRC 
+
+My function searches for ~begin imports/end imports~, then converts them lists where the first element is the package and every subsequent element is a function.
+The objective is to get a system where, with the point over ~package::function~, I run an interactive function ~ans/imports/add-to-imports~, which will check if the package-function combination is in the imports, and if not, add it intelligently.
+
+This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (string manipulation) and [[https://github.com/magnars/dash.el][dash.el]] (list manipulation) libraries. 
+
+#+BEGIN_SRC emacs-lisp
+  ;; dplyr::select
+  ;; dplyr::bind_rows
+  ;; tidyr::gather
+  ;;
+  ;; # begin imports
+  ;; import::from(dplyr, select, mutate, bind_rows, .into = "")
+  ;; import::from(tidyr, gather, spread, .into = "")
+  ;; # end imports
+
+  (defun ans/import/R-pkg-fun-word-at-point ()
+    "Select a package::function statement as a word."
+    (let (($temp-syn-table (make-syntax-table ess-r-syntax-table)))
+      (modify-syntax-entry ?: "w" $temp-syn-table)
+      (modify-syntax-entry ?_ "w" $temp-syn-table)
+      (with-syntax-table $temp-syn-table
+        (word-at-point))))
+
+  (defun ans/import/split-pkg-fun-call (word)
+    "Split WORD containing package::function into package and function."
+    (s-split "::" word))
+
+  (defun ans/import/import-to-list (import-string)
+    "Grab IMPORT-STRING and convert to a list.
+
+  The first element of this list is the package and the remaining statements are imports."
+    (let ((import-list (s-with import-string
+                         (s-chop-prefix "import::from(")
+                         (s-chop-suffix ")")
+                         (s-split ", +"))))
+      (-remove (lambda (s) (s-matches? "\.into +=" s)) import-list)))
+
+  (defun ans/import/find-import-lists ()
+    "Find the nearest imports list from the current buffer, and return
+    their start and end points as a list.
+
+  Imports lists start with the comment string 'begin imports' and end
+  with 'end imports'."
+    (let* ((import-start (save-excursion
+                           (re-search-backward "#+ *begin imports" nil t)
+                           (forward-line)
+                           (point)))
+           (import-end (save-excursion
+                         (goto-char import-start)
+                         (re-search-forward "#+ *end imports" nil t)
+                         (forward-line -1)
+                         (end-of-line)
+                         (point))))
+      (when (and import-start import-end)
+        (list import-start import-end))))
+
+  (defun ans/import/parse-import-lists (import-block-string)
+    "Convert block of import statements into a list of import strings.
+
+  In the process, remove extraneous whitespace."
+    (let* ((import-block-list
+            (s-with import-block-string
+              (s-collapse-whitespace)
+              (s-match-strings-all "import::from(.*?)"))))
+      (-map 'ans/import/import-to-list (-flatten import-block-list))))
+
+  (defun ans/import/read-imports ()
+    "Read and parse current buffer's imports block."
+    (let* ((import-start-end (ans/import/find-import-lists))
+           (import-block (buffer-substring-no-properties
+                          (nth 0 import-start-end)
+                          (nth 1 import-start-end))))
+      (ans/import/parse-import-lists import-block)))
+
+  (defun ans/import/list-to-import (import-list)
+    "Convert import-list to a formatted import string."
+    (let* ((imports-joined (s-join ", " import-list)))
+      (s-with imports-joined (s-prepend "import::from(") (s-append ", .into = \"\")"))))
+
+  (defun ans/import/replace-imports (import-start-end new-imports)
+    "Replace imports list at IMPORT-START-END with NEW-IMPORTS."
+    (delete-region (nth 0 import-start-end) (nth 1 import-start-end))
+    (let* ((import-string-list (-map 'ans/import/list-to-import new-imports))
+           (import-string (s-join "\n" import-string-list)))
+      (save-excursion
+        (goto-char (nth 0 import-start-end))
+        (insert import-string))))
+
+  (defun ans/import/add-to-imports ()
+    "Add the current thing to the imports list and update the imports list."
+    (interactive)
+    (let* ((addition (ans/import/split-pkg-fun-call (ans/import/R-pkg-fun-word-at-point))))
+      (when (= (length addition) 2)
+        (let ((current-imports (ans/import/read-imports)))
+          (if (= (length current-imports) 0)
+              (ans/import/replace-imports (ans/import/find-import-lists) addition)
+            ;; WORK IN PROGRESS...
+            (let ((current-packages ))))))))
+
+  ;; Workflow
+  ;; - Read current pkg::function form into list ADDITION
+  ;; - Read current imports list into list IMPORTS
+  ;; - Extract first elements of IMPORTS into PACKAGES
+  ;; - (if (-contains? PACKAGES (nth 0 ADDITION))...
+  ;;   - let (NEW-FUNCTION (nth 1 ADDITION))
+  ;;   - let (ADD-TO-PACKAGE (which PACKAGES == PACKAGES))
+  ;;   - let (FUNCTIONS (nthcdr 1 (nth ADD-TO-PACKAGE PACKAGES)))
+  ;;   - If (NEW-FUNCTION not in FUNCTIONS)
+  ;;     - (-update-at (ADD-TO-PACKAGE) (nth ADD-TO-PACKAGE IMPORTS) (append (nth 1 ADDITION)))
+  ;;   - ...)
+#+END_SRC
+
 * LaTeX
 ** Core configuration
     
