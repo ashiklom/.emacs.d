@@ -2271,3 +2271,14 @@ Quickly jump to definitions based on regular expression search (not tags or anyt
     ("o" dumb-jump-go-other-window "Other window")
     ("b" dumb-jump-back "Back"))
 #+END_SRC
+** slime
+
+Superior Lisp Interaction Mode for Emacs (SLIME)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package slime
+    :ensure t
+    :commands slime
+    :init
+    (setq inferior-lisp-program "/usr/bin/sbcl"))
+#+END_SRC
