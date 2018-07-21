@@ -123,6 +123,8 @@ At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll o
         column-number-mode t
         compilation-scroll-output t)
 
+  (set-face-attribute 'show-paren-match nil :foreground nil :background "dim gray")
+
   (show-paren-mode 1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
