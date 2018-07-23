@@ -1,12 +1,12 @@
 #+TITLE: My Emacs dotfiles
 #+AUTHOR: Alexey Shiklomanov
-#+PROPERTY: header-args :tangle yes :results silent
+#+PROPERTY: header-args :tangle yes :results silent :comments both
 
 * Personal information
 
 #+BEGIN_SRC emacs-lisp
-  (setq user-full-name "Alexey Shiklomanov"
-	user-mail-address "alexey.shiklomanov@gmail.com")
+(setq user-full-name "Alexey Shiklomanov"
+      user-mail-address "alexey.shiklomanov@gmail.com")
 #+END_SRC
 
 * Package management
@@ -15,16 +15,16 @@
  Load Emacs's internal package manager and tell it where to look for packages.
 
  #+BEGIN_SRC emacs-lisp
-   (eval-when-compile
-     (require 'package)
-     (setq package-enable-at-startup nil)
-     (unless (assoc-default "org" package-archives)
-       (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/")))
-     (unless (assoc-default "melpa" package-archives)
-       (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/")))
-     (unless (assoc-default "melpa-stable" package-archives)
-       (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/")))
-     (package-initialize))
+(eval-when-compile
+  (require 'package)
+  (setq package-enable-at-startup nil)
+  (unless (assoc-default "org" package-archives)
+    (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/")))
+  (unless (assoc-default "melpa" package-archives)
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/")))
+  (unless (assoc-default "melpa-stable" package-archives)
+    (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/")))
+  (package-initialize))
  #+END_SRC
 
 ** use-package
@@ -32,10 +32,10 @@
 Bootstrap the ~use-package~ package manager.
 
  #+BEGIN_SRC emacs-lisp
- (unless (package-installed-p 'use-package)
-   (package-refresh-contents)
-   (package-install 'use-package))
- (eval-when-compile (require 'use-package))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-when-compile (require 'use-package))
  #+END_SRC
 
 ** quelpa
@@ -43,11 +43,11 @@ Bootstrap the ~use-package~ package manager.
  For installing packages from source (e.g. GitHub).
 
  #+BEGIN_SRC emacs-lisp
- (use-package quelpa
-   :ensure t
-   :init
-   (setq quelpa-update-melpa-p nil))
- (use-package quelpa-use-package :ensure t)
+(use-package quelpa
+  :ensure t
+  :init
+  (setq quelpa-update-melpa-p nil))
+(use-package quelpa-use-package :ensure t)
  #+END_SRC
 
  Also,
@@ -79,12 +79,12 @@ Create version-controlled backups of all files Emacs touches.
 Save them in "~/.emacs.d/backups".
     
 #+BEGIN_SRC emacs-lisp
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
-	delete-old-versions -1		; Don't delete old versions
-	version-control t			; Version control backups
-	make-backup-files t
-	vc-make-backup-files t		; Backup files even if they are version controlled
-	auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t))) ; Save file name changes
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
+      delete-old-versions -1		; Don't delete old versions
+      version-control t			; Version control backups
+      make-backup-files t
+      vc-make-backup-files t		; Backup files even if they are version controlled
+      auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t))) ; Save file name changes
 #+END_SRC
 
 ** Other settings
@@ -92,16 +92,16 @@ Save them in "~/.emacs.d/backups".
 Sentences should end with a single space, not a double space.
 
 #+BEGIN_SRC emacs-lisp
-  (setq sentence-end-double-space nil)
+(setq sentence-end-double-space nil)
 #+END_SRC
 
 Start with a blank scratch buffer.
 No need for startup messages, splash screens, etc.
 
 #+BEGIN_SRC emacs-lisp
-  (setq inhibit-splash-screen t
-	inhibit-startup-message t
-	inhibit-startup-echo-area-message t)
+(setq inhibit-splash-screen t
+      inhibit-startup-message t
+      inhibit-startup-echo-area-message t)
 #+END_SRC
 
 Scroll conservatively, like vim does.
@@ -111,27 +111,27 @@ Auto-scrolling in Emacs scrolls the buffer until the cursor is at the center of 
 At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll one line at a time).
 
 #+BEGIN_SRC emacs-lisp
-  (setq scroll-margin 2
-        scroll-conservatively 101)
+(setq scroll-margin 2
+      scroll-conservatively 101)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (setq show-paren-delay 0
-        abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory)
-        save-abbrevs 'silent
-        auto-save-default nil
-        column-number-mode t
-        compilation-scroll-output t)
+(setq show-paren-delay 0
+      abbrev-file-name (expand-file-name "abbrev_defs" user-emacs-directory)
+      save-abbrevs 'silent
+      auto-save-default nil
+      column-number-mode t
+      compilation-scroll-output t)
 
-  (show-paren-mode 1)
-  (set-face-attribute 'show-paren-match nil :foreground nil :background "dim gray")
+(show-paren-mode 1)
+(set-face-attribute 'show-paren-match nil :foreground nil :background "dim gray")
 
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (blink-cursor-mode -1)
-  (global-hl-line-mode)
-  (winner-mode)				; Remember window configurations
-  (electric-pair-mode 1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(blink-cursor-mode -1)
+(global-hl-line-mode)
+(winner-mode)				; Remember window configurations
+(electric-pair-mode 1)
 #+END_SRC
 
 * Global variables
@@ -139,14 +139,14 @@ At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll o
 Related to bibtex references. 
    
 #+BEGIN_SRC emacs-lisp
-  (defvar ans/reference-dir (file-name-as-directory "~/Dropbox/references")
-    "Root directory for storing my bibliography.")
-  (defvar ans/reference-dir-pdfs (file-name-as-directory (concat ans/reference-dir "pdfs"))
-    "Subdirectory containing PDF files of papers in my bibliography.")
-  (defvar ans/reference-bibfile (concat ans/reference-dir "library.bib")
-    "Full path to my personal bibtex file.")
-  (defvar ans/reference-notes (concat ans/reference-dir "notes.org")
-    "Full path to reference-related notes.")
+(defvar ans/reference-dir (file-name-as-directory "~/Dropbox/references")
+  "Root directory for storing my bibliography.")
+(defvar ans/reference-dir-pdfs (file-name-as-directory (concat ans/reference-dir "pdfs"))
+  "Subdirectory containing PDF files of papers in my bibliography.")
+(defvar ans/reference-bibfile (concat ans/reference-dir "library.bib")
+  "Full path to my personal bibtex file.")
+(defvar ans/reference-notes (concat ans/reference-dir "notes.org")
+  "Full path to reference-related notes.")
 #+END_SRC
 
 * Text and prog mode hooks
@@ -181,32 +181,32 @@ Don't show cursor in non-selected window.
 This is mostly to avoid annoying visual artifacts of a hollow box cursor.
 
 #+BEGIN_SRC emacs-lisp
-  (setq cursor-in-non-selected-windows nil)
+(setq cursor-in-non-selected-windows nil)
 #+END_SRC
 ** delight
 
 Customize how major and minor modes appear in the modeline.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package delight
-    :ensure t
-    :config
-    (delight '((lispyville-mode nil lispyville)
-               (yas-minor-mode nil yasnippet)
-               (helm-mode nil helm)
-               (company-mode nil company)
-               (company-quickhelp-mode nil company-quickhelp)
-               (evil-org-mode nil evil-org)
-               (org-indent-mode nil org-indent)
-               (flycheck-mode " 🐛" flycheck)
-               (flyspell-mode " 𝐀𝐁𝐂" flyspell)
-               (visual-line-mode " ↩" simple)
-               (adaptive-wrap-prefix-mode " ⥱" adaptive-wrap)
-               (aggressive-indent-mode " ➠" aggressive-indent)
-               (auto-revert-mode " ↻" autorevert)
-               (undo-tree-mode nil undo-tree)
-               (eldoc-mode nil eldoc)
-               (winner-mode nil winner))))
+(use-package delight
+  :ensure t
+  :config
+  (delight '((lispyville-mode nil lispyville)
+	     (yas-minor-mode nil yasnippet)
+	     (helm-mode nil helm)
+	     (company-mode nil company)
+	     (company-quickhelp-mode nil company-quickhelp)
+	     (evil-org-mode nil evil-org)
+	     (org-indent-mode nil org-indent)
+	     (flycheck-mode " 🐛" flycheck)
+	     (flyspell-mode " 𝐀𝐁𝐂" flyspell)
+	     (visual-line-mode " ↩" simple)
+	     (adaptive-wrap-prefix-mode " ⥱" adaptive-wrap)
+	     (aggressive-indent-mode " ➠" aggressive-indent)
+	     (auto-revert-mode " ↻" autorevert)
+	     (undo-tree-mode nil undo-tree)
+	     (eldoc-mode nil eldoc)
+	     (winner-mode nil winner))))
 #+END_SRC
 ** rainbow-delimiters
 
@@ -219,10 +219,10 @@ Customize how major and minor modes appear in the modeline.
 ** Mode line
 
 #+BEGIN_SRC emacs-lisp
-  (use-package smart-mode-line
-    :ensure t
-    :config
-    (sml/setup))
+(use-package smart-mode-line
+  :ensure t
+  :config
+  (sml/setup))
 #+END_SRC
 * Keybindings
 ** general
@@ -238,12 +238,12 @@ Unbind keys that I'll need elsewhere.
 ~\~ is my "local leader".
 
 #+BEGIN_SRC emacs-lisp
-  (general-unbind
-    :states '(motion normal visual)
-    "SPC"
-    "C-u"
-    "\\")
-  (general-unbind "M-SPC")
+(general-unbind
+  :states '(motion normal visual)
+  "SPC"
+  "C-u"
+  "\\")
+(general-unbind "M-SPC")
 #+END_SRC
 
 Create a custom definer to emulate Vim's leader key.
@@ -271,110 +271,175 @@ My leader key is SPACE.
 ** Evil extensions
 *** evil-collection
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-collection
-    :ensure t
-    :after evil
-    :init
-    (setq evil-collection-company-use-tng nil)
-    :config
-    (setq evil-collection-mode-list (remove 'company evil-collection-mode-list))
-    (evil-collection-init))
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :init
+  (setq evil-collection-company-use-tng nil)
+  :config
+  (setq evil-collection-mode-list (remove 'company evil-collection-mode-list))
+  (evil-collection-init))
 #+END_SRC
 *** evil-surround
      
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-surround
-    :ensure t
-    :after evil
-    :config
-    (global-evil-surround-mode))
+(use-package evil-surround
+  :ensure t
+  :after evil
+  :config
+  (global-evil-surround-mode))
 #+END_SRC
 *** evil-embrace
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-embrace
-    :ensure t
-    :after evil
-    :init
-    (setq evil-embrace-show-help-p nil)
-    :config
-    (evil-embrace-enable-evil-surround-integration)
-    (add-hook 'org-mode-hook 'embrace-org-mode-hook)
-    (add-hook 'LaTeX-mode-hook 'embrace-LaTeX-mode-hook))
+(use-package evil-embrace
+  :ensure t
+  :after evil
+  :init
+  (setq evil-embrace-show-help-p nil)
+  :config
+  (evil-embrace-enable-evil-surround-integration)
+  (add-hook 'org-mode-hook 'embrace-org-mode-hook)
+  (add-hook 'LaTeX-mode-hook 'embrace-LaTeX-mode-hook))
 #+END_SRC
 
 *** evil-indent-textobject
      
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-indent-textobject
-    :ensure t
-    :after evil)
+(use-package evil-indent-textobject
+  :ensure t
+  :after evil)
 #+END_SRC
 
 *** evil-nerd-commenter
      
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-nerd-commenter
-    :ensure t
-    :general
-    (ans-leader-def
-      :states '(normal visual)
-      ";" 'evilnc-comment-or-uncomment-lines))
+(general-def
+  :states '(normal insert)
+  :keymaps 'org-mode-map
+  "C-c C-q" 'org-set-tags
+  "M-l" 'org-metaright
+  "M-S-l" 'org-demote-subtree
+  "M-h" 'org-metaleft
+  "M-S-l" 'org-promote-subtree
+  "<C-M-return>" 'org-insert-subheading)
+
+(general-def
+  :states '(motion normal)
+  :keymaps 'org-mode-map
+  "<backspace>" 'outline-hide-subtree
+  "{" 'org-up-element
+  "}" 'org-down-element
+  "g]" 'evil-forward-paragraph
+  "g[" 'evil-backward-paragraph
+  "gt" 'org-todo
+  "g$" 'evil-end-of-line
+  "g%" 'ans/org-realign-tags
+  "go" 'ans/evil-insert-heading-after-current
+  "gO" 'ans/evil-insert-heading)
+
+(general-def
+  :states 'visual
+  :keymaps 'org-mode-map
+  :prefix "\\"
+  "ss" 'eval-region)
+
+(general-def
+  :states 'normal
+  :keymaps 'org-mode-map
+  :prefix "\\"
+  "e" 'org-edit-special
+  "k" 'org-export-dispatch
+  "RET" 'org-ctrl-c-ctrl-c
+  "=" 'ans/indent-org-source-block
+  "TAB" 'ans/org-hide-all-except-current)
+
+(general-def
+  :states 'insert
+  :keymaps 'org-mode-map
+  "C-=" '(lambda () (interactive)(insert "#+"))
+  "C-/" 'org-toggle-checkbox
+  "C--" 'org-toggle-item
+  "C-." 'org-cycle-list-bullet
+  "C-," '(lambda () (interactive) (org-cycle-list-bullet 'previous)))
+
+(ans-leader-def
+  :states '(motion normal emacs)
+  :keymaps 'org-mode-map
+  "#" 'org-update-statistics-cookies
+  "%" 'ans/org-toggle-emphasis-markers)
+
+(ans-leader-def
+  :states '(motion normal visual)
+  :keymaps 'org-mode-map
+  "ss" 'org-schedule
+  "sd" 'org-deadline
+  "/" 'helm-org-rifle-current-buffer)
+
+(general-def
+  :states '(motion)
+  :keymaps 'calendar-mode-map
+  "h" 'calendar-backward-day
+  "l" 'calendar-forward-day
+  "k" 'calendar-backward-week
+  "j" 'calendar-forward-week
+  "H" 'calendar-backward-month
+  "L" 'calendar-forward-month)
 #+END_SRC
 
 *** evil-easymotion
      
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-easymotion
-    :ensure t
-    :after evil
-    :config
-    (general-def
-      :states '(normal motion visual)
-      "SPC SPC" evilem-map))
+(use-package evil-easymotion
+  :ensure t
+  :after evil
+  :config
+  (general-def
+    :states '(normal motion visual)
+    "SPC SPC" evilem-map))
 #+END_SRC
 
 *** evil-exchange
      
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-exchange
-    :ensure t
-    :after evil
-    :config
-    (evil-exchange-install))
+(use-package evil-exchange
+  :ensure t
+  :after evil
+  :config
+  (evil-exchange-install))
 #+END_SRC
 
 *** evil-numbers
      
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-numbers
-    :ensure t
-    :after evil
-    :init
-    (defhydra evil-numbers-hydra ()
-      "Increment or decrement numbers."
-      ("=" evil-numbers/inc-at-pt "Increment")
-      ("-" evil-numbers/dec-at-pt "Decrement"))
-    :general
-    (general-def
-      :states 'normal
-      "C-a" 'evil-numbers-hydra/body))
+(use-package evil-numbers
+  :ensure t
+  :after evil
+  :init
+  (defhydra evil-numbers-hydra ()
+    "Increment or decrement numbers."
+    ("=" evil-numbers/inc-at-pt "Increment")
+    ("-" evil-numbers/dec-at-pt "Decrement"))
+  :general
+  (general-def
+    :states 'normal
+    "C-a" 'evil-numbers-hydra/body))
 #+END_SRC
 
 *** evil-magit
 
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-magit
-    :ensure t
-    :after magit)
+(use-package evil-magit
+  :ensure t
+  :after magit)
 #+END_SRC
 
 *** evil-latex-textobjects
 
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-latex-textobjects
-    :quelpa (evil-latex-textobjects :fetcher github :repo "hpdeifel/evil-latex-textobjects")
-    :config
-    (add-hook 'LaTeX-mode-hook 'turn-on-evil-latex-textobjects-mode))
+(use-package evil-latex-textobjects
+  :quelpa (evil-latex-textobjects :fetcher github :repo "hpdeifel/evil-latex-textobjects")
+  :config
+  (add-hook 'LaTeX-mode-hook 'turn-on-evil-latex-textobjects-mode))
 #+END_SRC
 
 *** evil-matchit
@@ -419,137 +484,137 @@ Evaluate lisp at point.
 Other keymaps (need to be sorted and cleaned up).
 
 #+BEGIN_SRC emacs-lisp
-  (defun ans/add-evil-maps (keymap)
-    "Add some basic navigation mappings (including hjkl) to KEYMAP."
-    (general-def
-      :keymaps keymap
-      "h" 'evil-backward-char
-      "l" 'evil-forward-char
-      "k" 'evil-previous-visual-line
-      "j" 'evil-next-visual-line
-      "C-u" 'evil-scroll-up
-      "C-d" 'evil-scroll-down
-      "/" 'evil-search-forward
-      "n" 'evil-search-next
-      "N" 'evil-search-previous))
-
-  (ans/add-evil-maps 'occur-mode-map)
-
+(defun ans/add-evil-maps (keymap)
+  "Add some basic navigation mappings (including hjkl) to KEYMAP."
   (general-def
-    :states 'insert
-    "j" (general-key-dispatch 'self-insert-command
-          :timeout 0.25
-          "k" 'evil-normal-state))
-
-  (general-def
-    :states '(motion normal visual)
-    ;; Move by visual lines
-    "j" 'evil-next-visual-line
+    :keymaps keymap
+    "h" 'evil-backward-char
+    "l" 'evil-forward-char
     "k" 'evil-previous-visual-line
-    "gj" 'evil-next-line
-    "gk" 'evil-previous-line
-    "C-=" 'evil-window-increase-height
-    "C--" 'evil-window-decrease-height
-    "C-+" 'evil-window-increase-width
-    "C-_" 'evil-window-decrease-width
-    "C-0" 'balance-windows
-    "C-)" 'shrink-window-if-larger-than-buffer
+    "j" 'evil-next-visual-line
+    "C-u" 'evil-scroll-up
     "C-d" 'evil-scroll-down
-    "C-u" 'evil-scroll-up)
+    "/" 'evil-search-forward
+    "n" 'evil-search-next
+    "N" 'evil-search-previous))
 
-  (general-def
-    :states 'normal
-    "S" 'save-buffer)
+(ans/add-evil-maps 'occur-mode-map)
 
-  (ans-leader-def
-    :states '(motion normal visual emacs)
-    :keymaps 'override
-    "b" 'helm-mini
-    "f" 'helm-find-files
-    ":" 'eval-expression
-    "dd" 'dired
-    "dw" 'dired-other-window
-    "df" 'dired-other-frame
-    "x" 'helm-M-x
-    "sv" 'ans--reload-initfile
-    "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
-    "ss" 'delete-trailing-whitespace
-    "'" 'comment-dwim			; Insert right comment
-    "*" 'universal-argument		; Emacs's C-u
-    "vl" 'visual-line-mode
-    "/" 'helm-occur
-    "\"" 'helm-show-kill-ring
-    "mm" 'compile
-    "w"  'ans/buffer-window-hydra/body
-    "p" 'ans/projectile-hydra/body
-    "h" 'ans/help-hydra/body
-    "o" 'ans/org-mode-hydra/body)
+(general-def
+  :states 'insert
+  "j" (general-key-dispatch 'self-insert-command
+	:timeout 0.25
+	"k" 'evil-normal-state))
+
+(general-def
+  :states '(motion normal visual)
+  ;; Move by visual lines
+  "j" 'evil-next-visual-line
+  "k" 'evil-previous-visual-line
+  "gj" 'evil-next-line
+  "gk" 'evil-previous-line
+  "C-=" 'evil-window-increase-height
+  "C--" 'evil-window-decrease-height
+  "C-+" 'evil-window-increase-width
+  "C-_" 'evil-window-decrease-width
+  "C-0" 'balance-windows
+  "C-)" 'shrink-window-if-larger-than-buffer
+  "C-d" 'evil-scroll-down
+  "C-u" 'evil-scroll-up)
+
+(general-def
+  :states 'normal
+  "S" 'save-buffer)
+
+(ans-leader-def
+  :states '(motion normal visual emacs)
+  :keymaps 'override
+  "b" 'helm-mini
+  "f" 'helm-find-files
+  ":" 'eval-expression
+  "dd" 'dired
+  "dw" 'dired-other-window
+  "df" 'dired-other-frame
+  "x" 'helm-M-x
+  "sv" 'ans--reload-initfile
+  "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
+  "ss" 'delete-trailing-whitespace
+  "'" 'comment-dwim			; Insert right comment
+  "*" 'universal-argument		; Emacs's C-u
+  "vl" 'visual-line-mode
+  "/" 'helm-occur
+  "\"" 'helm-show-kill-ring
+  "mm" 'compile
+  "w"  'ans/buffer-window-hydra/body
+  "p" 'ans/projectile-hydra/body
+  "h" 'ans/help-hydra/body
+  "o" 'ans/org-mode-hydra/body)
 #+END_SRC
 
 *** Hydra for emacs help
 
 #+BEGIN_SRC emacs-lisp
-  (defhydra ans/help-hydra (:exit t)
-    "Emacs help."
-    ("v" describe-variable "Variable")
-    ("V" (describe-variable (variable-at-point)))
-    ("f" describe-function "Function")
-    ("F" (describe-function (function-called-at-point)))
-    ("k" describe-key "Key")
-    ("b" describe-bindings "Bindings")
-    ("P" describe-package "Package")
-    ("a" apropos-command "Apropos command")
-    ("A" (let ((current-pre	fix-arg '(4))) (call-interactively 'apropos-command)) "Apropos all")
-    ("m" describe-mode "Mode")
-    ("M" (describe-variable current-major-mode) "Major mode")
-    ("i" helm-info "Helm info"))
+(defhydra ans/help-hydra (:exit t)
+  "Emacs help."
+  ("v" describe-variable "Variable")
+  ("V" (describe-variable (variable-at-point)))
+  ("f" describe-function "Function")
+  ("F" (describe-function (function-called-at-point)))
+  ("k" describe-key "Key")
+  ("b" describe-bindings "Bindings")
+  ("P" describe-package "Package")
+  ("a" apropos-command "Apropos command")
+  ("A" (let ((current-pre	fix-arg '(4))) (call-interactively 'apropos-command)) "Apropos all")
+  ("m" describe-mode "Mode")
+  ("M" (describe-variable current-major-mode) "Major mode")
+  ("i" helm-info "Helm info"))
 #+END_SRC
 *** Hydra for projectile
 
 #+BEGIN_SRC emacs-lisp
-  (defhydra ans/projectile-hydra (:exit t)
-    "Projectile"
-    ("p" helm-projectile "Helm projectile")
-    ("o" helm-projectile-switch-project "Switch project")
-    ("f" helm-projectile-find-file "Find file")
-    ("F" helm-projectile-find-file-in-known-projects "Find file in known projects")
-    ("d" projectile-dired "Dired")
-    ("D" projectile-dired-other-window "Dired other window")
-    ("r" helm-projectile-recentf "Recent file")
-    ("c" projectile-compile-project "Compile")
-    ("e" projectile-run-eshell "Eshell")
-    ("g" helm-projectile-ag "Ag search")
-    ("E" projectile-edit-dir-locals "Edit dir-locals")
-    ("Q" projectile-kill-buffers "Kill buffers")
-    ("!" projectile-commander))
+(defhydra ans/projectile-hydra (:exit t)
+  "Projectile"
+  ("p" helm-projectile "Helm projectile")
+  ("o" helm-projectile-switch-project "Switch project")
+  ("f" helm-projectile-find-file "Find file")
+  ("F" helm-projectile-find-file-in-known-projects "Find file in known projects")
+  ("d" projectile-dired "Dired")
+  ("D" projectile-dired-other-window "Dired other window")
+  ("r" helm-projectile-recentf "Recent file")
+  ("c" projectile-compile-project "Compile")
+  ("e" projectile-run-eshell "Eshell")
+  ("g" helm-projectile-ag "Ag search")
+  ("E" projectile-edit-dir-locals "Edit dir-locals")
+  ("Q" projectile-kill-buffers "Kill buffers")
+  ("!" projectile-commander))
 #+END_SRC
 *** Hydra for buffer and window operations
 
 #+BEGIN_SRC emacs-lisp
-  (defhydra ans/buffer-window-hydra (:exit t :hint nil)
-    "
+(defhydra ans/buffer-window-hydra (:exit t :hint nil)
+  "
   Buffers: _w_:quit _W_:kill    Windows: _d_elete  _D_elete and kill    Frames: _f_:pop _F_:new     Split: _\\_:vert  _-_:horiz
   Switch:  _h__j__k__l_    Move: _H__J__K__L_    Misc: _r_evert   _s_ave as   _z_:undo   _Z_:redo"
-    ("w" quit-window)
-    ("W" kill-this-buffer)
-    ("d" delete-window)
-    ("D" kill-buffer-and-window)
-    ("f" ans/pop-window-into-frame)
-    ("F" make-frame-command)
-    ("r" revert-buffer)
-    ("s" write-file)
-    ("\\" evil-window-vsplit)
-    ("-" evil-window-split)
-    ("j" windmove-down)
-    ("h" windmove-left)
-    ("k" windmove-up)
-    ("l" windmove-right)
-    ("J" buf-move-down)
-    ("H" buf-move-left)
-    ("K" buf-move-up)
-    ("L" buf-move-right)
-    ("z" winner-undo)
-    ("Z" winner-redo))
+  ("w" quit-window)
+  ("W" kill-this-buffer)
+  ("d" delete-window)
+  ("D" kill-buffer-and-window)
+  ("f" ans/pop-window-into-frame)
+  ("F" make-frame-command)
+  ("r" revert-buffer)
+  ("s" write-file)
+  ("\\" evil-window-vsplit)
+  ("-" evil-window-split)
+  ("j" windmove-down)
+  ("h" windmove-left)
+  ("k" windmove-up)
+  ("l" windmove-right)
+  ("J" buf-move-down)
+  ("H" buf-move-left)
+  ("K" buf-move-up)
+  ("L" buf-move-right)
+  ("z" winner-undo)
+  ("Z" winner-redo))
 #+END_SRC
 * Buffer and window management
    
@@ -584,12 +649,12 @@ Swap buffer positions.
 #+END_SRC
 ** projectile
 #+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :ensure t
-    :init
-    (setq projectile-mode-line '(:eval (format " 🕮%s🕮" (projectile-project-name))))
-    :config
-    (projectile-mode))
+(use-package projectile
+  :ensure t
+  :init
+  (setq projectile-mode-line '(:eval (format " 🕮%s🕮" (projectile-project-name))))
+  :config
+  (projectile-mode))
 #+END_SRC
 
 Function to check if I'm inside of a projectile project.
@@ -602,28 +667,28 @@ Function to check if I'm inside of a projectile project.
 ** perspective
 
 #+BEGIN_SRC emacs-lisp
-  (use-package perspective
-    :ensure t
-    :init
-    (setq persp-mode-prefix-key (kbd "<C-SPC>"))
-    :config
-    (persp-mode))
+(use-package perspective
+  :ensure t
+  :init
+  (setq persp-mode-prefix-key (kbd "<C-SPC>"))
+  :config
+  (persp-mode))
 #+END_SRC
 * Version control
 ** magit
 
 #+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :ensure t
-    :general
-    (ans-leader-def
-      :states 'normal
-      "g s" 'magit-status)
-    :config
-    (general-def
-      :states 'normal
-      :keymaps 'magit-status-mode-map
-      "gd" 'magit-diff-toggle-refine-hunk))
+(use-package magit
+  :ensure t
+  :general
+  (ans-leader-def
+    :states 'normal
+    "g s" 'magit-status)
+  :config
+  (general-def
+    :states 'normal
+    :keymaps 'magit-status-mode-map
+    "gd" 'magit-diff-toggle-refine-hunk))
 #+END_SRC
 ** magithub
 
@@ -672,16 +737,16 @@ Function to check if I'm inside of a projectile project.
 ** pdf-tools
 
 #+BEGIN_SRC emacs-lisp
-  (use-package pdf-tools
-    :ensure t
-    :mode (("\\.pdf\\'" . pdf-view-mode))
-    :config
-    (pdf-tools-install)
-    (general-def
-      :states 'normal
-      :keymaps 'pdf-view-mode-map
-      "<" 'pdf-history-backward
-      ">" 'pdf-history-forward))
+(use-package pdf-tools
+  :ensure t
+  :mode (("\\.pdf\\'" . pdf-view-mode))
+  :config
+  (pdf-tools-install)
+  (general-def
+    :states 'normal
+    :keymaps 'pdf-view-mode-map
+    "<" 'pdf-history-backward
+    ">" 'pdf-history-forward))
 #+END_SRC
 * Utility functions
 ** Rename buffer and file
@@ -691,19 +756,19 @@ Function to check if I'm inside of a projectile project.
   "Renames current buffer and file it is visiting."
   (interactive)
   (let ((name (buffer-name))
-        (filename (buffer-file-name)))
+	(filename (buffer-file-name)))
     (if (not (and filename (file-exists-p filename)))
-        (error "Buffer '%s' is not visiting a file!" name)
+	(error "Buffer '%s' is not visiting a file!" name)
       (let ((new-name (read-file-name "New name: " filename)))
-        (cond ((get-buffer new-name)
-               (error "A buffer named '%s' already exists!" new-name))
-              (t
-               (rename-file filename new-name 1)
-               (rename-buffer new-name)
-               (set-visited-file-name new-name)
-               (set-buffer-modified-p nil)
-               (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
-	       
+	(cond ((get-buffer new-name)
+	       (error "A buffer named '%s' already exists!" new-name))
+	      (t
+	       (rename-file filename new-name 1)
+	       (rename-buffer new-name)
+	       (set-visited-file-name new-name)
+	       (set-buffer-modified-p nil)
+	       (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
+
 (evil-ex-define-cmd "rename" 'rename-this-buffer-and-file)
 #+END_SRC
 ** Delete buffer and file
@@ -718,7 +783,7 @@ Function to check if I'm inside of a projectile project.
 	(delete-file filename)
 	(message "Deleted file %s" filename)
 	(kill-buffer)))))
-	
+
 (evil-ex-define-cmd "dkill" 'ans/delete-file-and-buffer)
 #+END_SRC
 ** Switch to most recently used buffer
@@ -856,9 +921,9 @@ Core helm configuration.
 ** helm-org-rifle
 
 #+BEGIN_SRC emacs-lisp
-  (use-package helm-org-rifle
-    :ensure t
-    :commands helm-org-rifle-agenda-files)
+(use-package helm-org-rifle
+  :ensure t
+  :commands helm-org-rifle-agenda-files)
 #+END_SRC
 ** helm-swoop
 
@@ -889,89 +954,143 @@ Core helm configuration.
 For easier unicode entry.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package helm-unicode
-    :ensure t
-    :general
-    (general-def
-      :states 'insert
-      "C-u" 'helm-unicode))
+(use-package helm-unicode
+  :ensure t
+  :general
+  (general-def
+    :states 'insert
+    "C-u" 'helm-unicode))
 #+END_SRC
 * Company
    
 ** Core configuration
 
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :commands (global-company-mode company-complete ans/directory-file-backend)
-    :init
-    (setq company-selection-wrap-around t)
-    (setq company-idle-delay nil)
-    :config
-    (global-company-mode)
-    ;; Thanks to this:
-    ;; https://github.com/otijhuis/evil-emacs.d/blob/7c122b0e05c367192444a85d12323487422b793b/config/evil-settings.el#L38-L39
-    (add-hook 'evil-insert-state-exit-hook (lambda ()(company-abort)))
-    ;; See discussion in: https://github.com/expez/company-quickhelp/issues/17
-    (add-hook 'company-completion-started-hook 'ans/set-company-maps)
-    (add-hook 'company-completion-finished-hook 'ans/unset-company-maps)
-    (add-hook 'company-completion-cancelled-hook 'ans/unset-company-maps)
-    (add-to-list 'company-backends 'ans/org-keyword-backend)
-    :general
-    (general-def
-      :states 'insert
-      ;; See below for discussion of company-dabbrev-code
-      ;; https://github.com/company-mode/company-mode/issues/360
-      "C-f" 'ans/directory-file-backend
-      "C-l" 'company-complete		; Note that this includes company-files
-      )
-    (general-def
-      :states 'insert
-      :keymaps 'prog-mode-map
-      "C-n" 'company-dabbrev-code
-      "C-p" 'company-dabbrev-code
-      "C-S-n" 'company-dabbrev
-      "C-S-p" 'company-dabbrev)
-    (general-def
-      :states 'insert
-      :keymaps 'text-mode-map
-      "C-n" 'company-dabbrev
-      "C-p" 'company-dabbrev))
+(use-package tex
+  :defer t
+  :ensure auctex
+  :mode ("\\.tex\\'" . LaTeX-mode)
+  :init
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+	TeX-source-correlate-start-server t)
+  :config
+  (add-hook 'LaTeX-mode-hook 'ans-latex-mode-setup)
+  (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook #'TeX-revert-document-buffer))
+
+(defun ans-latex-mode-setup ()
+  "Set custom options for LaTeX files."
+  (require 'reftex)
+  ;; Use settings for text mode
+  (ans-text-mode-setup)
+  ;; Use the "default" vim paragraph definition
+  (setq paragraph-start "\f\\|[ 	]*$")
+  (setq paragraph-separate "[ 	\f]*$"))
 #+END_SRC
 
 Additional functions needed to make ~company-quickhelp~ respect my keybindings.
 
 #+BEGIN_SRC emacs-lisp
-  (defun ans/unset-company-maps (&rest unused)
-    "Set default mappings (outside of company).
+(defun ans/unset-company-maps (&rest unused)
+  "Set default mappings (outside of company).
   Arguments (UNUSED) are ignored."
-    (general-def
-      :states 'insert
-      :keymaps 'override
-      "C-n" nil
-      "C-p" nil
-      "C-l" nil))
+  (general-def
+    :states 'insert
+    :keymaps 'override
+    "C-n" nil
+    "C-p" nil
+    "C-l" nil))
 
-  (defun ans/set-company-maps (&rest unused)
-    "Set maps for when you're inside company completion.
+(defun ans/set-company-maps (&rest unused)
+  "Set maps for when you're inside company completion.
   Arguments (UNUSED) are ignored."
-    (general-def
-      :states 'insert
-      :keymaps 'override
-      "C-n" 'company-select-next
-      "C-p" 'company-select-previous
-      "C-l" 'ans-company-complete-continue))
+  (general-def
+    :states 'insert
+    :keymaps 'override
+    "C-n" 'company-select-next
+    "C-p" 'company-select-previous
+    "C-l" 'ans-company-complete-continue))
 #+END_SRC
 
 ** Complete and continue function
     
 #+BEGIN_SRC emacs-lisp
-(defun ans-company-complete-continue ()
-  "Insert the result of a completion, then re-start completion.
-This makes repeat completions easier (e.g. when completing long file paths)."
-  (interactive)
-  (company-complete-selection)
-  (company-complete))
+(use-package ess
+  :ensure t
+  :mode ("\\.[rR]\\'" . r-mode)
+  :init
+  (setq comint-move-point-for-output t)	; Scroll R buffer on output
+  (setq ess-ask-for-ess-directory nil
+	ess-directory-function 'ans-r-file-here
+	ess-default-style 'RStudio
+	ess-use-company t
+	ess-eval-visibly 'nowait)
+  :config
+  (require 'ess-rutils)
+  (add-to-list 'ess-R-font-lock-keywords
+	       '(ess-fl-keyword:fun-calls . t) t)
+  (ans/add-evil-maps 'ess-help-mode-map)
+  :general
+  (general-def
+    :keymaps 'ess-mode-map
+    :states 'normal
+    :prefix "\\"
+    "r f" 'ans-start-R
+    "r q" 'ans-quit-R
+    "l" 'ess-eval-line
+    "d" 'ess-eval-line-and-step
+    "f f" 'ess-eval-function
+    "p p" 'ess-eval-paragraph
+    "p d" 'ess-eval-paragraph-and-step
+    "a a" 'ess-eval-buffer
+    "a d" 'ess-eval-buffer-from-here-to-end
+    "a s" 'ess-eval-buffer-from-beg-to-here
+    "r h" 'ess-display-help-on-object
+    "v i" 'ess-r-devtools-install-package
+    "v d" 'ess-r-devtools-document-package
+    "v l" 'ess-r-devtools-load-package
+    "v t" 'ess-r-devtools-test-package
+    "r o" 'ess-rutils-objs
+    "r p" 'ans/ess-eval-symbol
+    "k r" 'ans/rmarkdown-render)
+  (general-def
+    :states 'visual
+    :keymaps 'ess-mode-map
+    :prefix "\\"
+    "s s" 'ess-eval-region)
+  (general-def
+    :states 'insert
+    :keymaps 'inferior-ess-mode-map
+    "_" 'self-insert-command
+    "M--" 'ess-insert-S-assign)
+  (general-def
+    :states 'insert
+    :keymaps 'ess-mode-map
+    "_" 'self-insert-command
+    "M-m" (lambda() (interactive)(insert " %>%"))
+    "M--" 'ess-insert-S-assign
+    "C-c" (lambda() (interactive)(insert "#'")))
+  (general-def
+    :keymaps 'ess-help-mode-map
+    :states 'emacs
+    "SPC" 'ans-leader-command)
+  (general-def
+    :keymaps 'ess-help-mode-map
+    :states 'emacs
+    :prefix "\\"
+    "r h" 'ess-display-help-on-object)
+  (general-def
+    :keymaps 'ess-rdired-mode-map
+    "j" 'ess-rdired-next-line
+    "k" 'ess-rdired-previous-line))
+
+(defun ans/inferior-ess-mode-setup ()
+  "My custom configuration for inferior-ess-mode."
+  (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
+
+(add-hook 'inferior-ess-mode-hook 'ans/inferior-ess-mode-setup)
 #+END_SRC
 
 ** company-quickhelp
@@ -1030,12 +1149,12 @@ IGNORED are arguments ignored by company."
   (cl-case command
     (interactive (company-begin-backend 'org-keyword-backend))
     (prefix (and (eq major-mode 'org-mode)
-                 (cons (company-grab-line "^#\\+\\(\\w*\\)" 1)
-                       t)))
+		 (cons (company-grab-line "^#\\+\\(\\w*\\)" 1)
+		       t)))
     (candidates (mapcar #'upcase
-                        (cl-remove-if-not
-                         (lambda (c) (string-prefix-p arg c))
-                         (pcomplete-completions))))
+			(cl-remove-if-not
+			 (lambda (c) (string-prefix-p arg c))
+			 (pcomplete-completions))))
     (ignore-case t)
     (duplicates t)))
 #+END_SRC
@@ -1044,10 +1163,10 @@ IGNORED are arguments ignored by company."
 I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I split other aspects of the configuration out into their own blocks.
    
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :ensure t
-    :demand t
-    :mode ("\\.org\\'" . org-mode))
+(use-package org
+  :ensure t
+  :demand t
+  :mode ("\\.org\\'" . org-mode))
 #+END_SRC
 
 ** Agenda files
@@ -1055,7 +1174,7 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
     I keep my core org files backed up using Dropbox.
     
     #+BEGIN_SRC emacs-lisp
-      (setq org-agenda-files '("~/Dropbox/Notes/" "~/Dropbox/references/notes.org"))
+(setq org-agenda-files '("~/Dropbox/Notes/" "~/Dropbox/references/notes.org"))
     #+END_SRC
 
     I have my core org-mode files organized as follows:
@@ -1085,22 +1204,22 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
       - Personal habits :: Non work-related things I should be doing regularly.
 	   
     #+BEGIN_SRC emacs-lisp
-      (defun ans/clean-org-agenda-files ()
-	"Remove org agenda files that don't exist."
-	(interactive)
-	(setq org-agenda-files (-filter 'file-exists-p (org-agenda-files))))
+(defun ans/clean-org-agenda-files ()
+  "Remove org agenda files that don't exist."
+  (interactive)
+  (setq org-agenda-files (-filter 'file-exists-p (org-agenda-files))))
 
-      (ans/clean-org-agenda-files)
+(ans/clean-org-agenda-files)
 
-      ;; Custom source listing all agenda files
-      (defun ans/helm-org-agenda-list-files ()
-	"Helm source listing all current org agenda files."
-	(interactive)
-	(helm :sources (helm-build-sync-source
-			   "Org agenda files"
-			 :candidates (org-agenda-files)
-			 :action '(("Open file" . find-file)))
-	      :buffer "*helm agenda files*"))
+;; Custom source listing all agenda files
+(defun ans/helm-org-agenda-list-files ()
+  "Helm source listing all current org agenda files."
+  (interactive)
+  (helm :sources (helm-build-sync-source
+		     "Org agenda files"
+		   :candidates (org-agenda-files)
+		   :action '(("Open file" . find-file)))
+	:buffer "*helm agenda files*"))
     #+END_SRC
 
 ** Agenda views
@@ -1109,48 +1228,48 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
     This will make it easier to exclude top level headers from Agenda views.
     
     #+BEGIN_SRC emacs-lisp
-      (setq org-tags-exclude-from-inheritance '("_project" "_organize" "_habit"))
+(setq org-tags-exclude-from-inheritance '("_project" "_organize" "_habit"))
     #+END_SRC
     
     #+BEGIN_SRC emacs-lisp
-      (setq org-agenda-custom-commands
-            '((" " "Agenda"
-               ((agenda "" nil)
-                (tags "REFILE"
-                      ((org-agenda-overriding-header "Notes to Refile")
-                       (org-tags-match-list-sublevels nil)))
-                (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit"
-                           ((org-agenda-overriding-header "Other tasks")
-                            (org-agenda-prefix-format " %i %-12:c %l"))))
-               nil)
-              ("r" "Reading list" todo "TODO"
-               ((org-agenda-files '("~/Dropbox/references/notes.org"))
-                (org-agenda-sorting-strategy '(todo-state-down))))
-              ("c" "Configuration" tags-todo "-_organization-_project"
-               ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
-                (org-agenda-sorting-strategy '(todo-state-down))))
-              ("p" "Projects" tags-todo "_project"
-               ((org-agenda-sorting-strategy '(todo-state-down))))))
+(setq org-agenda-custom-commands
+      '((" " "Agenda"
+	 ((agenda "" nil)
+	  (tags "REFILE"
+		((org-agenda-overriding-header "Notes to Refile")
+		 (org-tags-match-list-sublevels nil)))
+	  (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit"
+		     ((org-agenda-overriding-header "Other tasks")
+		      (org-agenda-prefix-format " %i %-12:c %l"))))
+	 nil)
+	("r" "Reading list" todo "TODO"
+	 ((org-agenda-files '("~/Dropbox/references/notes.org"))
+	  (org-agenda-sorting-strategy '(todo-state-down))))
+	("c" "Configuration" tags-todo "-_organization-_project"
+	 ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
+	  (org-agenda-sorting-strategy '(todo-state-down))))
+	("p" "Projects" tags-todo "_project"
+	 ((org-agenda-sorting-strategy '(todo-state-down))))))
     #+END_SRC
 
 ** Org capture
 
     #+BEGIN_SRC emacs-lisp
-      (setq org-capture-templates
-            '(("E" "Emacs config" entry
-               (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
-               "** TODO %?")
-              ("e" "Emacs note" entry
-               (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
-               "** %?")
-              ("t" "TODO" entry
-               (file "~/Dropbox/Notes/unsorted.org")
-               "* TODO %?\n%U\n%a\n")
-              ("u" "Miscellaneous note" entry
-               (file "~/Dropbox/Notes/unsorted.org")
-               "* %? :NOTE:\n%U\n%a\n")
-              ("m" "Meeting" entry (file "~/Dropbox/Notes/unsorted.org")
-               "* Meeting with %? \n%U" :clock-in t :clock-resume t)))
+(setq org-capture-templates
+      '(("E" "Emacs config" entry
+	 (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
+	 "** TODO %?")
+	("e" "Emacs note" entry
+	 (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
+	 "** %?")
+	("t" "TODO" entry
+	 (file "~/Dropbox/Notes/unsorted.org")
+	 "* TODO %?\n%U\n%a\n")
+	("u" "Miscellaneous note" entry
+	 (file "~/Dropbox/Notes/unsorted.org")
+	 "* %? :NOTE:\n%U\n%a\n")
+	("m" "Meeting" entry (file "~/Dropbox/Notes/unsorted.org")
+	 "* Meeting with %? \n%U" :clock-in t :clock-resume t)))
     #+END_SRC
 
 *** org-capture-pop-frame
@@ -1168,8 +1287,8 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 All my org files have these to-do keywords by default.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-todo-keywords
-        '((sequence "TODO" "NEXT" "|" "DONE" "CANCELED")))
+(setq org-todo-keywords
+      '((sequence "TODO" "NEXT" "|" "DONE" "CANCELED")))
 #+END_SRC
     
 However, these can be set on a file-specific basis as well via the ~#+TODO~ property.
@@ -1183,57 +1302,57 @@ However, these can be set on a file-specific basis as well via the ~#+TODO~ prop
 Show emphasis markers by default, but also quickly toggle them with a custom function.
     
 #+BEGIN_SRC emacs-lisp
-  (setq org-hide-emphasis-markers nil)
+(setq org-hide-emphasis-markers nil)
 
-  (defun ans/org-toggle-emphasis-markers ()
-    "Toggle the display of org emphasis markers."
-    (interactive)
-    (if org-hide-emphasis-markers
-        (setq org-hide-emphasis-markers nil)
-      (setq org-hide-emphasis-markers t))
-    (font-lock-flush))
+(defun ans/org-toggle-emphasis-markers ()
+  "Toggle the display of org emphasis markers."
+  (interactive)
+  (if org-hide-emphasis-markers
+      (setq org-hide-emphasis-markers nil)
+    (setq org-hide-emphasis-markers t))
+  (font-lock-flush))
 #+END_SRC
     
 By default, hide line numbers in org-mode buffers, and disable adaptive prefix mode.
 
 #+BEGIN_SRC emacs-lisp
-  (defun ans/org-mode-settings ()
-    "Custom settings for org mode."
-    (linum-mode -1)
-    (adaptive-wrap-prefix-mode -1))
+(defun ans/org-mode-settings ()
+  "Custom settings for org mode."
+  (linum-mode -1)
+  (adaptive-wrap-prefix-mode -1))
 
-  (add-hook 'org-mode-hook 'ans/org-mode-settings)
+(add-hook 'org-mode-hook 'ans/org-mode-settings)
 #+END_SRC
 
 By default, use org-mode indentation.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-startup-indented t)
+(setq org-startup-indented t)
 #+END_SRC
 
 Automatically re-indent a source code block.
 
 #+BEGIN_SRC emacs-lisp
-  (defun ans/indent-org-source-block ()
-    "Re-indent an org mode source code block."
-    (interactive)
-    (when (org-in-src-block-p)
-      (org-edit-special)
-      (indent-region (point-min) (point-max))
-      (org-edit-src-exit)))
+(defun ans/indent-org-source-block ()
+  "Re-indent an org mode source code block."
+  (interactive)
+  (when (org-in-src-block-p)
+    (org-edit-special)
+    (indent-region (point-min) (point-max))
+    (org-edit-src-exit)))
 #+END_SRC
 
 Don't reposition the screen when expanding an outline.
 Note that the cursor can be repositioned at the center of the screen with =zz=.
 
 #+BEGIN_SRC emacs-lisp
-  (remove-hook 'org-cycle-hook #'org-optimize-window-after-visibility-change)
+(remove-hook 'org-cycle-hook #'org-optimize-window-after-visibility-change)
 #+END_SRC
 
 End of line should ignore tags.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-special-ctrl-a/e t)
+(setq org-special-ctrl-a/e t)
 #+END_SRC
 
 ** Source code (babel)
@@ -1241,42 +1360,43 @@ End of line should ignore tags.
 Automatically fontify source code, and edit source code in the current window (rather than opening a new one).
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-babel-load-languages '((emacs-lisp . t) (R . t))
-        org-src-fontify-natively t
-        org-src-tab-acts-natively t
-        org-src-window-setup 'current-window)
-  (set-face-attribute 'org-block nil :foreground nil :background "Gray15")
-  (set-face-attribute 'org-block-begin-line nil :background "Gray15")
+(setq org-babel-load-languages '((emacs-lisp . t) (R . t))
+      org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-src-window-setup 'current-window
+      org-src-preserve-indentation t)
+(set-face-attribute 'org-block nil :foreground nil :background "Gray15")
+(set-face-attribute 'org-block-begin-line nil :background "#001436")
 
-  (with-eval-after-load 'org
-    (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t) (R . t))))
+(with-eval-after-load 'org
+  (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t) (R . t))))
 #+END_SRC
     
 Don't prompt for confirmation on babel evaluation.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-confirm-babel-evaluate nil)
+(setq org-confirm-babel-evaluate nil)
 #+END_SRC
     
 Set some language-specific default settings.
     
 #+BEGIN_SRC emacs-lisp
-  (defvar org-babel-default-header-args:R '((:session . "*org-R*")))
+(defvar org-babel-default-header-args:R '((:session . "*org-R*")))
 #+END_SRC
 
 ** Refile
     
     #+BEGIN_SRC emacs-lisp
-      (setq org-refile-targets '((nil :maxlevel . 9)
-				 (org-agenda-files :maxlevel . 9))
-	    org-refile-use-outline-path 'file
-	    org-outline-path-complete-in-steps nil
-	    org-refile-allow-creating-parent-nodes 'confirm
-	    org-refile-target-verify-function 'ans/verify-refile-target)
+(setq org-refile-targets '((nil :maxlevel . 9)
+			   (org-agenda-files :maxlevel . 9))
+      org-refile-use-outline-path 'file
+      org-outline-path-complete-in-steps nil
+      org-refile-allow-creating-parent-nodes 'confirm
+      org-refile-target-verify-function 'ans/verify-refile-target)
 
-      (defun ans/verify-refile-target ()
-	"Exclude TODO keywords with a done state from refile targets."
-	(not (member (nth 2 (org-heading-components)) org-done-keywords)))
+(defun ans/verify-refile-target ()
+  "Exclude TODO keywords with a done state from refile targets."
+  (not (member (nth 2 (org-heading-components)) org-done-keywords)))
     #+END_SRC
     
 ** Clocking
@@ -1284,66 +1404,66 @@ Set some language-specific default settings.
 Use the clocking settings from "Organize your life in plain text".
     
 #+BEGIN_SRC emacs-lisp
-  (org-clock-persistence-insinuate)
+(org-clock-persistence-insinuate)
 
-  (setq
-   ;; Resume clocking task on clock in if it's already open
-   org-clock-in-resume t
-   ;; Separate drawers for clocking and logs
-   org-drawers '("PROPERTIES" "LOGBOOK")
-   ;; Save clock data and state changes and notes in LOGBOOK drawer
-   org-clock-into-drawer t
-   ;; Remove clocks with 0:00 duration
-   org-clock-out-remove-zero-time-clocks t
-   ;; Clock out when marking a task as DONE
-   org-clock-out-when-done t
-   ;; Save running clock and clock history when exiting emacs; reload on startup
-   org-clock-persist t
-   ;; Do not prompt to resume an active clock
-   org-clock-persist-query-resume nil
-   ;; Auto-clock resolution for finding open clocks
-   org-clock-auto-clock-resolution (quote when-no-clock-is-running)
-   ;; Include current clocking task in clock reports
-   org-clock-report-include-clocking-task t
-   ;; Mode line configuration
-   org-clock-mode-line-total 'current)
+(setq
+ ;; Resume clocking task on clock in if it's already open
+ org-clock-in-resume t
+ ;; Separate drawers for clocking and logs
+ org-drawers '("PROPERTIES" "LOGBOOK")
+ ;; Save clock data and state changes and notes in LOGBOOK drawer
+ org-clock-into-drawer t
+ ;; Remove clocks with 0:00 duration
+ org-clock-out-remove-zero-time-clocks t
+ ;; Clock out when marking a task as DONE
+ org-clock-out-when-done t
+ ;; Save running clock and clock history when exiting emacs; reload on startup
+ org-clock-persist t
+ ;; Do not prompt to resume an active clock
+ org-clock-persist-query-resume nil
+ ;; Auto-clock resolution for finding open clocks
+ org-clock-auto-clock-resolution (quote when-no-clock-is-running)
+ ;; Include current clocking task in clock reports
+ org-clock-report-include-clocking-task t
+ ;; Mode line configuration
+ org-clock-mode-line-total 'current)
 #+END_SRC
 
 When clocking out of a task, automatically clock into the parent task
 
 #+BEGIN_SRC emacs-lisp
-  (defun ans/clock-out-maybe ()
-    "Clock parent task, or clock out."
-    (when (and ans/keep-clock-running
-               (not org-clock-clocking-in)
-               (marker-buffer org-clock-default-task)
-               (not org-clock-resolving-clocks-due-to-idleness))
-      (ans/clock-in-parent-task)))
+(defun ans/clock-out-maybe ()
+  "Clock parent task, or clock out."
+  (when (and ans/keep-clock-running
+	     (not org-clock-clocking-in)
+	     (marker-buffer org-clock-default-task)
+	     (not org-clock-resolving-clocks-due-to-idleness))
+    (ans/clock-in-parent-task)))
 
-  (defun ans/clock-in-parent-task ()
-    "Move point to parent task (if any) and clock in.
+(defun ans/clock-in-parent-task ()
+  "Move point to parent task (if any) and clock in.
   Otherwise, clock in the default task."
-    (let ((parent-task))
-      (save-excursion
-        (save-restriction
-          (widen)
-          (while (and (not parent-task) (org-up-heading-safe))
-            (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
-              (setq parent-task (point))))
-          (if parent-task
-              (org-with-point-at parent-task
-                (org-clock-in))
-            (when ans/keep-clock-running
-              (ans/clock-in-organization-task)))))))
+  (let ((parent-task))
+    (save-excursion
+      (save-restriction
+	(widen)
+	(while (and (not parent-task) (org-up-heading-safe))
+	  (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+	    (setq parent-task (point))))
+	(if parent-task
+	    (org-with-point-at parent-task
+	      (org-clock-in))
+	  (when ans/keep-clock-running
+	    (ans/clock-in-organization-task)))))))
 
-  (add-hook 'org-clock-out-hook #'ans/clock-out-maybe 'append)
+(add-hook 'org-clock-out-hook #'ans/clock-out-maybe 'append)
 #+END_SRC
 
 Default settings for a clocktable.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-clock-clocktable-default-properties
-        '(:maxlevel 4 :scope agenda :block today))
+(setq org-clock-clocktable-default-properties
+      '(:maxlevel 4 :scope agenda :block today))
 #+END_SRC
 
 *** Clocking functions
@@ -1351,29 +1471,28 @@ Default settings for a clocktable.
 Clock into a default task ("organization").
 
 #+BEGIN_SRC emacs-lisp
-  (defun ans/punch-in ()
-    "Start clocking, and set default task to Organization."
-    (interactive)
-    (setq ans/keep-clock-running t)
-    (ans/clock-in-organization-task))
+(defun ans/punch-in ()
+  "Start clocking, and set default task to Organization."
+  (interactive)
+  (setq ans/keep-clock-running t)
+  (ans/clock-in-organization-task))
 
-  (defun ans/punch-out ()
-    "End all clocking."
-    (interactive)
-    (setq ans/keep-clock-running nil)
-    (when (org-clock-is-active)
-      (org-clock-out))
-    (org-agenda-remove-restriction-lock))
+(defun ans/punch-out ()
+  "End all clocking."
+  (interactive)
+  (setq ans/keep-clock-running nil)
+  (when (org-clock-is-active)
+    (org-clock-out)))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  ;; Default clocking task ("organization") ID
-  (defvar ans/organization-task-id "b86713a1-f9db-47c5-860f-6a2aecfec6c9")
-  (defun ans/clock-in-organization-task ()
-    "Clock in the default organization task."
-    (interactive)
-    (org-with-point-at (org-id-find ans/organization-task-id 'marker)
-      (org-clock-in '(16))))
+;; Default clocking task ("organization") ID
+(defvar ans/organization-task-id "b86713a1-f9db-47c5-860f-6a2aecfec6c9")
+(defun ans/clock-in-organization-task ()
+  "Clock in the default organization task."
+  (interactive)
+  (org-with-point-at (org-id-find ans/organization-task-id 'marker)
+    (org-clock-in '(16))))
 #+END_SRC
 
 ** Custom structure templates
@@ -1381,10 +1500,10 @@ Clock into a default task ("organization").
 These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     
     #+BEGIN_SRC emacs-lisp
-      (add-to-list 'org-structure-template-alist
-                   '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-      (add-to-list 'org-structure-template-alist
-                   '("p" ":PROPERTIES:\n?\n:END:"))
+(add-to-list 'org-structure-template-alist
+	     '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+(add-to-list 'org-structure-template-alist
+	     '("p" ":PROPERTIES:\n?\n:END:"))
     #+END_SRC
     
 ** Keybindings
@@ -1466,93 +1585,93 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 *** evil-org
      
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-org
-    :ensure t
-    :after org
-    :config
-    (add-hook 'org-mode-hook 'evil-org-mode)
-    (add-hook 'evil-org-mode-hook 'ans/evil-org-mode-setup)
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys))
+(use-package evil-org
+  :ensure t
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook 'ans/evil-org-mode-setup)
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
 
-  (defun ans/evil-org-mode-setup ()
-    "Custom setup for org mode."
-    (push '(?* . ("*" . "*")) evil-surround-pairs-alist)
-    (push '(?/ . ("/" . "/")) evil-surround-pairs-alist)
-    (evil-org-set-key-theme '(navigation insert textobjects calendar)))
+(defun ans/evil-org-mode-setup ()
+  "Custom setup for org mode."
+  (push '(?* . ("*" . "*")) evil-surround-pairs-alist)
+  (push '(?/ . ("/" . "/")) evil-surround-pairs-alist)
+  (evil-org-set-key-theme '(navigation insert textobjects calendar)))
 #+END_SRC
 
 ** Other custom functions
 
 #+BEGIN_SRC emacs-lisp
-  (defun ans/evil-insert-heading ()
-    "Insert heading before point and enter insert mode."
-    (interactive)
-    (org-insert-heading)
-    (evil-insert 1))
+(defun ans/evil-insert-heading ()
+  "Insert heading before point and enter insert mode."
+  (interactive)
+  (org-insert-heading)
+  (evil-insert 1))
 
-  (defun ans/evil-insert-heading-after-current ()
-    "Insert heading after point and enter insert mode."
-    (interactive)
-    (org-insert-heading-respect-content)
-    (evil-insert 1))
+(defun ans/evil-insert-heading-after-current ()
+  "Insert heading after point and enter insert mode."
+  (interactive)
+  (org-insert-heading-respect-content)
+  (evil-insert 1))
 
-  (defun ans/org-realign-tags ()
-    "Right-align org mode tags in current buffer."
-    (interactive)
-    (org-set-tags nil t))
-  
-  (defun air--org-swap-tags (tags)
-    "Replace any tags on the current headline with TAGS.
+(defun ans/org-realign-tags ()
+  "Right-align org mode tags in current buffer."
+  (interactive)
+  (org-set-tags nil t))
+
+(defun air--org-swap-tags (tags)
+  "Replace any tags on the current headline with TAGS.
 
   The assumption is that TAGS will be a string conforming to Org Mode's
   tag format specifications, or nil to remove all tags."
-    (let ((old-tags (org-get-tags-string))
-          (tags (if tags
-                    (concat " " tags)
-                  "")))
-      (save-excursion
-        (beginning-of-line)
-        (re-search-forward
-         (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
-         (line-end-position) t)
-        (replace-match tags)
-        (org-set-tags t))))
+  (let ((old-tags (org-get-tags-string))
+	(tags (if tags
+		  (concat " " tags)
+		"")))
+    (save-excursion
+      (beginning-of-line)
+      (re-search-forward
+       (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
+       (line-end-position) t)
+      (replace-match tags)
+      (org-set-tags t))))
 
-  (defun air-org-set-tags (tag)
-    "Add TAG if it is not in the list of tags, remove it otherwise.
+(defun air-org-set-tags (tag)
+  "Add TAG if it is not in the list of tags, remove it otherwise.
 
   TAG is chosen interactively from the global tags completion table."
-    (interactive
-     (list (let ((org-last-tags-completion-table
-                  (if (derived-mode-p 'org-mode)
-                      (org-uniquify
-                       (delq nil (append (org-get-buffer-tags)
-                                         (org-global-tags-completion-table))))
-                    (org-global-tags-completion-table))))
-             (completing-read
-              "Tag: " 'org-tags-completion-function nil nil nil
-              'org-tags-history))))
-    (let* ((cur-list (org-get-tags))
-           (new-tags (mapconcat 'identity
-                                (if (member tag cur-list)
-                                    (delete tag cur-list)
-                                  (append cur-list (list tag)))
-                                ":"))
-           (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
-                  nil)))
-      (air--org-swap-tags new)))
-    
-  (defun ans/org-hide-all-except-current ()
-    "Close all subtrees outside of the current view."
-    (interactive)
-    (save-excursion
-      (org-global-cycle))
-    (org-cycle))
+  (interactive
+   (list (let ((org-last-tags-completion-table
+		(if (derived-mode-p 'org-mode)
+		    (org-uniquify
+		     (delq nil (append (org-get-buffer-tags)
+				       (org-global-tags-completion-table))))
+		  (org-global-tags-completion-table))))
+	   (completing-read
+	    "Tag: " 'org-tags-completion-function nil nil nil
+	    'org-tags-history))))
+  (let* ((cur-list (org-get-tags))
+	 (new-tags (mapconcat 'identity
+			      (if (member tag cur-list)
+				  (delete tag cur-list)
+				(append cur-list (list tag)))
+			      ":"))
+	 (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
+		nil)))
+    (air--org-swap-tags new)))
 
-  (defun ans/org-agenda-mode-p ()
-    "Boolean to check if currently in agenda mode."
-    (equal major-mode 'org-agenda-mode))
+(defun ans/org-hide-all-except-current ()
+  "Close all subtrees outside of the current view."
+  (interactive)
+  (save-excursion
+    (org-global-cycle))
+  (org-cycle))
+
+(defun ans/org-agenda-mode-p ()
+  "Boolean to check if currently in agenda mode."
+  (equal major-mode 'org-agenda-mode))
 #+END_SRC
 
 ** org-journal
@@ -1577,104 +1696,104 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 ** org-ref
     
     #+BEGIN_SRC emacs-lisp
-      (use-package org-ref
-        :ensure t
-        :init
-        (setq org-ref-bibliography-notes ans/reference-notes
-              reftex-default-bibliography `(,ans/reference-bibfile)
-              org-ref-default-bibliography `(,ans/reference-bibfile)
-              org-ref-pdf-directory ans/reference-dir-pdfs
-              org-ref-bibtex-hydra-key-binding nil
-              org-ref-note-title-format "** TODO %2a %y - %T
-             :PROPERTIES:
-              :Custom_ID: %k
-              :AUTHOR: %9a
-              :FULL_TITLE: %t
-              :JOURNAL: %j
-              :YEAR: %y
-              :VOLUME: %v
-              :PAGES: %p
-              :DOI: %D
-              :URL: %U
-             :END:
+(use-package org-ref
+  :ensure t
+  :init
+  (setq org-ref-bibliography-notes ans/reference-notes
+	reftex-default-bibliography `(,ans/reference-bibfile)
+	org-ref-default-bibliography `(,ans/reference-bibfile)
+	org-ref-pdf-directory ans/reference-dir-pdfs
+	org-ref-bibtex-hydra-key-binding nil
+	org-ref-note-title-format "** TODO %2a %y - %T
+	     :PROPERTIES:
+	      :Custom_ID: %k
+	      :AUTHOR: %9a
+	      :FULL_TITLE: %t
+	      :JOURNAL: %j
+	      :YEAR: %y
+	      :VOLUME: %v
+	      :PAGES: %p
+	      :DOI: %D
+	      :URL: %U
+	     :END:
 
-            ")
-        :config
-        (general-def
-          :states 'normal
-          "\\\\" 'org-ref-bibtex-hydra/body))
+	    ")
+  :config
+  (general-def
+    :states 'normal
+    "\\\\" 'org-ref-bibtex-hydra/body))
     #+END_SRC
     
 ** Hydra for org mode tasks
 
 #+BEGIN_SRC emacs-lisp
-  (defhydra ans/org-mode-hydra (:exit t)
-    "Org mode"
-    ("a" org-agenda "Agenda")
-    ("o" org-capture "Capture")
-    ("r" ans/org-refile-aware "Refile")
-    ("s" helm-org-rifle-agenda-files "Search")
-    ("f" ans/helm-org-agenda-list-files "List agenda files")
-    ("l" org-store-link "Store link")
-    ("L" org-insert-last-stored-link "Insert stored link")
-    ("n" ans/org-toggle-narrow "Toggle narrow")
-    ("0" widen "Widen")
-    ("e" org-edit-special "Edit special")
-    ("E" org-export-dispatch "Export")
-    ("c" ans/clock-hydra/body "Clocking")
-    ("t" ans/org-scheduling-hydra/body "Scheduling")
-    ("T" org-babel-tangle "Tangle")
-    ("S" org-save-all-org-buffers "Save all buffers")
-    ("!" org-reload "Reload")
-    ("SPC" org-ctrl-c-ctrl-c "C-c"))
+(defhydra ans/org-mode-hydra (:exit t)
+  "Org mode"
+  ("a" org-agenda "Agenda")
+  ("o" org-capture "Capture")
+  ("r" ans/org-refile-aware "Refile")
+  ("s" helm-org-rifle-agenda-files "Search")
+  ("f" ans/helm-org-agenda-list-files "List agenda files")
+  ("l" org-store-link "Store link")
+  ("L" org-insert-last-stored-link "Insert stored link")
+  ("n" ans/org-toggle-narrow "Toggle narrow")
+  ("0" widen "Widen")
+  ("e" org-edit-special "Edit special")
+  ("E" org-export-dispatch "Export")
+  ("c" ans/clock-hydra/body "Clocking")
+  ("t" ans/org-scheduling-hydra/body "Scheduling")
+  ("T" org-babel-tangle "Tangle")
+  ("S" org-save-all-org-buffers "Save all buffers")
+  ("!" org-reload "Reload")
+  ("SPC" org-ctrl-c-ctrl-c "C-c"))
 
-  (defun ans/org-refile-aware ()
-    "Context-aware org refile."
-    (interactive)
-    (if (ans/org-agenda-mode-p)
-        (org-agenda-refile)
-      (org-refile)))
+(defun ans/org-refile-aware ()
+  "Context-aware org refile."
+  (interactive)
+  (if (ans/org-agenda-mode-p)
+      (org-agenda-refile)
+    (org-refile)))
 
-  (defun ans/org-toggle-narrow ()
-    "Narrow if widened, otherwise widen."
-    (interactive)
-    (if (buffer-narrowed-p)
-        (widen)
-      (org-narrow-to-subtree)))
+(defun ans/org-toggle-narrow ()
+  "Narrow if widened, otherwise widen."
+  (interactive)
+  (if (buffer-narrowed-p)
+      (widen)
+    (org-narrow-to-subtree)))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (defhydra ans/clock-hydra (:exit t)
-    "Clocking commands."
-    ("RET" org-clock-in "Clock in")
-    ("<backspace>" org-clock-out "Clock out")
-    ("+" ans/punch-in "Punch in")
-    ("-" ans/punch-out "Punch out")
-    ("g" org-clock-goto "Go to current clock")
-    ("l" org-clock-in-last "Go to most recent clock")
-    ("h" (lambda () (interactive) (org-clock-in-last 4)) "Clock from history")
-    ("r" org-clock-report "Insert clock report"))
+(defhydra ans/clock-hydra (:exit t)
+  "Clocking commands."
+  ("RET" org-clock-in "Clock in")
+  ("<backspace>" org-clock-out "Clock out")
+  ("+" ans/punch-in "Punch in")
+  ("-" ans/punch-out "Punch out")
+  ("g" org-clock-goto "Go to current clock")
+  ("l" org-clock-in-last "Go to most recent clock")
+  ("h" (lambda () (interactive) (org-clock-in-last 4)) "Clock from history")
+  ("r" org-clock-report "Insert clock report"))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (defhydra ans/org-scheduling-hydra (:exit t)
-    "Deadlines and scheduling."
-    ("d" ans/org-deadline-aware "Deadline")
-    ("s" ans/org-schedule-aware "Schedule"))
+(defhydra ans/org-scheduling-hydra (:exit t)
+  "Deadlines and scheduling."
+  ("d" ans/org-deadline-aware "Deadline")
+  ("s" ans/org-schedule-aware "Schedule"))
 
-  (defun ans/org-deadline-aware ()
-    "Context-aware org-deadline."
-    (interactive)
-    (if (ans/org-agenda-mode-p)
-        (call-interactively 'org-agenda-deadline)
-      (org-deadline)))
+(defun ans/org-deadline-aware ()
+  "Context-aware org-deadline."
+  (interactive)
+  (if (ans/org-agenda-mode-p)
+      (call-interactively 'org-agenda-deadline)
+    (org-deadline)))
 
-  (defun ans/org-schedule-aware ()
-    "Context-aware org-schedule."
-    (interactive)
-    (if (ans/org-agenda-mode-p)
-        (call-interactively 'org-agenda-schedule)
-      (org-schedule)))
+(defun ans/org-schedule-aware ()
+  "Context-aware org-schedule."
+  (interactive)
+  (if (ans/org-agenda-mode-p)
+      (call-interactively 'org-agenda-schedule)
+    (org-schedule)))
 #+END_SRC
 
 * yasnippet
@@ -1834,7 +1953,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 
     #+BEGIN_SRC emacs-lisp
 ;; ox-ravel -- Better R integration into org mode
-; (require 'ox-ravel)
+					; (require 'ox-ravel)
     #+END_SRC
 
 ** Custom imports functions (WIP)
@@ -2007,56 +2126,56 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
 ** helm-bibtex
     
     #+BEGIN_SRC emacs-lisp
-      (use-package helm-bibtex
-	:ensure t
-	:init
-	(setq bibtex-completion-bibliography ans/reference-bibfile
-	      bibtex-completion-library-path ans/reference-dir-pdfs
-	      bibtex-completion-notes-path ans/reference-notes
-	      bibtex-autokey-name-case-convert-function 'downcase
-	      bibtex-autokey-name-year-separator "_"
-	      bibtex-autokey-year-title-separator "_"
-	      bibtex-autokey-year-length 4
-	      bibtex-autokey-titlewords 1
-	      bibtex-autokey-titleword-length nil
-	      bibtex-autokey-titleword-case-convert-function 'downcase)
-	:commands helm-bibtex
-	:config
-	(helm-delete-action-from-source "Edit notes" helm-source-bibtex)
-	(helm-add-action-to-source "Edit notes" 'ans/org-ref-notes-function helm-source-bibtex 7))
-      (evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
+(use-package helm-bibtex
+  :ensure t
+  :init
+  (setq bibtex-completion-bibliography ans/reference-bibfile
+	bibtex-completion-library-path ans/reference-dir-pdfs
+	bibtex-completion-notes-path ans/reference-notes
+	bibtex-autokey-name-case-convert-function 'downcase
+	bibtex-autokey-name-year-separator "_"
+	bibtex-autokey-year-title-separator "_"
+	bibtex-autokey-year-length 4
+	bibtex-autokey-titlewords 1
+	bibtex-autokey-titleword-length nil
+	bibtex-autokey-titleword-case-convert-function 'downcase)
+  :commands helm-bibtex
+  :config
+  (helm-delete-action-from-source "Edit notes" helm-source-bibtex)
+  (helm-add-action-to-source "Edit notes" 'ans/org-ref-notes-function helm-source-bibtex 7))
+(evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
     #+END_SRC
 
     Redefine ~bibtex-completion-fallback-candidates~ so it doesn't include "Create new entry" (which I never use).
 
     #+BEGIN_SRC emacs-lisp
-      (defun bibtex-completion-fallback-candidates ()
-	"Completion candidates if no entry is found."
-	bibtex-completion-fallback-options)
+(defun bibtex-completion-fallback-candidates ()
+  "Completion candidates if no entry is found."
+  bibtex-completion-fallback-options)
     #+END_SRC
 
     Custom function to insert bibtex entry at the end of my ~library.bib~ file.
 
     #+BEGIN_SRC emacs-lisp
-      (general-def
-	:states 'emacs
-	:keymaps 'biblio-selection-mode-map
-	"I" 'ans/biblio-selection-insert-end-of-bibfile)
+(general-def
+  :states 'emacs
+  :keymaps 'biblio-selection-mode-map
+  "I" 'ans/biblio-selection-insert-end-of-bibfile)
 
-      (defun ans/biblio--selection-insert-at-end-of-bibfile-callback (bibtex entry)
-	"Add BIBTEX (from ENTRY) to end of library.bib file."
-	(with-current-buffer (find-file-noselect ans/reference-bibfile)
-	  (goto-char (point-max))
-	  (insert bibtex)
-	  (org-ref-clean-bibtex-entry)
-	  (save-buffer))
-	(message "Inserted bibtex entry for %S."
-		 (biblio--prepare-title (biblio-alist-get 'title entry))))
+(defun ans/biblio--selection-insert-at-end-of-bibfile-callback (bibtex entry)
+  "Add BIBTEX (from ENTRY) to end of library.bib file."
+  (with-current-buffer (find-file-noselect ans/reference-bibfile)
+    (goto-char (point-max))
+    (insert bibtex)
+    (org-ref-clean-bibtex-entry)
+    (save-buffer))
+  (message "Inserted bibtex entry for %S."
+	   (biblio--prepare-title (biblio-alist-get 'title entry))))
 
-      (defun ans/biblio-selection-insert-end-of-bibfile ()
-	"Insert BibTeX of current entry at the end of my library.bib file."
-	(interactive)
-	(biblio--selection-forward-bibtex #'ans/biblio--selection-insert-at-end-of-bibfile-callback))
+(defun ans/biblio-selection-insert-end-of-bibfile ()
+  "Insert BibTeX of current entry at the end of my library.bib file."
+  (interactive)
+  (biblio--selection-forward-bibtex #'ans/biblio--selection-insert-at-end-of-bibfile-callback))
     #+END_SRC
 ** ebib
     

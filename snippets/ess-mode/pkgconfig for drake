@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: pkgconfig for drake
+# key: drakepkg
+# --
+pkgconfig::set_config("drake::strings_in_dots" = "literals")
