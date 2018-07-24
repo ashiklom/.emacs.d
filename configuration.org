@@ -12,9 +12,9 @@
 * Package management
 ** Core emacs package manager
   
- Load Emacs's internal package manager and tell it where to look for packages.
+Load Emacs's internal package manager and tell it where to look for packages.
 
- #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (eval-when-compile
   (require 'package)
   (setq package-enable-at-startup nil)
@@ -25,32 +25,32 @@
   (unless (assoc-default "melpa-stable" package-archives)
     (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/")))
   (package-initialize))
- #+END_SRC
+#+END_SRC
 
 ** use-package
 
 Bootstrap the ~use-package~ package manager.
 
- #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile (require 'use-package))
- #+END_SRC
+#+END_SRC
 
 ** quelpa
    
- For installing packages from source (e.g. GitHub).
+For installing packages from source (e.g. GitHub).
 
- #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package quelpa
   :ensure t
   :init
   (setq quelpa-update-melpa-p nil))
 (use-package quelpa-use-package :ensure t)
- #+END_SRC
+#+END_SRC
 
- Also,
+Also,
 * Lisp libraries
 ** dash -- list manipulation
 
@@ -192,21 +192,21 @@ Customize how major and minor modes appear in the modeline.
   :ensure t
   :config
   (delight '((lispyville-mode nil lispyville)
-	     (yas-minor-mode nil yasnippet)
-	     (helm-mode nil helm)
-	     (company-mode nil company)
-	     (company-quickhelp-mode nil company-quickhelp)
-	     (evil-org-mode nil evil-org)
-	     (org-indent-mode nil org-indent)
-	     (flycheck-mode " 🐛" flycheck)
-	     (flyspell-mode " 𝐀𝐁𝐂" flyspell)
-	     (visual-line-mode " ↩" simple)
-	     (adaptive-wrap-prefix-mode " ⥱" adaptive-wrap)
-	     (aggressive-indent-mode " ➠" aggressive-indent)
-	     (auto-revert-mode " ↻" autorevert)
-	     (undo-tree-mode nil undo-tree)
-	     (eldoc-mode nil eldoc)
-	     (winner-mode nil winner))))
+             (yas-minor-mode nil yasnippet)
+             (helm-mode nil helm)
+             (company-mode nil company)
+             (company-quickhelp-mode nil company-quickhelp)
+             (evil-org-mode nil evil-org)
+             (org-indent-mode nil org-indent)
+             (flycheck-mode " 🐛" flycheck)
+             (flyspell-mode " 𝐀𝐁𝐂" flyspell)
+             (visual-line-mode " ↩" simple)
+             (adaptive-wrap-prefix-mode " ⥱" adaptive-wrap)
+             (aggressive-indent-mode " ➠" aggressive-indent)
+             (auto-revert-mode " ↻" autorevert)
+             (undo-tree-mode nil undo-tree)
+             (eldoc-mode nil eldoc)
+             (winner-mode nil winner))))
 #+END_SRC
 ** rainbow-delimiters
 
@@ -450,25 +450,25 @@ Supercharges =%= to jump between other stuff as well (e.g. if-else statements).
 I also tried to expand it to R, but it doesn't currently work.
 
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package evil-matchit
-    :ensure t
-    :after evil
-    :config
-    (global-evil-matchit-mode 1)
-    (require 'evil-matchit-sdk)
-    (defvar ans/evilmi-r-match-tags
-      '(("if" "else if" "else")
-        ("function" "return" ())
-        (("for" "while") ("break") ())))
-    (defun ans/evilmi-r-get-tag ()
-      (evilmi-sdk-get-tag ans/evilmi-r-match-tags
-                          evilmi-sdk-extract-keyword-howtos))
-    (defun ans/evilmi-r-jump (rlt num)
-      (evilmi-sdk-jump rlt
-                       num
-                       ans/evilmi-r-match-tags
-                       evilmi-sdk-extract-keyword-howtos))
-    (plist-put evilmi-plugins 'r-mode '((ans/evilmi-r-get-tag ans/evilmi-r-jump))))
+(use-package evil-matchit
+  :ensure t
+  :after evil
+  :config
+  (global-evil-matchit-mode 1)
+  (require 'evil-matchit-sdk)
+  (defvar ans/evilmi-r-match-tags
+    '(("if" "else if" "else")
+      ("function" "return" ())
+      (("for" "while") ("break") ())))
+  (defun ans/evilmi-r-get-tag ()
+    (evilmi-sdk-get-tag ans/evilmi-r-match-tags
+                        evilmi-sdk-extract-keyword-howtos))
+  (defun ans/evilmi-r-jump (rlt num)
+    (evilmi-sdk-jump rlt
+                     num
+                     ans/evilmi-r-match-tags
+                     evilmi-sdk-extract-keyword-howtos))
+  (plist-put evilmi-plugins 'r-mode '((ans/evilmi-r-get-tag ans/evilmi-r-jump))))
 #+END_SRC
 ** Global keybindings
     
@@ -503,8 +503,8 @@ Other keymaps (need to be sorted and cleaned up).
 (general-def
   :states 'insert
   "j" (general-key-dispatch 'self-insert-command
-	:timeout 0.25
-	"k" 'evil-normal-state))
+        :timeout 0.25
+        "k" 'evil-normal-state))
 
 (general-def
   :states '(motion normal visual)
@@ -756,18 +756,18 @@ Function to check if I'm inside of a projectile project.
   "Renames current buffer and file it is visiting."
   (interactive)
   (let ((name (buffer-name))
-	(filename (buffer-file-name)))
+        (filename (buffer-file-name)))
     (if (not (and filename (file-exists-p filename)))
-	(error "Buffer '%s' is not visiting a file!" name)
+        (error "Buffer '%s' is not visiting a file!" name)
       (let ((new-name (read-file-name "New name: " filename)))
-	(cond ((get-buffer new-name)
-	       (error "A buffer named '%s' already exists!" new-name))
-	      (t
-	       (rename-file filename new-name 1)
-	       (rename-buffer new-name)
-	       (set-visited-file-name new-name)
-	       (set-buffer-modified-p nil)
-	       (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
+        (cond ((get-buffer new-name)
+               (error "A buffer named '%s' already exists!" new-name))
+              (t
+               (rename-file filename new-name 1)
+               (rename-buffer new-name)
+               (set-visited-file-name new-name)
+               (set-buffer-modified-p nil)
+               (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
 
 (evil-ex-define-cmd "rename" 'rename-this-buffer-and-file)
 #+END_SRC
@@ -780,9 +780,9 @@ Function to check if I'm inside of a projectile project.
   (let ((filename (buffer-file-name)))
     (when filename
       (progn
-	(delete-file filename)
-	(message "Deleted file %s" filename)
-	(kill-buffer)))))
+        (delete-file filename)
+        (message "Deleted file %s" filename)
+        (kill-buffer)))))
 
 (evil-ex-define-cmd "dkill" 'ans/delete-file-and-buffer)
 #+END_SRC
@@ -822,10 +822,10 @@ See `ans-toggle-minimize'.")
   (interactive)
   (if ans-window-minimized
       (progn (set-window-configuration (pop ans-window-minimized))
-	     (message "Windows restored."))
+             (message "Windows restored."))
     (progn (push (current-window-configuration) ans-window-minimized)
-	   (delete-other-windows)
-	   (message "Window minimized."))
+           (delete-other-windows)
+           (message "Window minimized."))
     ))
 #+END_SRC
 ** Pop window into own frame
@@ -908,15 +908,15 @@ Core helm configuration.
   :ensure t
   :init
   (setq helm-projectile-fuzzy-match t
-	helm-projectile-truncate-lines t
-	projectile-completion-system 'helm
-	projectile-switch-project-action 'helm-projectile)
+        helm-projectile-truncate-lines t
+        projectile-completion-system 'helm
+        projectile-switch-project-action 'helm-projectile)
   :config
   (helm-projectile-on)
   (ans-leader-def
     :states '(motion normal)
     "rg" (general-predicate-dispatch 'helm-ag
-	   (ans/in-project-p) 'helm-projectile-ag)))
+           (ans/in-project-p) 'helm-projectile-ag)))
 #+END_SRC
 ** helm-org-rifle
 
@@ -975,7 +975,7 @@ For easier unicode entry.
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-	TeX-source-correlate-start-server t)
+        TeX-source-correlate-start-server t)
   :config
   (add-hook 'LaTeX-mode-hook 'ans-latex-mode-setup)
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook #'TeX-revert-document-buffer))
@@ -1023,14 +1023,14 @@ Additional functions needed to make ~company-quickhelp~ respect my keybindings.
   :init
   (setq comint-move-point-for-output t)	; Scroll R buffer on output
   (setq ess-ask-for-ess-directory nil
-	ess-directory-function 'ans-r-file-here
-	ess-default-style 'RStudio
-	ess-use-company t
-	ess-eval-visibly 'nowait)
+        ess-directory-function 'ans-r-file-here
+        ess-default-style 'RStudio
+        ess-use-company t
+        ess-eval-visibly 'nowait)
   :config
   (require 'ess-rutils)
   (add-to-list 'ess-R-font-lock-keywords
-	       '(ess-fl-keyword:fun-calls . t) t)
+               '(ess-fl-keyword:fun-calls . t) t)
   (ans/add-evil-maps 'ess-help-mode-map)
   :general
   (general-def
@@ -1113,15 +1113,15 @@ Functions
 (defun ans/directory-completion-candidates (prefix)
   "List files in projectile or current buffer directory that match PREFIX."
   (let* ((starting-directory
-	  (condition-case nil
-	      (projectile-project-root)
-	    (error "./")))
-	 (my-prefix-base (file-name-nondirectory prefix))
-	 (my-prefix-dir (file-name-directory prefix))
-	 (my-complete-dir (concat starting-directory my-prefix-dir))
-	 (my-completions-all
-	  (file-name-all-completions my-prefix-base my-complete-dir))
-	 (my-completions (-difference my-completions-all '("./" "../"))))
+          (condition-case nil
+              (projectile-project-root)
+            (error "./")))
+         (my-prefix-base (file-name-nondirectory prefix))
+         (my-prefix-dir (file-name-directory prefix))
+         (my-complete-dir (concat starting-directory my-prefix-dir))
+         (my-completions-all
+          (file-name-all-completions my-prefix-base my-complete-dir))
+         (my-completions (-difference my-completions-all '("./" "../"))))
     (mapcar (lambda (file) (concat my-prefix-dir file)) my-completions)))
 
 (defun ans/directory-file-backend (command &optional arg &rest ignored)
@@ -1149,12 +1149,12 @@ IGNORED are arguments ignored by company."
   (cl-case command
     (interactive (company-begin-backend 'org-keyword-backend))
     (prefix (and (eq major-mode 'org-mode)
-		 (cons (company-grab-line "^#\\+\\(\\w*\\)" 1)
-		       t)))
+                 (cons (company-grab-line "^#\\+\\(\\w*\\)" 1)
+                       t)))
     (candidates (mapcar #'upcase
-			(cl-remove-if-not
-			 (lambda (c) (string-prefix-p arg c))
-			 (pcomplete-completions))))
+                        (cl-remove-if-not
+                         (lambda (c) (string-prefix-p arg c))
+                         (pcomplete-completions))))
     (ignore-case t)
     (duplicates t)))
 #+END_SRC
@@ -1171,39 +1171,39 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 
 ** Agenda files
     
-    I keep my core org files backed up using Dropbox.
+I keep my core org files backed up using Dropbox.
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq org-agenda-files '("~/Dropbox/Notes/" "~/Dropbox/references/notes.org"))
-    #+END_SRC
+#+END_SRC
 
-    I have my core org-mode files organized as follows:
-    - unsorted.org :: Unsorted notes that automatically have the ~REFILE~ tag and show up in my custom agenda view. The goal is to keep this file empty.
-    - orgzly.org :: Similar to above, but limited to things I save from the "orgzly" app on my Android phone.
-    - work.org :: Notes related to work. This is broken down as follows:
-      + Projects :: Manuscripts, proposals, etc. that I am working on
-	- Top-level headers for each projects, as well as...
-	- Project ideas :: Random, unstructured ideas for future projects. As these solidify, they should be moved into top-level headers.
-      + Conferences :: Everything related to academic conferences, meetings, workshops, etc.
-      + Job applications :: Notes related to past, present, and future job applications
-      + Opportunities :: Possible places to work, research funding sources, etc.
-      + Teaching :: Notes related to any kind of teaching
-      + Work habits :: Work-related things I should be doing on a regular basis. Most important are reading literature and writing.
-    - computers.org :: Notes and tasks related to programming, software, etc. Small tasks related to "sharpening the knife" (e.g. tweaking configurations) are organized in here.
-      + Organization :: Default TODO for time logging. Also, notes related to how I am organized.
-      + R :: Things related to R programming.
-      + LaTeX :: Things related to writing in LaTeX, including beamer presentations
-      + Emacs :: Things related to my text editor, including configuration to-dos
-      + Unix :: Things related to Unix in general, including shells (bash, zsh), various utilities (awk, grep, ssh), and anything related to Linux configuration.
-      + Miscellaneous programming :: Other stuff related to programming
-    - life.org :: Notes and tasks that are not work-related, organized as follows:
-      - Chores :: Chores that need to get done 
-      - Events :: Upcoming life/personal events
-      - Music :: Things related to my music hobbies
-      - Personal notes :: Random notes-to-self
-      - Personal habits :: Non work-related things I should be doing regularly.
-	   
-    #+BEGIN_SRC emacs-lisp
+I have my core org-mode files organized as follows:
+- unsorted.org :: Unsorted notes that automatically have the ~REFILE~ tag and show up in my custom agenda view. The goal is to keep this file empty.
+- orgzly.org :: Similar to above, but limited to things I save from the "orgzly" app on my Android phone.
+- work.org :: Notes related to work. This is broken down as follows:
+              + Projects :: Manuscripts, proposals, etc. that I am working on
+                            - Top-level headers for each projects, as well as...
+                            - Project ideas :: Random, unstructured ideas for future projects. As these solidify, they should be moved into top-level headers.
+              + Conferences :: Everything related to academic conferences, meetings, workshops, etc.
+              + Job applications :: Notes related to past, present, and future job applications
+              + Opportunities :: Possible places to work, research funding sources, etc.
+              + Teaching :: Notes related to any kind of teaching
+              + Work habits :: Work-related things I should be doing on a regular basis. Most important are reading literature and writing.
+- computers.org :: Notes and tasks related to programming, software, etc. Small tasks related to "sharpening the knife" (e.g. tweaking configurations) are organized in here.
+                   + Organization :: Default TODO for time logging. Also, notes related to how I am organized.
+                   + R :: Things related to R programming.
+                   + LaTeX :: Things related to writing in LaTeX, including beamer presentations
+                   + Emacs :: Things related to my text editor, including configuration to-dos
+                   + Unix :: Things related to Unix in general, including shells (bash, zsh), various utilities (awk, grep, ssh), and anything related to Linux configuration.
+                   + Miscellaneous programming :: Other stuff related to programming
+- life.org :: Notes and tasks that are not work-related, organized as follows:
+              - Chores :: Chores that need to get done 
+              - Events :: Upcoming life/personal events
+              - Music :: Things related to my music hobbies
+              - Personal notes :: Random notes-to-self
+              - Personal habits :: Non work-related things I should be doing regularly.
+
+                   #+BEGIN_SRC emacs-lisp
 (defun ans/clean-org-agenda-files ()
   "Remove org agenda files that don't exist."
   (interactive)
@@ -1216,71 +1216,71 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
   "Helm source listing all current org agenda files."
   (interactive)
   (helm :sources (helm-build-sync-source
-		     "Org agenda files"
-		   :candidates (org-agenda-files)
-		   :action '(("Open file" . find-file)))
-	:buffer "*helm agenda files*"))
-    #+END_SRC
+                     "Org agenda files"
+                   :candidates (org-agenda-files)
+                   :action '(("Open file" . find-file)))
+        :buffer "*helm agenda files*"))
+                   #+END_SRC
 
 ** Agenda views
     
-    Exclude the following tags from inheritance.
-    This will make it easier to exclude top level headers from Agenda views.
+Exclude the following tags from inheritance.
+This will make it easier to exclude top level headers from Agenda views.
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq org-tags-exclude-from-inheritance '("_project" "_organize" "_habit"))
-    #+END_SRC
+#+END_SRC
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       '((" " "Agenda"
-	 ((agenda "" nil)
-	  (tags "REFILE"
-		((org-agenda-overriding-header "Notes to Refile")
-		 (org-tags-match-list-sublevels nil)))
-	  (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit"
-		     ((org-agenda-overriding-header "Other tasks")
-		      (org-agenda-prefix-format " %i %-12:c %l"))))
-	 nil)
-	("r" "Reading list" todo "TODO"
-	 ((org-agenda-files '("~/Dropbox/references/notes.org"))
-	  (org-agenda-sorting-strategy '(todo-state-down))))
-	("c" "Configuration" tags-todo "-_organization-_project"
-	 ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
-	  (org-agenda-sorting-strategy '(todo-state-down))))
-	("p" "Projects" tags-todo "_project"
-	 ((org-agenda-sorting-strategy '(todo-state-down))))))
-    #+END_SRC
+         ((agenda "" nil)
+          (tags "REFILE"
+                ((org-agenda-overriding-header "Notes to Refile")
+                 (org-tags-match-list-sublevels nil)))
+          (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit"
+                     ((org-agenda-overriding-header "Other tasks")
+                      (org-agenda-prefix-format " %i %-12:c %l"))))
+         nil)
+        ("r" "Reading list" todo "TODO"
+         ((org-agenda-files '("~/Dropbox/references/notes.org"))
+          (org-agenda-sorting-strategy '(todo-state-down))))
+        ("c" "Configuration" tags-todo "-_organization-_project"
+         ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
+          (org-agenda-sorting-strategy '(todo-state-down))))
+        ("p" "Projects" tags-todo "_project"
+         ((org-agenda-sorting-strategy '(todo-state-down))))))
+#+END_SRC
 
 ** Org capture
 
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
       '(("E" "Emacs config" entry
-	 (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
-	 "** TODO %?")
-	("e" "Emacs note" entry
-	 (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
-	 "** %?")
-	("t" "TODO" entry
-	 (file "~/Dropbox/Notes/unsorted.org")
-	 "* TODO %?\n%U\n%a\n")
-	("u" "Miscellaneous note" entry
-	 (file "~/Dropbox/Notes/unsorted.org")
-	 "* %? :NOTE:\n%U\n%a\n")
-	("m" "Meeting" entry (file "~/Dropbox/Notes/unsorted.org")
-	 "* Meeting with %? \n%U" :clock-in t :clock-resume t)))
-    #+END_SRC
+         (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
+         "** TODO %?")
+        ("e" "Emacs note" entry
+         (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
+         "** %?")
+        ("t" "TODO" entry
+         (file "~/Dropbox/Notes/unsorted.org")
+         "* TODO %?\n%U\n%a\n")
+        ("u" "Miscellaneous note" entry
+         (file "~/Dropbox/Notes/unsorted.org")
+         "* %? :NOTE:\n%U\n%a\n")
+        ("m" "Meeting" entry (file "~/Dropbox/Notes/unsorted.org")
+         "* Meeting with %? \n%U" :clock-in t :clock-resume t)))
+#+END_SRC
 
 *** org-capture-pop-frame
     
- Run ~org-capture~ in its own frame.
- This is temporarily disabled because it interferes with ~perspective~ in some edge cases.
+Run ~org-capture~ in its own frame.
+This is temporarily disabled because it interferes with ~perspective~ in some edge cases.
 
- #+BEGIN_SRC emacs-lisp :tangle no
- (use-package org-capture-pop-frame
-   :ensure t)
- #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package org-capture-pop-frame
+  :ensure t)
+#+END_SRC
 
 ** Default to-do keywords
     
@@ -1386,9 +1386,9 @@ Set some language-specific default settings.
 
 ** Refile
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (setq org-refile-targets '((nil :maxlevel . 9)
-			   (org-agenda-files :maxlevel . 9))
+                           (org-agenda-files :maxlevel . 9))
       org-refile-use-outline-path 'file
       org-outline-path-complete-in-steps nil
       org-refile-allow-creating-parent-nodes 'confirm
@@ -1397,7 +1397,7 @@ Set some language-specific default settings.
 (defun ans/verify-refile-target ()
   "Exclude TODO keywords with a done state from refile targets."
   (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-    #+END_SRC
+#+END_SRC
     
 ** Clocking
     
@@ -1435,9 +1435,9 @@ When clocking out of a task, automatically clock into the parent task
 (defun ans/clock-out-maybe ()
   "Clock parent task, or clock out."
   (when (and ans/keep-clock-running
-	     (not org-clock-clocking-in)
-	     (marker-buffer org-clock-default-task)
-	     (not org-clock-resolving-clocks-due-to-idleness))
+             (not org-clock-clocking-in)
+             (marker-buffer org-clock-default-task)
+             (not org-clock-resolving-clocks-due-to-idleness))
     (ans/clock-in-parent-task)))
 
 (defun ans/clock-in-parent-task ()
@@ -1446,15 +1446,15 @@ When clocking out of a task, automatically clock into the parent task
   (let ((parent-task))
     (save-excursion
       (save-restriction
-	(widen)
-	(while (and (not parent-task) (org-up-heading-safe))
-	  (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
-	    (setq parent-task (point))))
-	(if parent-task
-	    (org-with-point-at parent-task
-	      (org-clock-in))
-	  (when ans/keep-clock-running
-	    (ans/clock-in-organization-task)))))))
+        (widen)
+        (while (and (not parent-task) (org-up-heading-safe))
+          (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+            (setq parent-task (point))))
+        (if parent-task
+            (org-with-point-at parent-task
+              (org-clock-in))
+          (when ans/keep-clock-running
+            (ans/clock-in-organization-task)))))))
 
 (add-hook 'org-clock-out-hook #'ans/clock-out-maybe 'append)
 #+END_SRC
@@ -1499,12 +1499,12 @@ Clock into a default task ("organization").
     
 These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (add-to-list 'org-structure-template-alist
-	     '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+             '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
 (add-to-list 'org-structure-template-alist
-	     '("p" ":PROPERTIES:\n?\n:END:"))
-    #+END_SRC
+             '("p" ":PROPERTIES:\n?\n:END:"))
+#+END_SRC
     
 ** Keybindings
 
@@ -1627,9 +1627,9 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   The assumption is that TAGS will be a string conforming to Org Mode's
   tag format specifications, or nil to remove all tags."
   (let ((old-tags (org-get-tags-string))
-	(tags (if tags
-		  (concat " " tags)
-		"")))
+        (tags (if tags
+                  (concat " " tags)
+                "")))
     (save-excursion
       (beginning-of-line)
       (re-search-forward
@@ -1644,22 +1644,22 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   TAG is chosen interactively from the global tags completion table."
   (interactive
    (list (let ((org-last-tags-completion-table
-		(if (derived-mode-p 'org-mode)
-		    (org-uniquify
-		     (delq nil (append (org-get-buffer-tags)
-				       (org-global-tags-completion-table))))
-		  (org-global-tags-completion-table))))
-	   (completing-read
-	    "Tag: " 'org-tags-completion-function nil nil nil
-	    'org-tags-history))))
+                (if (derived-mode-p 'org-mode)
+                    (org-uniquify
+                     (delq nil (append (org-get-buffer-tags)
+                                       (org-global-tags-completion-table))))
+                  (org-global-tags-completion-table))))
+           (completing-read
+            "Tag: " 'org-tags-completion-function nil nil nil
+            'org-tags-history))))
   (let* ((cur-list (org-get-tags))
-	 (new-tags (mapconcat 'identity
-			      (if (member tag cur-list)
-				  (delete tag cur-list)
-				(append cur-list (list tag)))
-			      ":"))
-	 (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
-		nil)))
+         (new-tags (mapconcat 'identity
+                              (if (member tag cur-list)
+                                  (delete tag cur-list)
+                                (append cur-list (list tag)))
+                              ":"))
+         (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
+                nil)))
     (air--org-swap-tags new)))
 
 (defun ans/org-hide-all-except-current ()
@@ -1681,8 +1681,8 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   :ensure t
   :init
   (setq org-journal-dir "~/Dropbox/Notes/journal"
-	org-journal-file-format "%Y-%m-%d"
-	org-journal-enable-agenda-integration t))
+        org-journal-file-format "%Y-%m-%d"
+        org-journal-enable-agenda-integration t))
 (evil-ex-define-cmd "now" 'org-journal-new-entry)
 #+END_SRC
 ** toc-org
@@ -1695,34 +1695,34 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 #+END_SRC
 ** org-ref
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package org-ref
   :ensure t
   :init
   (setq org-ref-bibliography-notes ans/reference-notes
-	reftex-default-bibliography `(,ans/reference-bibfile)
-	org-ref-default-bibliography `(,ans/reference-bibfile)
-	org-ref-pdf-directory ans/reference-dir-pdfs
-	org-ref-bibtex-hydra-key-binding nil
-	org-ref-note-title-format "** TODO %2a %y - %T
-	     :PROPERTIES:
-	      :Custom_ID: %k
-	      :AUTHOR: %9a
-	      :FULL_TITLE: %t
-	      :JOURNAL: %j
-	      :YEAR: %y
-	      :VOLUME: %v
-	      :PAGES: %p
-	      :DOI: %D
-	      :URL: %U
-	     :END:
+        reftex-default-bibliography `(,ans/reference-bibfile)
+        org-ref-default-bibliography `(,ans/reference-bibfile)
+        org-ref-pdf-directory ans/reference-dir-pdfs
+        org-ref-bibtex-hydra-key-binding nil
+        org-ref-note-title-format "** TODO %2a %y - %T
+             :PROPERTIES:
+              :Custom_ID: %k
+              :AUTHOR: %9a
+              :FULL_TITLE: %t
+              :JOURNAL: %j
+              :YEAR: %y
+              :VOLUME: %v
+              :PAGES: %p
+              :DOI: %D
+              :URL: %U
+             :END:
 
-	    ")
+            ")
   :config
   (general-def
     :states 'normal
     "\\\\" 'org-ref-bibtex-hydra/body))
-    #+END_SRC
+#+END_SRC
     
 ** Hydra for org mode tasks
 
@@ -1798,13 +1798,13 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 
 * yasnippet
    
-   #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :ensure t
   :demand
   :init
   (setq yas-snippet-dirs '("~/.emacs.d/snippets"
-			   "~/.emacs.d/remote-snippets"))
+                           "~/.emacs.d/remote-snippets"))
   :config
   (yas-reload-all)
   (yas-global-mode 1)
@@ -1818,91 +1818,91 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     :states '(motion normal)
     "un" 'yas-new-snippet
     "ue" 'yas-visit-snippet-file))
-   #+END_SRC
+#+END_SRC
 * ESS -- Emacs Speaks Statistics
    
 ** Core configuration
 
-    #+BEGIN_SRC emacs-lisp
-      (use-package ess
-        :ensure t
-        :mode ("\\.[rR]\\'" . r-mode)
-        :init
-        (setq comint-move-point-for-output t)	; Scroll R buffer on output
-        (setq ess-ask-for-ess-directory nil
-              ess-directory-function 'ans-r-file-here
-              ess-default-style 'RStudio
-              ess-use-company t
-              ess-eval-visibly 'nowait)
-        :config
-        (require 'ess-rutils)
-        (add-to-list 'ess-R-font-lock-keywords
-                     '(ess-fl-keyword:fun-calls . t) t)
-        (ans/add-evil-maps 'ess-help-mode-map)
-        :general
-        (general-def
-          :keymaps 'ess-mode-map
-          :states 'normal
-          :prefix "\\"
-          "r f" 'ans-start-R
-          "r q" 'ans-quit-R
-          "l" 'ess-eval-line
-          "d" 'ess-eval-line-and-step
-          "f f" 'ess-eval-function
-          "p p" 'ess-eval-paragraph
-          "p d" 'ess-eval-paragraph-and-step
-          "a a" 'ess-eval-buffer
-          "a d" 'ess-eval-buffer-from-here-to-end
-          "a s" 'ess-eval-buffer-from-beg-to-here
-          "r h" 'ess-display-help-on-object
-          "v i" 'ess-r-devtools-install-package
-          "v d" 'ess-r-devtools-document-package
-          "v l" 'ess-r-devtools-load-package
-          "v t" 'ess-r-devtools-test-package
-          "r o" 'ess-rutils-objs
-          "r p" 'ans/ess-eval-symbol
-          "k r" 'ans/rmarkdown-render)
-        (general-def
-          :states 'visual
-          :keymaps 'ess-mode-map
-          :prefix "\\"
-          "s s" 'ess-eval-region)
-        (general-def
-          :states 'insert
-          :keymaps 'inferior-ess-mode-map
-          "_" 'self-insert-command
-          "M--" 'ess-insert-S-assign)
-        (general-def
-          :states 'insert
-          :keymaps 'ess-mode-map
-          "_" 'self-insert-command
-          "M-m" (lambda() (interactive)(insert " %>%"))
-          "M--" 'ess-insert-S-assign
-          "C-c" (lambda() (interactive)(insert "#'")))
-        (general-def
-          :keymaps 'ess-help-mode-map
-          :states 'emacs
-          "SPC" 'ans-leader-command)
-        (general-def
-          :keymaps 'ess-help-mode-map
-          :states 'emacs
-          :prefix "\\"
-          "r h" 'ess-display-help-on-object)
-        (general-def
-          :keymaps 'ess-rdired-mode-map
-          "j" 'ess-rdired-next-line
-          "k" 'ess-rdired-previous-line))
-    
-      (defun ans/inferior-ess-mode-setup ()
-        "My custom configuration for inferior-ess-mode."
-        (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
+#+BEGIN_SRC emacs-lisp
+(use-package ess
+  :ensure t
+  :mode ("\\.[rR]\\'" . r-mode)
+  :init
+  (setq comint-move-point-for-output t)	; Scroll R buffer on output
+  (setq ess-ask-for-ess-directory nil
+        ess-directory-function 'ans-r-file-here
+        ess-default-style 'RStudio
+        ess-use-company t
+        ess-eval-visibly 'nowait)
+  :config
+  (require 'ess-rutils)
+  (add-to-list 'ess-R-font-lock-keywords
+               '(ess-fl-keyword:fun-calls . t) t)
+  (ans/add-evil-maps 'ess-help-mode-map)
+  :general
+  (general-def
+    :keymaps 'ess-mode-map
+    :states 'normal
+    :prefix "\\"
+    "r f" 'ans-start-R
+    "r q" 'ans-quit-R
+    "l" 'ess-eval-line
+    "d" 'ess-eval-line-and-step
+    "f f" 'ess-eval-function
+    "p p" 'ess-eval-paragraph
+    "p d" 'ess-eval-paragraph-and-step
+    "a a" 'ess-eval-buffer
+    "a d" 'ess-eval-buffer-from-here-to-end
+    "a s" 'ess-eval-buffer-from-beg-to-here
+    "r h" 'ess-display-help-on-object
+    "v i" 'ess-r-devtools-install-package
+    "v d" 'ess-r-devtools-document-package
+    "v l" 'ess-r-devtools-load-package
+    "v t" 'ess-r-devtools-test-package
+    "r o" 'ess-rutils-objs
+    "r p" 'ans/ess-eval-symbol
+    "k r" 'ans/rmarkdown-render)
+  (general-def
+    :states 'visual
+    :keymaps 'ess-mode-map
+    :prefix "\\"
+    "s s" 'ess-eval-region)
+  (general-def
+    :states 'insert
+    :keymaps 'inferior-ess-mode-map
+    "_" 'self-insert-command
+    "M--" 'ess-insert-S-assign)
+  (general-def
+    :states 'insert
+    :keymaps 'ess-mode-map
+    "_" 'self-insert-command
+    "M-m" (lambda() (interactive)(insert " %>%"))
+    "M--" 'ess-insert-S-assign
+    "C-c" (lambda() (interactive)(insert "#'")))
+  (general-def
+    :keymaps 'ess-help-mode-map
+    :states 'emacs
+    "SPC" 'ans-leader-command)
+  (general-def
+    :keymaps 'ess-help-mode-map
+    :states 'emacs
+    :prefix "\\"
+    "r h" 'ess-display-help-on-object)
+  (general-def
+    :keymaps 'ess-rdired-mode-map
+    "j" 'ess-rdired-next-line
+    "k" 'ess-rdired-previous-line))
 
-      (add-hook 'inferior-ess-mode-hook 'ans/inferior-ess-mode-setup)
-    #+END_SRC
+(defun ans/inferior-ess-mode-setup ()
+  "My custom configuration for inferior-ess-mode."
+  (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
+
+(add-hook 'inferior-ess-mode-hook 'ans/inferior-ess-mode-setup)
+#+END_SRC
 
 ** Custom functions
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (defun ans/rmarkdown-render ()
   "Render the current R markdown document."
   (interactive)
@@ -1947,14 +1947,14 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     (er/mark-symbol)
     (ess-eval-region (point) (mark) nil)
     (deactivate-mark)))
-    #+END_SRC
+#+END_SRC
 
 ** ox-ravel
 
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 ;; ox-ravel -- Better R integration into org mode
-					; (require 'ox-ravel)
-    #+END_SRC
+(require 'ox-ravel)
+#+END_SRC
 
 ** Custom imports functions (WIP)
 :PROPERTIES:
@@ -1967,10 +1967,10 @@ This was a nice opportunity to play with some more serious Lisp coding.
 The general idea is that a script or function will have an imports list that looks something like:
 
 #+BEGIN_SRC R
-  # begin imports
-  import::from(dplyr, select, mutate, bind_rows, .into = "")
-  import::from(tidyr, gather, spread, .into = "")
-  # end imports
+# begin imports
+import::from(dplyr, select, mutate, bind_rows, .into = "")
+import::from(tidyr, gather, spread, .into = "")
+# end imports
 #+END_SRC 
 
 My function searches for ~begin imports/end imports~, then converts them lists where the first element is the package and every subsequent element is a function.
@@ -1979,116 +1979,116 @@ The objective is to get a system where, with the point over ~package::function~,
 This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (string manipulation) and [[https://github.com/magnars/dash.el][dash.el]] (list manipulation) libraries. 
 
 #+BEGIN_SRC emacs-lisp
-  ;; dplyr::select
-  ;; dplyr::bind_rows
-  ;; tidyr::gather
-  ;;
-  ;; # begin imports
-  ;; import::from(dplyr, select, mutate, bind_rows, .into = "")
-  ;; import::from(tidyr, gather, spread, .into = "")
-  ;; # end imports
+;; dplyr::select
+;; dplyr::bind_rows
+;; tidyr::gather
+;;
+;; # begin imports
+;; import::from(dplyr, select, mutate, bind_rows, .into = "")
+;; import::from(tidyr, gather, spread, .into = "")
+;; # end imports
 
-  (defun ans/import/R-pkg-fun-word-at-point ()
-    "Select a package::function statement as a word."
-    (let (($temp-syn-table (make-syntax-table ess-r-syntax-table)))
-      (modify-syntax-entry ?: "w" $temp-syn-table)
-      (modify-syntax-entry ?_ "w" $temp-syn-table)
-      (with-syntax-table $temp-syn-table
-        (word-at-point))))
+(defun ans/import/R-pkg-fun-word-at-point ()
+  "Select a package::function statement as a word."
+  (let (($temp-syn-table (make-syntax-table ess-r-syntax-table)))
+    (modify-syntax-entry ?: "w" $temp-syn-table)
+    (modify-syntax-entry ?_ "w" $temp-syn-table)
+    (with-syntax-table $temp-syn-table
+      (word-at-point))))
 
-  (defun ans/import/split-pkg-fun-call (word)
-    "Split WORD containing package::function into package and function."
-    (s-split "::" word))
+(defun ans/import/split-pkg-fun-call (word)
+  "Split WORD containing package::function into package and function."
+  (s-split "::" word))
 
-  (defun ans/import/import-to-list (import-string)
-    "Grab IMPORT-STRING and convert to a list.
+(defun ans/import/import-to-list (import-string)
+  "Grab IMPORT-STRING and convert to a list.
 
   The first element of this list is the package and the remaining statements are imports."
-    (let ((import-list (s-with import-string
-                         (s-chop-prefix "import::from(")
-                         (s-chop-suffix ")")
-                         (s-split ", +"))))
-      (-remove (lambda (s) (s-matches? "\.into +=" s)) import-list)))
+  (let ((import-list (s-with import-string
+                       (s-chop-prefix "import::from(")
+                       (s-chop-suffix ")")
+                       (s-split ", +"))))
+    (-remove (lambda (s) (s-matches? "\.into +=" s)) import-list)))
 
-  (defun ans/import/find-import-lists ()
-    "Find the nearest imports list from the current buffer, and return
+(defun ans/import/find-import-lists ()
+  "Find the nearest imports list from the current buffer, and return
     their start and end points as a list.
 
   Imports lists start with the comment string 'begin imports' and end
   with 'end imports'."
-    (let* ((import-start (save-excursion
-                           (re-search-backward "#+ *begin imports" nil t)
-                           (forward-line)
-                           (point)))
-           (import-end (save-excursion
-                         (goto-char import-start)
-                         (re-search-forward "#+ *end imports" nil t)
-                         (forward-line -1)
-                         (end-of-line)
-                         (point))))
-      (when (and import-start import-end)
-        (list import-start import-end))))
+  (let* ((import-start (save-excursion
+                         (re-search-backward "#+ *begin imports" nil t)
+                         (forward-line)
+                         (point)))
+         (import-end (save-excursion
+                       (goto-char import-start)
+                       (re-search-forward "#+ *end imports" nil t)
+                       (forward-line -1)
+                       (end-of-line)
+                       (point))))
+    (when (and import-start import-end)
+      (list import-start import-end))))
 
-  (defun ans/import/parse-import-lists (import-block-string)
-    "Convert block of import statements into a list of import strings.
+(defun ans/import/parse-import-lists (import-block-string)
+  "Convert block of import statements into a list of import strings.
 
   In the process, remove extraneous whitespace."
-    (let* ((import-block-list
-            (s-with import-block-string
-              (s-collapse-whitespace)
-              (s-match-strings-all "import::from(.*?)"))))
-      (-map 'ans/import/import-to-list (-flatten import-block-list))))
+  (let* ((import-block-list
+          (s-with import-block-string
+            (s-collapse-whitespace)
+            (s-match-strings-all "import::from(.*?)"))))
+    (-map 'ans/import/import-to-list (-flatten import-block-list))))
 
-  (defun ans/import/read-imports ()
-    "Read and parse current buffer's imports block."
-    (let* ((import-start-end (ans/import/find-import-lists))
-           (import-block (buffer-substring-no-properties
-                          (nth 0 import-start-end)
-                          (nth 1 import-start-end))))
-      (ans/import/parse-import-lists import-block)))
+(defun ans/import/read-imports ()
+  "Read and parse current buffer's imports block."
+  (let* ((import-start-end (ans/import/find-import-lists))
+         (import-block (buffer-substring-no-properties
+                        (nth 0 import-start-end)
+                        (nth 1 import-start-end))))
+    (ans/import/parse-import-lists import-block)))
 
-  (defun ans/import/list-to-import (import-list)
-    "Convert import-list to a formatted import string."
-    (let* ((imports-joined (s-join ", " import-list)))
-      (s-with imports-joined (s-prepend "import::from(") (s-append ", .into = \"\")"))))
+(defun ans/import/list-to-import (import-list)
+  "Convert import-list to a formatted import string."
+  (let* ((imports-joined (s-join ", " import-list)))
+    (s-with imports-joined (s-prepend "import::from(") (s-append ", .into = \"\")"))))
 
-  (defun ans/import/replace-imports (import-start-end new-imports)
-    "Replace imports list at IMPORT-START-END with NEW-IMPORTS."
-    (delete-region (nth 0 import-start-end) (nth 1 import-start-end))
-    (let* ((import-string-list (-map 'ans/import/list-to-import new-imports))
-           (import-string (s-join "\n" import-string-list)))
-      (save-excursion
-        (goto-char (nth 0 import-start-end))
-        (insert import-string))))
+(defun ans/import/replace-imports (import-start-end new-imports)
+  "Replace imports list at IMPORT-START-END with NEW-IMPORTS."
+  (delete-region (nth 0 import-start-end) (nth 1 import-start-end))
+  (let* ((import-string-list (-map 'ans/import/list-to-import new-imports))
+         (import-string (s-join "\n" import-string-list)))
+    (save-excursion
+      (goto-char (nth 0 import-start-end))
+      (insert import-string))))
 
-  (defun ans/import/add-to-imports ()
-    "Add the current thing to the imports list and update the imports list."
-    (interactive)
-    (let* ((addition (ans/import/split-pkg-fun-call (ans/import/R-pkg-fun-word-at-point))))
-      (when (= (length addition) 2)
-        (let ((current-imports (ans/import/read-imports)))
-          (if (= (length current-imports) 0)
-              (ans/import/replace-imports (ans/import/find-import-lists) addition)
-            ;; WORK IN PROGRESS...
-            (let ((current-packages ))))))))
+(defun ans/import/add-to-imports ()
+  "Add the current thing to the imports list and update the imports list."
+  (interactive)
+  (let* ((addition (ans/import/split-pkg-fun-call (ans/import/R-pkg-fun-word-at-point))))
+    (when (= (length addition) 2)
+      (let ((current-imports (ans/import/read-imports)))
+        (if (= (length current-imports) 0)
+            (ans/import/replace-imports (ans/import/find-import-lists) addition)
+          ;; WORK IN PROGRESS...
+          (let ((current-packages ))))))))
 
-  ;; Workflow
-  ;; - Read current pkg::function form into list ADDITION
-  ;; - Read current imports list into list IMPORTS
-  ;; - Extract first elements of IMPORTS into PACKAGES
-  ;; - (if (-contains? PACKAGES (nth 0 ADDITION))...
-  ;;   - let (NEW-FUNCTION (nth 1 ADDITION))
-  ;;   - let (ADD-TO-PACKAGE (which PACKAGES == PACKAGES))
-  ;;   - let (FUNCTIONS (nthcdr 1 (nth ADD-TO-PACKAGE PACKAGES)))
-  ;;   - If (NEW-FUNCTION not in FUNCTIONS)
-  ;;     - (-update-at (ADD-TO-PACKAGE) (nth ADD-TO-PACKAGE IMPORTS) (append (nth 1 ADDITION)))
-  ;;   - ...)
+;; Workflow
+;; - Read current pkg::function form into list ADDITION
+;; - Read current imports list into list IMPORTS
+;; - Extract first elements of IMPORTS into PACKAGES
+;; - (if (-contains? PACKAGES (nth 0 ADDITION))...
+;;   - let (NEW-FUNCTION (nth 1 ADDITION))
+;;   - let (ADD-TO-PACKAGE (which PACKAGES == PACKAGES))
+;;   - let (FUNCTIONS (nthcdr 1 (nth ADD-TO-PACKAGE PACKAGES)))
+;;   - If (NEW-FUNCTION not in FUNCTIONS)
+;;     - (-update-at (ADD-TO-PACKAGE) (nth ADD-TO-PACKAGE IMPORTS) (append (nth 1 ADDITION)))
+;;   - ...)
 #+END_SRC
 
 * LaTeX
 ** Core configuration
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package tex
   :defer t
   :ensure auctex
@@ -2098,11 +2098,11 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-	TeX-source-correlate-start-server t)
+        TeX-source-correlate-start-server t)
   :config
   (add-hook 'LaTeX-mode-hook 'ans-latex-mode-setup)
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook #'TeX-revert-document-buffer))
-  
+
 (defun ans-latex-mode-setup ()
   "Set custom options for LaTeX files."
   (require 'reftex)
@@ -2111,10 +2111,10 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
   ;; Use the "default" vim paragraph definition
   (setq paragraph-start "\f\\|[ 	]*$")
   (setq paragraph-separate "[ 	\f]*$"))
-    #+END_SRC
+#+END_SRC
 ** auctex-latexmk
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package auctex-latexmk
   :ensure t
   :after tex
@@ -2122,41 +2122,41 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
   :config
   (auctex-latexmk-setup))
-    #+END_SRC
+#+END_SRC
 ** helm-bibtex
     
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (use-package helm-bibtex
   :ensure t
   :init
   (setq bibtex-completion-bibliography ans/reference-bibfile
-	bibtex-completion-library-path ans/reference-dir-pdfs
-	bibtex-completion-notes-path ans/reference-notes
-	bibtex-autokey-name-case-convert-function 'downcase
-	bibtex-autokey-name-year-separator "_"
-	bibtex-autokey-year-title-separator "_"
-	bibtex-autokey-year-length 4
-	bibtex-autokey-titlewords 1
-	bibtex-autokey-titleword-length nil
-	bibtex-autokey-titleword-case-convert-function 'downcase)
+        bibtex-completion-library-path ans/reference-dir-pdfs
+        bibtex-completion-notes-path ans/reference-notes
+        bibtex-autokey-name-case-convert-function 'downcase
+        bibtex-autokey-name-year-separator "_"
+        bibtex-autokey-year-title-separator "_"
+        bibtex-autokey-year-length 4
+        bibtex-autokey-titlewords 1
+        bibtex-autokey-titleword-length nil
+        bibtex-autokey-titleword-case-convert-function 'downcase)
   :commands helm-bibtex
   :config
   (helm-delete-action-from-source "Edit notes" helm-source-bibtex)
   (helm-add-action-to-source "Edit notes" 'ans/org-ref-notes-function helm-source-bibtex 7))
 (evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
-    #+END_SRC
+#+END_SRC
 
-    Redefine ~bibtex-completion-fallback-candidates~ so it doesn't include "Create new entry" (which I never use).
+Redefine ~bibtex-completion-fallback-candidates~ so it doesn't include "Create new entry" (which I never use).
 
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (defun bibtex-completion-fallback-candidates ()
   "Completion candidates if no entry is found."
   bibtex-completion-fallback-options)
-    #+END_SRC
+#+END_SRC
 
-    Custom function to insert bibtex entry at the end of my ~library.bib~ file.
+Custom function to insert bibtex entry at the end of my ~library.bib~ file.
 
-    #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (general-def
   :states 'emacs
   :keymaps 'biblio-selection-mode-map
@@ -2170,234 +2170,234 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
     (org-ref-clean-bibtex-entry)
     (save-buffer))
   (message "Inserted bibtex entry for %S."
-	   (biblio--prepare-title (biblio-alist-get 'title entry))))
+           (biblio--prepare-title (biblio-alist-get 'title entry))))
 
 (defun ans/biblio-selection-insert-end-of-bibfile ()
   "Insert BibTeX of current entry at the end of my library.bib file."
   (interactive)
   (biblio--selection-forward-bibtex #'ans/biblio--selection-insert-at-end-of-bibfile-callback))
-    #+END_SRC
+#+END_SRC
 ** ebib
     
-    In general, [[helm-bibtex][helm-bibtex]] and [[org-ref]] provide a pretty solid interface for working with references.
-    However, it's nice to have a more sophisticated solution for organizing a bibtex file.
-    Ebib provides a nice, Zotero-like interface to bib files that is easier to work with than the raw bibfiles.
-    Here, I tell Ebib to grab my default, global library, and modify its default keybindings with more evil-friendly ones.
+In general, [[helm-bibtex][helm-bibtex]] and [[org-ref]] provide a pretty solid interface for working with references.
+However, it's nice to have a more sophisticated solution for organizing a bibtex file.
+Ebib provides a nice, Zotero-like interface to bib files that is easier to work with than the raw bibfiles.
+Here, I tell Ebib to grab my default, global library, and modify its default keybindings with more evil-friendly ones.
 
-    #+BEGIN_SRC emacs-lisp
-  (use-package ebib
-    :ensure t
-    :commands ebib
-    :init
-    (add-to-list 'evil-emacs-state-modes 'ebib-index-mode)
-    (setq ebib-preload-bib-files '("~/Dropbox/references/library.bib"))
-    :config
-    (general-def
-      :keymaps 'ebib-index-mode-map
-      :states 'emacs
-      "j" 'ebib-next-entry
-      "k" 'ebib-prev-entry
-      "d" 'ebib-kill-entry
-      "p" 'ebib-yank-entry
-      "SPC" ans-leader-map))
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(use-package ebib
+  :ensure t
+  :commands ebib
+  :init
+  (add-to-list 'evil-emacs-state-modes 'ebib-index-mode)
+  (setq ebib-preload-bib-files '("~/Dropbox/references/library.bib"))
+  :config
+  (general-def
+    :keymaps 'ebib-index-mode-map
+    :states 'emacs
+    "j" 'ebib-next-entry
+    "k" 'ebib-prev-entry
+    "d" 'ebib-kill-entry
+    "p" 'ebib-yank-entry
+    "SPC" ans-leader-map))
+#+END_SRC
 * Editing tools
 ** rebox2
     
 Edit comment boxes.
     
 #+BEGIN_SRC emacs-lisp
-  (use-package rebox2
-    :ensure t
-    :general
-    (general-def
-      :states 'normal
-      "gR" 'rebox-mode
-      "gr" 'rebox-dwim)
-    :config
-    (add-to-list 'rebox-language-character-alist '(7 . "!"))
-    (setq rebox-regexp-start (vconcat rebox-regexp-start '("^[ \t]*!+")))
-    (rebox-register-all-templates))
+(use-package rebox2
+  :ensure t
+  :general
+  (general-def
+    :states 'normal
+    "gR" 'rebox-mode
+    "gr" 'rebox-dwim)
+  :config
+  (add-to-list 'rebox-language-character-alist '(7 . "!"))
+  (setq rebox-regexp-start (vconcat rebox-regexp-start '("^[ \t]*!+")))
+  (rebox-register-all-templates))
 #+END_SRC
 ** flycheck
 
 #+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :ensure t
-    :config
-    (global-flycheck-mode)
-    (general-def
-      :states '(motion normal)
-      "]a" 'flycheck-next-error
-      "[a" 'flycheck-previous-error
-      "]A" 'flycheck-first-error)
-    (ans-leader-def
-      :states '(motion normal)
-      "!" 'flycheck-list-errors)
-    )
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode)
+  (general-def
+    :states '(motion normal)
+    "]a" 'flycheck-next-error
+    "[a" 'flycheck-previous-error
+    "]A" 'flycheck-first-error)
+  (ans-leader-def
+    :states '(motion normal)
+    "!" 'flycheck-list-errors)
+  )
 #+END_SRC
 ** simpleclip
 
 #+BEGIN_SRC emacs-lisp
-  (use-package simpleclip
-    :ensure t
-    :config
-    (simpleclip-mode 1))
+(use-package simpleclip
+  :ensure t
+  :config
+  (simpleclip-mode 1))
 #+END_SRC
 ** smartparens
 
 #+BEGIN_SRC emacs-lisp
-  (use-package smartparens
-    :ensure t
-    :config
-    (require 'smartparens-config)
-    (general-def
-      :states 'insert
-      "M-e" 'ans/sp-slurp-and-end
-      "M-w" 'sp-forward-barf-sexp)
-    (general-def
-      :states '(motion normal visual insert)
-      "M-]" 'sp-end-of-sexp
-      "M-[" 'sp-beginning-of-sexp
-      "M-." 'sp-next-sexp
-      "M-," 'sp-backward-sexp))
+(use-package smartparens
+  :ensure t
+  :config
+  (require 'smartparens-config)
+  (general-def
+    :states 'insert
+    "M-e" 'ans/sp-slurp-and-end
+    "M-w" 'sp-forward-barf-sexp)
+  (general-def
+    :states '(motion normal visual insert)
+    "M-]" 'sp-end-of-sexp
+    "M-[" 'sp-beginning-of-sexp
+    "M-." 'sp-next-sexp
+    "M-," 'sp-backward-sexp))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (defun ans/sp-slurp-and-end ()
-    "Slurp up sexp and move to its end."
-    (interactive)
-    (sp-forward-slurp-sexp)
-    (sp-end-of-sexp))
+(defun ans/sp-slurp-and-end ()
+  "Slurp up sexp and move to its end."
+  (interactive)
+  (sp-forward-slurp-sexp)
+  (sp-end-of-sexp))
 #+END_SRC
 ** lispyville
 
 #+BEGIN_SRC emacs-lisp
-  (use-package lispyville
-    :ensure t
-    :hook ((lisp-mode emacs-lisp-mode lisp-interaction-mode) . lispyville-mode))
+(use-package lispyville
+  :ensure t
+  :hook ((lisp-mode emacs-lisp-mode lisp-interaction-mode) . lispyville-mode))
 #+END_SRC
 
 ** edit-server
 
 #+BEGIN_SRC emacs-lisp
-  ;; For editing text fields in the browser
-  (use-package edit-server
-    :ensure t
-    :config
-    (edit-server-start))
+;; For editing text fields in the browser
+(use-package edit-server
+  :ensure t
+  :config
+  (edit-server-start))
 #+END_SRC
 ** adaptive-wrap
 
 #+BEGIN_SRC emacs-lisp
-  (use-package adaptive-wrap
-    :ensure t
-    :hook (visual-line-mode . adaptive-wrap-prefix-mode))
+(use-package adaptive-wrap
+  :ensure t
+  :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 #+END_SRC
 ** expand-region
 
 #+BEGIN_SRC emacs-lisp
-  (use-package expand-region
-    :ensure t
-    :init
-    (setq expand-region-contract-fast-key ",")
-    :general
-    (general-def
-      :states 'motion
-      "z." 'er/expand-region))
+(use-package expand-region
+  :ensure t
+  :init
+  (setq expand-region-contract-fast-key ",")
+  :general
+  (general-def
+    :states 'motion
+    "z." 'er/expand-region))
 #+END_SRC
 ** fill-function-arguments
 
 #+BEGIN_SRC emacs-lisp
-  (use-package fill-function-arguments
-    :quelpa (fill-function-arguments
-             :fetcher github
-             :repo "davidshepherd7/fill-function-arguments")
-    :general
-    (general-def
-      :states 'normal
-      "gs" 'fill-function-arguments-dwim))
+(use-package fill-function-arguments
+  :quelpa (fill-function-arguments
+           :fetcher github
+           :repo "davidshepherd7/fill-function-arguments")
+  :general
+  (general-def
+    :states 'normal
+    "gs" 'fill-function-arguments-dwim))
 #+END_SRC
 ** aggressive-indent
     
 #+BEGIN_SRC emacs-lisp
-  (use-package aggressive-indent
-    :ensure t
-    :hook (prog-mode . aggressive-indent-mode)
-    :config
-    (add-to-list 'aggressive-indent-excluded-modes 'makefile-mode)
-    (ans-leader-def
-      :states 'normal
-      "I" 'aggressive-indent-mode))
+(use-package aggressive-indent
+  :ensure t
+  :hook (prog-mode . aggressive-indent-mode)
+  :config
+  (add-to-list 'aggressive-indent-excluded-modes 'makefile-mode)
+  (ans-leader-def
+    :states 'normal
+    "I" 'aggressive-indent-mode))
 #+END_SRC
 ** undo-tree
     
 NOTE: This is temporarily disabled.
 
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package undo-tree
-    :ensure t
-    :init
-    (setq undo-tree-history-directory-alist `(("." . "~/.emacs.d/undo"))
-          undo-tree-auto-save-history t)
-    :config
-    (global-undo-tree-mode))
+(use-package undo-tree
+  :ensure t
+  :init
+  (setq undo-tree-history-directory-alist `(("." . "~/.emacs.d/undo"))
+        undo-tree-auto-save-history t)
+  :config
+  (global-undo-tree-mode))
 #+END_SRC
 ** hl-todo
 
 #+BEGIN_SRC emacs-lisp
-  (use-package hl-todo
-    :ensure t
-    :config
-    (global-hl-todo-mode)
-    (defhydra hl-todo-hydra ()
-      "Browse todo tags."
-      ("n" hl-todo-next "Next")
-      ("p" hl-todo-previous "Previous"))
-    (ans-leader-def
-      :states 'normal
-      "t" 'hl-todo-hydra/body))
+(use-package hl-todo
+  :ensure t
+  :config
+  (global-hl-todo-mode)
+  (defhydra hl-todo-hydra ()
+    "Browse todo tags."
+    ("n" hl-todo-next "Next")
+    ("p" hl-todo-previous "Previous"))
+  (ans-leader-def
+    :states 'normal
+    "t" 'hl-todo-hydra/body))
 #+END_SRC
 
 Function to use ~org-ref~ for notes rather than bibtex defaults.
 
 #+BEGIN_SRC emacs-lisp
-  (defun ans/org-ref-notes-function (candidates)
-    "Helm bibtex completion function to insert notes for marked CANDIDATES."
-    (let ((key (helm-marked-candidates)))
-      (funcall org-ref-notes-function (car key))))
+(defun ans/org-ref-notes-function (candidates)
+  "Helm bibtex completion function to insert notes for marked CANDIDATES."
+  (let ((key (helm-marked-candidates)))
+    (funcall org-ref-notes-function (car key))))
 #+END_SRC
 ** dumb-jump
 
 Quickly jump to definitions based on regular expression search (not tags or anything more robust).
 
 #+BEGIN_SRC emacs-lisp
-  (use-package dumb-jump
-    :ensure t
-    :init
-    (setq dumb-jump-selector 'helm)
-    (setq dumb-jump-force-searcher 'ag)
-    :general
-    (general-def
-      :states 'normal
-      "gd" 'dumb-jump-go
-      "gD" 'ans/dumb-jump-hydra/body))
+(use-package dumb-jump
+  :ensure t
+  :init
+  (setq dumb-jump-selector 'helm)
+  (setq dumb-jump-force-searcher 'ag)
+  :general
+  (general-def
+    :states 'normal
+    "gd" 'dumb-jump-go
+    "gD" 'ans/dumb-jump-hydra/body))
 
-  (defhydra ans/dumb-jump-hydra (:exit t)
-    "Dumb jump."
-    ("d" dumb-jump-go "Go")
-    ("D" evil-goto-definition "Evil goto def")
-    ("o" dumb-jump-go-other-window "Other window")
-    ("b" dumb-jump-back "Back"))
+(defhydra ans/dumb-jump-hydra (:exit t)
+  "Dumb jump."
+  ("d" dumb-jump-go "Go")
+  ("D" evil-goto-definition "Evil goto def")
+  ("o" dumb-jump-go-other-window "Other window")
+  ("b" dumb-jump-back "Back"))
 #+END_SRC
 ** slime
 
 Superior Lisp Interaction Mode for Emacs (SLIME)
 
 #+BEGIN_SRC emacs-lisp
-  (use-package slime
-    :ensure t
-    :commands slime
-    :init
-    (setq inferior-lisp-program "/usr/bin/sbcl"))
+(use-package slime
+  :ensure t
+  :commands slime
+  :init
+  (setq inferior-lisp-program "/usr/bin/sbcl"))
 #+END_SRC
