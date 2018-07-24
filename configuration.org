@@ -962,32 +962,46 @@ For easier unicode entry.
     "C-u" 'helm-unicode))
 #+END_SRC
 * Company
-   
-** Core configuration
+
+** Company core configuration
 
 #+BEGIN_SRC emacs-lisp
-(use-package tex
-  :defer t
-  :ensure auctex
-  :mode ("\\.tex\\'" . LaTeX-mode)
+(use-package company
+  :ensure t
+  :commands (global-company-mode company-complete ans/directory-file-backend)
   :init
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-        TeX-source-correlate-start-server t)
+  (setq company-selection-wrap-around t)
+  (setq company-idle-delay nil)
   :config
-  (add-hook 'LaTeX-mode-hook 'ans-latex-mode-setup)
-  (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook #'TeX-revert-document-buffer))
-
-(defun ans-latex-mode-setup ()
-  "Set custom options for LaTeX files."
-  (require 'reftex)
-  ;; Use settings for text mode
-  (ans-text-mode-setup)
-  ;; Use the "default" vim paragraph definition
-  (setq paragraph-start "\f\\|[ 	]*$")
-  (setq paragraph-separate "[ 	\f]*$"))
+  (global-company-mode)
+  ;; Thanks to this:
+  ;; https://github.com/otijhuis/evil-emacs.d/blob/7c122b0e05c367192444a85d12323487422b793b/config/evil-settings.el#L38-L39
+  (add-hook 'evil-insert-state-exit-hook (lambda ()(company-abort)))
+  ;; See discussion in: https://github.com/expez/company-quickhelp/issues/17
+  (add-hook 'company-completion-started-hook 'ans/set-company-maps)
+  (add-hook 'company-completion-finished-hook 'ans/unset-company-maps)
+  (add-hook 'company-completion-cancelled-hook 'ans/unset-company-maps)
+  (add-to-list 'company-backends 'ans/org-keyword-backend)
+  :general
+  (general-def
+    :states 'insert
+    ;; See below for discussion of company-dabbrev-code
+    ;; https://github.com/company-mode/company-mode/issues/360
+    "C-f" 'ans/directory-file-backend
+    "C-l" 'company-complete		; Note that this includes company-files
+    )
+  (general-def
+    :states 'insert
+    :keymaps 'prog-mode-map
+    "C-n" 'company-dabbrev-code
+    "C-p" 'company-dabbrev-code
+    "C-S-n" 'company-dabbrev
+    "C-S-p" 'company-dabbrev)
+  (general-def
+    :states 'insert
+    :keymaps 'text-mode-map
+    "C-n" 'company-dabbrev
+    "C-p" 'company-dabbrev))
 #+END_SRC
 
 Additional functions needed to make ~company-quickhelp~ respect my keybindings.
@@ -1012,6 +1026,13 @@ Additional functions needed to make ~company-quickhelp~ respect my keybindings.
     "C-n" 'company-select-next
     "C-p" 'company-select-previous
     "C-l" 'ans-company-complete-continue))
+
+(defun ans-company-complete-continue ()
+  "Insert the result of a completion, then re-start completion.
+This makes repeat completions easier (e.g. when completing long file paths)."
+  (interactive)
+  (company-complete-selection)
+  (company-complete))
 #+END_SRC
 
 ** Complete and continue function
@@ -1102,8 +1123,6 @@ Additional functions needed to make ~company-quickhelp~ respect my keybindings.
   :config
   (company-quickhelp-mode))
 #+END_SRC
-
-Functions 
 
 ** Custom backends
 
@@ -1821,7 +1840,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 #+END_SRC
 * ESS -- Emacs Speaks Statistics
    
-** Core configuration
+** ESS core configuration
 
 #+BEGIN_SRC emacs-lisp
 (use-package ess
@@ -2086,7 +2105,7 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
 #+END_SRC
 
 * LaTeX
-** Core configuration
+** LaTeX core configuration
     
 #+BEGIN_SRC emacs-lisp
 (use-package tex
