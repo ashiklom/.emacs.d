@@ -970,85 +970,6 @@ This makes repeat completions easier (e.g. when completing long file paths)."
   (company-complete))
 #+END_SRC
 
-** Complete and continue function
-    
-#+BEGIN_SRC emacs-lisp
-(use-package ess
-  :ensure t
-  :mode ("\\.[rR]\\'" . r-mode)
-  :init
-  (setq comint-move-point-for-output t)	; Scroll R buffer on output
-  (setq ess-ask-for-ess-directory nil
-        ess-directory-function 'ans-r-file-here
-        ess-default-style 'RStudio
-        ess-use-company t
-        ess-eval-visibly 'nowait)
-  :config
-  (require 'ess-rutils)
-  (add-to-list 'ess-R-font-lock-keywords
-               '(ess-fl-keyword:fun-calls . t) t)
-  (ans/add-evil-maps 'ess-help-mode-map)
-  :general
-  (general-def
-    :keymaps 'ess-mode-map
-    :states 'normal
-    :prefix "\\"
-    "r f" 'ans-start-R
-    "r q" 'ans-quit-R
-    "l" 'ess-eval-line
-    "d" 'ess-eval-line-and-step
-    "f f" 'ess-eval-function
-    "p p" 'ess-eval-paragraph
-    "p d" 'ess-eval-paragraph-and-step
-    "a a" 'ess-eval-buffer
-    "a d" 'ess-eval-buffer-from-here-to-end
-    "a s" 'ess-eval-buffer-from-beg-to-here
-    "r h" 'ess-display-help-on-object
-    "v i" 'ess-r-devtools-install-package
-    "v d" 'ess-r-devtools-document-package
-    "v l" 'ess-r-devtools-load-package
-    "v t" 'ess-r-devtools-test-package
-    "r o" 'ess-rutils-objs
-    "r p" 'ans/ess-eval-symbol
-    "k r" 'ans/rmarkdown-render)
-  (general-def
-    :states 'visual
-    :keymaps 'ess-mode-map
-    :prefix "\\"
-    "s s" 'ess-eval-region)
-  (general-def
-    :states 'insert
-    :keymaps 'inferior-ess-mode-map
-    "_" 'self-insert-command
-    "M--" 'ess-insert-S-assign)
-  (general-def
-    :states 'insert
-    :keymaps 'ess-mode-map
-    "_" 'self-insert-command
-    "M-m" (lambda() (interactive)(insert " %>%"))
-    "M--" 'ess-insert-S-assign
-    "C-c" (lambda() (interactive)(insert "#'")))
-  (general-def
-    :keymaps 'ess-help-mode-map
-    :states 'emacs
-    "SPC" 'ans-leader-command)
-  (general-def
-    :keymaps 'ess-help-mode-map
-    :states 'emacs
-    :prefix "\\"
-    "r h" 'ess-display-help-on-object)
-  (general-def
-    :keymaps 'ess-rdired-mode-map
-    "j" 'ess-rdired-next-line
-    "k" 'ess-rdired-previous-line))
-
-(defun ans/inferior-ess-mode-setup ()
-  "My custom configuration for inferior-ess-mode."
-  (setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
-
-(add-hook 'inferior-ess-mode-hook 'ans/inferior-ess-mode-setup)
-#+END_SRC
-
 ** company-quickhelp
 
 #+BEGIN_SRC emacs-lisp
@@ -1725,7 +1646,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   ("-" ans/punch-out "Punch out")
   ("g" org-clock-goto "Go to current clock")
   ("l" org-clock-in-last "Go to most recent clock")
-  ("h" (lambda () (interactive) (org-clock-in-last 4)) "Clock from history")
+  ("h" (org-clock-in-last '(4)) "Clock from history")
   ("r" org-clock-report "Insert clock report"))
 #+END_SRC
 
@@ -1755,7 +1676,6 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :ensure t
-  :demand
   :init
   (setq yas-snippet-dirs '("~/.emacs.d/snippets"
                            "~/.emacs.d/remote-snippets"))
