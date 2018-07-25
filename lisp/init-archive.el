@@ -90,28 +90,6 @@
   :config
   (persp-mode 1))
 
-;; (use-package mmm-mode
-;;   :ensure t
-;;   :init
-;;   (setq mmm-global-mode 'maybe)
-;;   (setq mmm-submode-decoration-level 2)
-;;   (setq mmm-parse-when-idle nil)
-;;   (setq mmm-idle-timer-delay 0.2)
-;;   :config
-;;   (mmm-add-classes
-;;    '((ans-rmarkdown
-;;       :submode r-mode
-;;       :front "^```{r.*}[\r\n]"
-;;       :back "^```$"
-;;       )
-;;      (ans-latex
-;;       :submode latex-mode
-;;       :front "^```{tikz.*}[\r\n]"
-;;       :back "^```$")))
-;;   (mmm-add-mode-ext-class 'markdown-mode "\\.Rmd\\'" 'ans-rmarkdown)
-;;   (mmm-add-mode-ext-class 'markdown-mode "\\.Rmd\\'" 'ans-latex)
-;;   )
-
 ;; ;; Alternative: Polymode
 ;; ;; Currently feels buggy
 ;; (use-package polymode

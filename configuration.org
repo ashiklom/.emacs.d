@@ -683,6 +683,47 @@ Function to check if I'm inside of a projectile project.
     "<" 'pdf-history-backward
     ">" 'pdf-history-forward))
 #+END_SRC
+** mmm-mode
+
+#+BEGIN_SRC emacs-lisp :tangle no :eval no
+(use-package mmm-mode
+  :ensure t
+  :init
+  (setq mmm-global-mode 'maybe
+	mmm-submode-decoration-level 1
+	mmm-parse-when-idle t
+	mmm-idle-timer-delay 1)
+  :config
+  (mmm-add-classes
+   '((ans-mmm-org-elisp
+      :submode emacs-lisp-mode
+      :face org-block
+      :front "#\+BEGIN_SRC emacs-lisp"
+      :front-offset -1
+      :back "#\+END_SRC")
+     (ans-mmm-org-r
+      :submode R-mode
+      :face org-block
+      :front "#\+BEGIN_SRC R"
+      :front-offset -1
+      :back "\n#\+END_SRC")
+     (ans-rmarkdown
+      :submode r-mode
+      :front "^```{r.*}"
+      :front-offset -1
+      :back "^```$")
+     (ans-latex
+      :submode latex-mode
+      :front "^```{tikz.*}"
+      :front-offset -1
+      :back "^```$")))
+  (mmm-add-mode-ext-class 'org-mode nil 'ans-mmm-org-elisp)
+  (mmm-add-mode-ext-class 'org-mode nil 'ans-mmm-org-r))
+
+;; (mmm-add-mode-ext-class 'markdown-mode "\\.Rmd\\'" 'ans-rmarkdown)
+;; (mmm-add-mode-ext-class 'markdown-mode "\\.Rmd\\'" 'ans-latex))
+
+#+END_SRC
 * Utility functions
 ** Rename buffer and file
 
