@@ -311,81 +311,16 @@ My leader key is SPACE.
 #+END_SRC
 
 *** evil-nerd-commenter
-     
+
 #+BEGIN_SRC emacs-lisp
-(general-def
-  :states '(normal insert)
-  :keymaps 'org-mode-map
-  "C-c C-q" 'org-set-tags
-  "M-l" 'org-metaright
-  "M-S-l" 'org-demote-subtree
-  "M-h" 'org-metaleft
-  "M-S-l" 'org-promote-subtree
-  "<C-M-return>" 'org-insert-subheading)
-
-(general-def
-  :states '(motion normal)
-  :keymaps 'org-mode-map
-  "<backspace>" 'outline-hide-subtree
-  "{" 'org-up-element
-  "}" 'org-down-element
-  "g]" 'evil-forward-paragraph
-  "g[" 'evil-backward-paragraph
-  "gt" 'org-todo
-  "g$" 'evil-end-of-line
-  "g%" 'ans/org-realign-tags
-  "go" 'ans/evil-insert-heading-after-current
-  "gO" 'ans/evil-insert-heading)
-
-(general-def
-  :states 'visual
-  :keymaps 'org-mode-map
-  :prefix "\\"
-  "ss" 'eval-region)
-
-(general-def
-  :states 'normal
-  :keymaps 'org-mode-map
-  :prefix "\\"
-  "e" 'org-edit-special
-  "k" 'org-export-dispatch
-  "RET" 'org-ctrl-c-ctrl-c
-  "=" 'ans/indent-org-source-block
-  "TAB" 'ans/org-hide-all-except-current)
-
-(general-def
-  :states 'insert
-  :keymaps 'org-mode-map
-  "C-=" '(lambda () (interactive)(insert "#+"))
-  "C-/" 'org-toggle-checkbox
-  "C--" 'org-toggle-item
-  "C-." 'org-cycle-list-bullet
-  "C-," '(lambda () (interactive) (org-cycle-list-bullet 'previous)))
-
-(ans-leader-def
-  :states '(motion normal emacs)
-  :keymaps 'org-mode-map
-  "#" 'org-update-statistics-cookies
-  "%" 'ans/org-toggle-emphasis-markers)
-
-(ans-leader-def
-  :states '(motion normal visual)
-  :keymaps 'org-mode-map
-  "ss" 'org-schedule
-  "sd" 'org-deadline
-  "/" 'helm-org-rifle-current-buffer)
-
-(general-def
-  :states '(motion)
-  :keymaps 'calendar-mode-map
-  "h" 'calendar-backward-day
-  "l" 'calendar-forward-day
-  "k" 'calendar-backward-week
-  "j" 'calendar-forward-week
-  "H" 'calendar-backward-month
-  "L" 'calendar-forward-month)
+(use-package evil-nerd-commenter
+  :ensure t
+  :general
+  (ans-leader-def
+    :states '(normal visual)
+    ";" 'evilnc-comment-or-uncomment-lines))
 #+END_SRC
-
+     
 *** evil-easymotion
      
 #+BEGIN_SRC emacs-lisp
@@ -1525,7 +1460,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
              '("p" ":PROPERTIES:\n?\n:END:"))
 #+END_SRC
     
-** Keybindings
+** Org-mode keybindings
 
 #+BEGIN_SRC emacs-lisp
 (general-def
