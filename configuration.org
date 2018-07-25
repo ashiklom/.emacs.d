@@ -50,7 +50,6 @@ For installing packages from source (e.g. GitHub).
 (use-package quelpa-use-package :ensure t)
 #+END_SRC
 
-Also,
 * Lisp libraries
 ** dash -- list manipulation
 
@@ -463,7 +462,6 @@ Other keymaps (need to be sorted and cleaned up).
 
 (ans-leader-def
   :states '(motion normal visual emacs)
-  :keymaps 'override
   "b" 'helm-mini
   "f" 'helm-find-files
   ":" 'eval-expression
@@ -1279,7 +1277,7 @@ Automatically fontify source code, and edit source code in the current window (r
 (setq org-babel-load-languages '((emacs-lisp . t) (R . t))
       org-src-fontify-natively t
       org-src-tab-acts-natively t
-      org-src-window-setup 'current-window
+      org-src-window-setup 'other-window
       org-src-preserve-indentation t)
 (set-face-attribute 'org-block nil :foreground nil :background "Gray15")
 (set-face-attribute 'org-block-begin-line nil :background "#001436")
@@ -1474,18 +1472,19 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   "C-." 'org-cycle-list-bullet
   "C-," '(lambda () (interactive) (org-cycle-list-bullet 'previous)))
 
-(ans-leader-def
+(general-def
   :states '(motion normal emacs)
   :keymaps 'org-mode-map
+  :prefix "SPC"
   "#" 'org-update-statistics-cookies
   "%" 'ans/org-toggle-emphasis-markers)
 
-(ans-leader-def
+(general-def
   :states '(motion normal visual)
   :keymaps 'org-mode-map
+  :prefix "SPC"
   "ss" 'org-schedule
-  "sd" 'org-deadline
-  "/" 'helm-org-rifle-current-buffer)
+  "sd" 'org-deadline)
 
 (general-def
   :states '(motion)
@@ -1649,6 +1648,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   ("o" org-capture "Capture")
   ("r" ans/org-refile-aware "Refile")
   ("s" helm-org-rifle-agenda-files "Search")
+  ("/" helm-org-rifle-current-buffer "Search current")
   ("f" ans/helm-org-agenda-list-files "List agenda files")
   ("l" org-store-link "Store link")
   ("L" org-insert-last-stored-link "Insert stored link")
