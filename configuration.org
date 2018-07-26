@@ -462,6 +462,7 @@ Other keymaps (need to be sorted and cleaned up).
 
 (ans-leader-def
   :states '(motion normal visual emacs)
+  :keymaps 'override
   "b" 'helm-mini
   "f" 'helm-find-files
   ":" 'eval-expression
