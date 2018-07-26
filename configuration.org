@@ -814,6 +814,19 @@ See `ans-toggle-minimize'.")
       (delete-window))
     (display-buffer-pop-up-frame buffer nil)))
 #+END_SRC
+** Align commas
+
+Align a comma-separated table inside the current selection.
+This is useful for complex R ~tribbles~.
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/align-comma (start end)
+  "Align comma-separated table."
+  (interactive "r")
+  (align-regexp start end
+		"\\(\\s-*\\)," 1 1 t))
+
+#+END_SRC
 * Helm
 
 Core helm configuration.
