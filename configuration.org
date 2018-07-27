@@ -1094,7 +1094,9 @@ I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I sp
 (use-package org
   :ensure t
   :demand t
-  :mode ("\\.org\\'" . org-mode))
+  :mode ("\\.org\\'" . org-mode)
+  :config
+  (require 'ox-md))
 #+END_SRC
 
 ** Agenda files
@@ -1686,6 +1688,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   ("t" ans/org-scheduling-hydra/body "Scheduling")
   ("b" ans/org-babel-hydra/body "Babel")
   ("S" org-save-all-org-buffers "Save all buffers")
+  ("x" ans/make-org-scratch "Open scratch")
   ("!" org-reload "Reload")
   ("SPC" org-ctrl-c-ctrl-c "C-c"))
 
@@ -1702,6 +1705,12 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   (if (buffer-narrowed-p)
       (widen)
     (org-narrow-to-subtree)))
+
+(defun ans/make-org-scratch ()
+  "Open an org-mode scratch buffer."
+  (interactive)
+  (find-file "/tmp/publish/scratch.org")
+  (gnus-make-directory "/tmp/publish"))
 #+END_SRC
 
 *** Hydra for clocking
@@ -1755,6 +1764,14 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   ("F" org-babel-tangle-jump-to-org "jump to org file")
   ("s" org-babel-switch-to-session "session")
   ("S" org-babel-switch-to-session-with-code "session with code"))
+#+END_SRC
+
+** Github-flavored markdown
+
+#+BEGIN_SRC emacs-lisp
+(use-package ox-gfm
+  :ensure t
+  :after org)
 #+END_SRC
 * yasnippet
    
