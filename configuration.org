@@ -1663,7 +1663,9 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     "\\\\" 'org-ref-bibtex-hydra/body))
 #+END_SRC
     
-** Hydra for org mode tasks
+** Hydras for org mode tasks
+
+*** Main org-mode hydra
 
 #+BEGIN_SRC emacs-lisp
 (defhydra ans/org-mode-hydra (:exit t)
@@ -1682,7 +1684,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   ("E" org-export-dispatch "Export")
   ("c" ans/clock-hydra/body "Clocking")
   ("t" ans/org-scheduling-hydra/body "Scheduling")
-  ("T" org-babel-tangle "Tangle")
+  ("b" ans/org-babel-hydra/body "Babel")
   ("S" org-save-all-org-buffers "Save all buffers")
   ("!" org-reload "Reload")
   ("SPC" org-ctrl-c-ctrl-c "C-c"))
@@ -1701,6 +1703,8 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
       (widen)
     (org-narrow-to-subtree)))
 #+END_SRC
+
+*** Hydra for clocking
 
 #+BEGIN_SRC emacs-lisp
 (defhydra ans/clock-hydra (:exit t)
@@ -1736,6 +1740,22 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     (org-schedule)))
 #+END_SRC
 
+*** Hydra for org-babel
+
+#+BEGIN_SRC emacs-lisp
+(defhydra ans/org-babel-hydra (:exit t)
+  "org-babel"
+  ("t" org-babel-tangle "tangle")
+  ("-" org-babel-demarcate-block "split block")
+  ("r" org-babel-execute-subtree "run subtree")
+  ("R" org-babel-execute-buffer "run buffer")
+  ("g" org-babel-goto-named-src-block "goto block")
+  ("G" org-babel-goto-named-result "goto result")
+  ("SPC" org-babel-goto-src-block-head "block head")
+  ("F" org-babel-tangle-jump-to-org "jump to org file")
+  ("s" org-babel-switch-to-session "session")
+  ("S" org-babel-switch-to-session-with-code "session with code"))
+#+END_SRC
 * yasnippet
    
 #+BEGIN_SRC emacs-lisp
