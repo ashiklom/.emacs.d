@@ -1391,7 +1391,9 @@ Default settings for a clocktable.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-clock-clocktable-default-properties
-      '(:maxlevel 4 :scope agenda :block today))
+      '(:maxlevel 5 :scope agenda-with-archives :block today :link t)
+      org-agenda-clockreport-parameter-plist
+      '(:maxlevel 5 :link t))
 #+END_SRC
 
 *** Clocking functions
@@ -1509,6 +1511,13 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   "j" 'calendar-forward-week
   "H" 'calendar-backward-month
   "L" 'calendar-forward-month)
+
+(general-def
+  :states 'motion
+  :keymaps 'org-agenda-mode-map
+  "wd" 'org-agenda-day-view
+  "ww" 'org-agenda-week-view
+  "wm" 'org-agenda-month-view)
 #+END_SRC
 
 *** evil-org
