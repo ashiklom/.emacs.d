@@ -1332,8 +1332,6 @@ Set some language-specific default settings.
 Use the clocking settings from "Organize your life in plain text".
     
 #+BEGIN_SRC emacs-lisp
-(org-clock-persistence-insinuate)
-
 (setq
  ;; Resume clocking task on clock in if it's already open
  org-clock-in-resume t
@@ -1346,6 +1344,7 @@ Use the clocking settings from "Organize your life in plain text".
  ;; Clock out when marking a task as DONE
  org-clock-out-when-done t
  ;; Save running clock and clock history when exiting emacs; reload on startup
+ ;; See org-clock-persistence-insinuate below
  org-clock-persist t
  ;; Do not prompt to resume an active clock
  org-clock-persist-query-resume nil
@@ -1355,6 +1354,8 @@ Use the clocking settings from "Organize your life in plain text".
  org-clock-report-include-clocking-task t
  ;; Mode line configuration
  org-clock-mode-line-total 'current)
+
+(org-clock-persistence-insinuate)
 #+END_SRC
 
 When clocking out of a task, automatically clock into the parent task
