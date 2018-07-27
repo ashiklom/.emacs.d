@@ -1185,7 +1185,7 @@ This will make it easier to exclude top level headers from Agenda views.
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
       '(("E" "Emacs config" entry
-         (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
+         (file+headline "~/Dropbox/Notes/computers.org" "TODO Emacs configuration")
          "** TODO %?")
         ("e" "Emacs note" entry
          (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
