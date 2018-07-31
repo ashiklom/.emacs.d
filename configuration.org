@@ -1198,12 +1198,14 @@ This will make it easier to exclude top level headers from Agenda views.
          "** %?")
         ("t" "TODO" entry
          (file "~/Dropbox/Notes/unsorted.org")
-         "* TODO %?\n%U\n%a\n")
+         "* TODO %?\nCaptured %U\nFrom file %a\n")
         ("u" "Miscellaneous note" entry
          (file "~/Dropbox/Notes/unsorted.org")
-         "* %? :NOTE:\n%U\n%a\n")
+         "* %? :NOTE:\nCaptured %U\n%a\n")
         ("m" "Meeting" entry (file "~/Dropbox/Notes/unsorted.org")
-         "* Meeting with %? \n%U" :clock-in t :clock-resume t)))
+         "* Meeting with %? \nCaptured %U" :clock-in t :clock-resume t)
+        ("s" "Schedule event" entry (file "~/Dropbox/Notes/unsorted.org")
+         "* %^{Event}t %? :NOTE:\nCaptured %U")))
 #+END_SRC
 
 *** org-capture-pop-frame
