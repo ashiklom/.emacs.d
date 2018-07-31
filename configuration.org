@@ -528,7 +528,7 @@ Other keymaps (need to be sorted and cleaned up).
 (defhydra ans/buffer-window-hydra (:exit t :hint nil)
   "
   Buffers: _w_:quit _W_:kill    Windows: _d_elete  _D_elete and kill    Frames: _f_:pop _F_:new     Split: _\\_:vert  _-_:horiz
-  Switch:  _h__j__k__l_    Move: _H__J__K__L_    Misc: _r_evert   _s_ave as   _z_:undo   _Z_:redo"
+  Switch:  _h__j__k__l_  Move (far = g): _H__J__K__L_    Misc: _r_evert   _s_ave as   _z_:undo   _Z_:redo"
   ("w" quit-window)
   ("W" kill-this-buffer)
   ("d" delete-window)
@@ -547,6 +547,10 @@ Other keymaps (need to be sorted and cleaned up).
   ("H" buf-move-left)
   ("K" buf-move-up)
   ("L" buf-move-right)
+  ("gj" evil-window-move-very-bottom)
+  ("gk" evil-window-move-very-top)
+  ("gl" evil-window-move-far-right)
+  ("gh" evil-window-move-far-left)
   ("z" winner-undo)
   ("Z" winner-redo))
 #+END_SRC
@@ -1681,6 +1685,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   ("l" org-store-link "Store link")
   ("L" org-insert-last-stored-link "Insert stored link")
   ("n" ans/org-toggle-narrow "Toggle narrow")
+  ("N" org-narrow-to-subtree "Narrow")
   ("0" widen "Widen")
   ("e" org-edit-special "Edit special")
   ("E" org-export-dispatch "Export")
