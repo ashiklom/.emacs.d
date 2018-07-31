@@ -1164,26 +1164,66 @@ This will make it easier to exclude top level headers from Agenda views.
 #+BEGIN_SRC emacs-lisp
 (setq org-tags-exclude-from-inheritance '("_project" "_organize" "_habit"))
 #+END_SRC
+
+Toggle showing scheduled/deadline tasks in the default agenda view (by default, don't show these tasks).
+This is nice because tasks scheduled for some point in the future shouldn't take up room in my to-do list.
     
+#+BEGIN_SRC emacs-lisp
+(setq ans/hide-scheduled-tasks t)
+(setq org-agenda-tags-todo-honor-ignore-options t)
+
+(defun ans/toggle-show-scheduled-tasks ()
+  "Toggle display of scheduled/deadline tasks in agenda."
+  (interactive)
+  (setq ans/hide-scheduled-tasks (not ans/hide-scheduled-tasks))
+  (when (equal major-mode 'org-agenda-mode)
+    (org-agenda-redo))
+  (message "%s SCHEDULED/DEADLINE tasks" (if ans/hide-scheduled-tasks "Hide" "Show")))
+#+END_SRC
+
+Define the custom agenda views.
+
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       '((" " "Agenda"
-         ((agenda "" nil)
-          (tags "REFILE"
-                ((org-agenda-overriding-header "Notes to Refile")
-                 (org-tags-match-list-sublevels nil)))
-          (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit"
-                     ((org-agenda-overriding-header "Other tasks")
-                      (org-agenda-prefix-format " %i %-12:c %l"))))
-         nil)
-        ("r" "Reading list" todo "TODO"
-         ((org-agenda-files '("~/Dropbox/references/notes.org"))
-          (org-agenda-sorting-strategy '(todo-state-down))))
-        ("c" "Configuration" tags-todo "-_organization-_project"
-         ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
-          (org-agenda-sorting-strategy '(todo-state-down))))
-        ("p" "Projects" tags-todo "_project"
-         ((org-agenda-sorting-strategy '(todo-state-down))))))
+	 ((agenda "" nil)
+	  (tags "REFILE"
+		((org-agenda-overriding-header "Notes to Refile")
+		 (org-tags-match-list-sublevels nil)))
+	  (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit/NEXT!"
+		     ((org-agenda-overriding-header (concat "Next tasks"
+							    (if ans/hide-scheduled-tasks
+								""
+							      " (including scheduled)")))
+		      (org-agenda-todo-ignore-scheduled ans/hide-scheduled-tasks)))
+	  (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit/-NEXT!"
+		     ((org-agenda-overriding-header (concat "Other tasks"
+							    (if ans/hide-scheduled-tasks
+								""
+							      " (including scheduled)")))
+		      (org-agenda-sorting-strategy '(todo-state-down))
+		      (org-agenda-todo-ignore-deadlines ans/hide-scheduled-tasks))))
+	 nil)
+	("r" "Reading list" todo "TODO"
+	 ((org-agenda-files '("~/Dropbox/references/notes.org"))
+	  (org-agenda-sorting-strategy '(todo-state-down))))
+	("c" "Configuration" tags-todo "-_organization-_project"
+	 ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
+	  (org-agenda-sorting-strategy '(todo-state-down))))
+	("p" "Projects" tags-todo "_project"
+	 ((org-agenda-sorting-strategy '(todo-state-down))))))
+#+END_SRC
+
+Some custom keybindings for org agenda mode.
+
+#+BEGIN_SRC emacs-lisp
+(general-def
+  :states 'motion
+  :keymaps 'org-agenda-mode-map
+  "wd" 'org-agenda-day-view
+  "ww" 'org-agenda-week-view
+  "wm" 'org-agenda-month-view
+  "@" 'ans/toggle-show-scheduled-tasks)
 #+END_SRC
 
 ** Org capture
@@ -1520,13 +1560,6 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   "j" 'calendar-forward-week
   "H" 'calendar-backward-month
   "L" 'calendar-forward-month)
-
-(general-def
-  :states 'motion
-  :keymaps 'org-agenda-mode-map
-  "wd" 'org-agenda-day-view
-  "ww" 'org-agenda-week-view
-  "wm" 'org-agenda-month-view)
 #+END_SRC
 
 *** evil-org
