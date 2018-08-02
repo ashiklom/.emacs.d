@@ -2258,7 +2258,10 @@ Edit comment boxes.
   (ans-leader-def
     :states '(motion normal)
     "!" 'flycheck-list-errors)
-  )
+  (defun disable-flycheck-in-org-src-edit ()
+    "Disable some Flycheck features when editing an org src block."
+    (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+  (add-hook 'org-src-mode-hook 'disable-flycheck-in-org-src-edit))
 #+END_SRC
 ** simpleclip
 
