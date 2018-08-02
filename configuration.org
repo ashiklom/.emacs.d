@@ -1865,6 +1865,13 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
         ess-default-style 'RStudio
         ess-use-company t
         ess-eval-visibly 'nowait)
+  (setq ess-roxy-str "#'"
+	ess-roxy-fill-param-p t
+	ess-roxy-template-alist
+	'(("description" . ".. title/description ..")
+	  ("param" . "")
+	  ("return" . "")
+	  ("author" . "Alexey Shiklomanov")))
   :config
   (require 'ess-rutils)
   (add-to-list 'ess-R-font-lock-keywords
