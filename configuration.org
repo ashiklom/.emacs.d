@@ -122,6 +122,8 @@ At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll o
       column-number-mode t
       compilation-scroll-output t)
 
+(setq-default indicate-empty-lines t)
+
 (show-paren-mode 1)
 (set-face-attribute 'show-paren-match nil :foreground nil :background "dim gray")
 
