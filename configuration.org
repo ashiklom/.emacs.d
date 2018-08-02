@@ -155,12 +155,10 @@ Related to bibtex references.
 #+BEGIN_SRC emacs-lisp
 (defun ans-prog-mode-setup ()
   "My custom setup for prog mode."
-  (linum-mode 1)
   (toggle-truncate-lines 1)
   (flyspell-prog-mode))
 (defun ans-text-mode-setup ()
   "My custom configuration for text mode."
-  (linum-mode 1)
   (visual-line-mode)
   (flyspell-mode))
 (add-hook 'prog-mode-hook #'ans-prog-mode-setup)
