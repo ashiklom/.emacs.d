@@ -458,7 +458,8 @@ Other keymaps (need to be sorted and cleaned up).
 
 (general-def
   :states 'normal
-  "S" 'save-buffer)
+  "S" (general-predicate-dispatch nil
+	(buffer-file-name) 'save-buffer))
 
 (ans-leader-def
   :states '(motion normal visual emacs)
