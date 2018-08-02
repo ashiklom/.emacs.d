@@ -1412,8 +1412,9 @@ Use the clocking settings from "Organize your life in plain text".
  org-clock-auto-clock-resolution (quote when-no-clock-is-running)
  ;; Include current clocking task in clock reports
  org-clock-report-include-clocking-task t
- ;; Mode line configuration
- org-clock-mode-line-total 'current)
+ ;; Show current clock time in frame title
+ org-clock-mode-line-total 'current
+ org-clock-clocked-in-display 'frame-title)
 
 (org-clock-persistence-insinuate)
 #+END_SRC
