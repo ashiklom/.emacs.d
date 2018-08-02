@@ -972,6 +972,8 @@ For easier unicode entry.
   :init
   (setq company-selection-wrap-around t)
   (setq company-idle-delay nil)
+  (setq company-dabbrev-code-everywhere t
+	company-dabbrev-code-modes t)
   :config
   (global-company-mode)
   ;; Thanks to this:
@@ -1001,7 +1003,9 @@ For easier unicode entry.
     :states 'insert
     :keymaps 'text-mode-map
     "C-n" 'company-dabbrev
-    "C-p" 'company-dabbrev))
+    "C-p" 'company-dabbrev
+    "C-S-n" 'company-dabbrev-code
+    "C-S-p" 'company-dabbrev-code))
 #+END_SRC
 
 Additional functions needed to make ~company-quickhelp~ respect my keybindings.
