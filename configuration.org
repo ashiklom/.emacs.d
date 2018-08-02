@@ -728,6 +728,13 @@ Function to check if I'm inside of a projectile project.
 ;; (mmm-add-mode-ext-class 'markdown-mode "\\.Rmd\\'" 'ans-latex))
 
 #+END_SRC
+** yaml
+
+#+BEGIN_SRC emacs-lisp
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.yml\\'")
+#+END_SRC
 * Utility functions
 ** Rename buffer and file
 
