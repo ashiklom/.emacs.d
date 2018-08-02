@@ -447,8 +447,8 @@ Other keymaps (need to be sorted and cleaned up).
   ;; Move by visual lines
   "j" 'evil-next-visual-line
   "k" 'evil-previous-visual-line
-  "gj" 'evil-next-line
-  "gk" 'evil-previous-line
+  "gj" 'evilem-motion-next-line
+  "gk" 'evilem-motion-previous-line
   "C-=" 'evil-window-increase-height
   "C--" 'evil-window-decrease-height
   "C-+" 'evil-window-increase-width
