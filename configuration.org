@@ -1897,12 +1897,17 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     "v t" 'ess-r-devtools-test-package
     "r o" 'ess-rutils-objs
     "r p" 'ans/ess-eval-symbol
+    "r g" 'ans/ess-glimpse-symbol
     "k r" 'ans/rmarkdown-render)
+  (general-def
+    :keymaps 'ess-mode-map
+    "M-RET" 'ess-newline-and-indent)
   (general-def
     :states 'visual
     :keymaps 'ess-mode-map
     :prefix "\\"
-    "s s" 'ess-eval-region)
+    "s s" 'ess-eval-region
+    "r x" 'ans/ess-reprex-region)
   (general-def
     :states 'insert
     :keymaps 'inferior-ess-mode-map
@@ -1983,6 +1988,20 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     (er/mark-symbol)
     (ess-eval-region (point) (mark) nil)
     (deactivate-mark)))
+
+(defun ans/ess-glimpse-symbol ()
+  "Run 'dplyr::glimpse' on symbol at point."
+  (interactive)
+  (ess-send-string (ess-get-process) (format "dplyr::glimpse(%s)" (symbol-at-point))))
+
+(defun ans/ess-reprex-region (start end venue)
+  "Run the selection through `reprex::reprex', saving the output to the clipboard."
+  (interactive "r\nsVenue (gh, so, ds, or r): ")
+  (ess-send-string
+   (ess-get-process)
+   (format "reprex::reprex({%s}, venue = '%s', show = FALSE, advertise = FALSE)"
+	   (buffer-substring-no-properties start end)
+	   venue)))
 #+END_SRC
 
 ** ox-ravel
