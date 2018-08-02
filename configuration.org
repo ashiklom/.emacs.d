@@ -2328,6 +2328,26 @@ Edit comment boxes.
   (sp-forward-slurp-sexp)
   (sp-end-of-sexp))
 #+END_SRC
+
+Here's a hydra for navigating lisp code.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(setq sp-navigate-interactive-always-progress-point t)
+
+(defhydra ans/smartparen-hydra (:foreign-keys run)
+  "Smartparens"
+  ("n" sp-next-sexp "Next")
+  ("p" sp-previous-sexp "Prev")
+  ("f" sp-forward-sexp "Forward")
+  ("b" sp-backward-sexp "Backward")
+  ("k" sp-up-sexp "Up")
+  ("j" sp-down-sexp "Down")
+  ("e" sp-end-of-sexp "End")
+  ("b" sp-beginning-of-sexp "Beginning")
+  ("-" sp-split-sexp "Split")
+  ("J" sp-join-sexp "Join")
+  ("q" nil "Quit"))
+#+END_SRC
 ** lispyville
 
 #+BEGIN_SRC emacs-lisp
