@@ -1174,7 +1174,7 @@ Exclude the following tags from inheritance.
 This will make it easier to exclude top level headers from Agenda views.
     
 #+BEGIN_SRC emacs-lisp
-(setq org-tags-exclude-from-inheritance '("_project" "_organize" "_habit"))
+(setq org-tags-exclude-from-inheritance '("_project" "_organize"))
 #+END_SRC
 
 Toggle showing scheduled/deadline tasks in the default agenda view (by default, don't show these tasks).
@@ -1202,14 +1202,14 @@ Define the custom agenda views.
 	  (tags "REFILE"
 		((org-agenda-overriding-header "Notes to Refile")
 		 (org-tags-match-list-sublevels nil)))
-	  (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit/NEXT!"
+	  (tags-todo "-REFILE-config-reading_list-_project-_organization/NEXT!"
 		     ((org-agenda-overriding-header (concat "Next tasks"
 							    (if ans/hide-scheduled-tasks
 								""
 							      " (including scheduled)")))
 		      (org-agenda-todo-ignore-scheduled ans/hide-scheduled-tasks)
 		      (org-agenda-sorting-strategy '(priority-down))))
-	  (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit/-NEXT!"
+	  (tags-todo "-REFILE-config-reading_list-_project-_organization/-NEXT!"
 		     ((org-agenda-overriding-header (concat "Other tasks"
 							    (if ans/hide-scheduled-tasks
 								""
@@ -1842,6 +1842,22 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   :ensure t
   :after org)
 #+END_SRC
+
+** Habits
+
+Load the habits module.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'org-modules 'org-habit)
+#+END_SRC
+
+For now, don't show habits in the agenda view.
+I still need to set this up.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-habit-show-habits nil)
+#+END_SRC
+
 * yasnippet
    
 #+BEGIN_SRC emacs-lisp
