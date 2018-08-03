@@ -1924,14 +1924,15 @@ I still need to set this up.
     "a a" 'ess-eval-buffer
     "a d" 'ess-eval-buffer-from-here-to-end
     "a s" 'ess-eval-buffer-from-beg-to-here
-    "r h" 'ess-display-help-on-object
     "v i" 'ess-r-devtools-install-package
     "v d" 'ess-r-devtools-document-package
     "v l" 'ess-r-devtools-load-package
     "v t" 'ess-r-devtools-test-package
+    "r h" 'ess-display-help-on-object
     "r o" 'ess-rutils-objs
     "r p" 'ans/ess-eval-symbol
     "r g" 'ans/ess-glimpse-symbol
+    "r s" 'ans/ess-symbol-size
     "k r" 'ans/rmarkdown-render)
   (general-def
     :keymaps 'ess-mode-map
@@ -1977,6 +1978,49 @@ I still need to set this up.
 
 ** Custom functions
     
+*** Eval current symbol
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-eval-symbol ()
+  "Evaluate (usually print) the symbol at point."
+  (interactive)
+  (save-excursion
+    (er/mark-symbol)
+    (ess-eval-region (point) (mark) nil)
+    (deactivate-mark)))
+#+END_SRC
+
+*** ~dplyr::glimpse~
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-glimpse-symbol ()
+  "Run 'dplyr::glimpse' on symbol at point."
+  (interactive)
+  (ess-send-string (ess-get-process) (format "dplyr::glimpse(%s)" (symbol-at-point))))
+#+END_SRC
+
+*** ~reprex::reprex~
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-reprex-region (start end venue)
+  "Run the selection through `reprex::reprex', saving the output to the clipboard."
+  (interactive "r\nsVenue (gh, so, ds, or r): ")
+  (ess-send-string
+   (ess-get-process)
+   (format "reprex::reprex({%s}, venue = '%s', show = FALSE, advertise = FALSE)"
+	   (buffer-substring-no-properties start end)
+	   venue)))
+#+END_SRC
+
+*** Size of symbol at point
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-symbol-size ()
+  "Run 'pryr::object_size' on symbol at point."
+  (interactive)
+  (ess-send-string (ess-get-process) (format "pryr::object_size(%s)" (symbol-at-point))))
+#+END_SRC
+*** Other
 #+BEGIN_SRC emacs-lisp
 (defun ans/rmarkdown-render ()
   "Render the current R markdown document."
@@ -2014,28 +2058,6 @@ I still need to set this up.
   (ess-quit)
   (kill-buffer)
   (delete-window))
-
-(defun ans/ess-eval-symbol ()
-  "Evaluate (usually print) the symbol at point."
-  (interactive)
-  (save-excursion
-    (er/mark-symbol)
-    (ess-eval-region (point) (mark) nil)
-    (deactivate-mark)))
-
-(defun ans/ess-glimpse-symbol ()
-  "Run 'dplyr::glimpse' on symbol at point."
-  (interactive)
-  (ess-send-string (ess-get-process) (format "dplyr::glimpse(%s)" (symbol-at-point))))
-
-(defun ans/ess-reprex-region (start end venue)
-  "Run the selection through `reprex::reprex', saving the output to the clipboard."
-  (interactive "r\nsVenue (gh, so, ds, or r): ")
-  (ess-send-string
-   (ess-get-process)
-   (format "reprex::reprex({%s}, venue = '%s', show = FALSE, advertise = FALSE)"
-	   (buffer-substring-no-properties start end)
-	   venue)))
 #+END_SRC
 
 ** ox-ravel
