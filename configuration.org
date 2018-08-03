@@ -1846,7 +1846,8 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   :ensure t
   :init
   (setq yas-snippet-dirs '("~/.emacs.d/snippets"
-                           "~/.emacs.d/remote-snippets"))
+                           "~/.emacs.d/remote-snippets")
+	yas-visit-from-menu t)
   :config
   (yas-reload-all)
   (yas-global-mode 1)
@@ -1859,7 +1860,8 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   (ans-leader-def
     :states '(motion normal)
     "un" 'yas-new-snippet
-    "ue" 'yas-visit-snippet-file))
+    "ue" 'yas-visit-snippet-file
+    "ur" 'yas-reload-all))
 #+END_SRC
 * ESS -- Emacs Speaks Statistics
    
