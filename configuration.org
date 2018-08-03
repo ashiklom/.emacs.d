@@ -1207,21 +1207,22 @@ Define the custom agenda views.
 							    (if ans/hide-scheduled-tasks
 								""
 							      " (including scheduled)")))
-		      (org-agenda-todo-ignore-scheduled ans/hide-scheduled-tasks)))
+		      (org-agenda-todo-ignore-scheduled ans/hide-scheduled-tasks)
+		      (org-agenda-sorting-strategy '(priority-down))))
 	  (tags-todo "-REFILE-config-reading_list-_project-_organization-_habit/-NEXT!"
 		     ((org-agenda-overriding-header (concat "Other tasks"
 							    (if ans/hide-scheduled-tasks
 								""
 							      " (including scheduled)")))
-		      (org-agenda-sorting-strategy '(todo-state-down))
+		      (org-agenda-sorting-strategy '(todo-state-down priority-down))
 		      (org-agenda-todo-ignore-deadlines ans/hide-scheduled-tasks))))
 	 nil)
 	("r" "Reading list" todo "TODO"
 	 ((org-agenda-files '("~/Dropbox/references/notes.org"))
-	  (org-agenda-sorting-strategy '(todo-state-down))))
+	  (org-agenda-sorting-strategy '(todo-state-down priority-down))))
 	("c" "Configuration" tags-todo "-_organization-_project"
 	 ((org-agenda-files '("~/Dropbox/Notes/computers.org"))
-	  (org-agenda-sorting-strategy '(todo-state-down))))
+	  (org-agenda-sorting-strategy '(todo-state-down priority-down))))
 	("p" "Projects" tags-todo "_project"
 	 ((org-agenda-sorting-strategy '(todo-state-down))))))
 #+END_SRC
@@ -1236,6 +1237,18 @@ Some custom keybindings for org agenda mode.
   "ww" 'org-agenda-week-view
   "wm" 'org-agenda-month-view
   "@" 'ans/toggle-show-scheduled-tasks)
+#+END_SRC
+
+Configure priorities.
+The three priority levels are high (A, 65), normal (B, 66), and low (C, 67).
+Tasks without a priority default to the normal (B) priority.
+My agenda places higher-priority tasks at the top and lower-priority tasks at the bottom.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-priority-start-cycle-with-default t
+      org-default-priority 66
+      org-highest-priority 65
+      org-lowest-priority 67)
 #+END_SRC
 
 ** Org capture
