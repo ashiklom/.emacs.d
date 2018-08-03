@@ -1755,6 +1755,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   ("b" ans/org-babel-hydra/body "Babel")
   ("S" org-save-all-org-buffers "Save all buffers")
   ("x" ans/make-org-scratch "Open scratch")
+  ("DEL" org-archive-subtree-default "Archive")
   ("!" org-reload "Reload")
   ("&" org-toggle-pretty-entities "Toggle pretty math")
   ("SPC" org-ctrl-c-ctrl-c "C-c"))
@@ -1822,6 +1823,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 (defhydra ans/org-babel-hydra (:exit t)
   "org-babel"
   ("t" org-babel-tangle "tangle")
+  ("T" org-table-export "export table")
   ("-" org-babel-demarcate-block "split block")
   ("r" org-babel-execute-subtree "run subtree")
   ("R" org-babel-execute-buffer "run buffer")
