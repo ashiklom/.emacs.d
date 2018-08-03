@@ -1,0 +1,7 @@
+# key: eq
+# name: tex-equation
+# expand-env: ((yas-indent-line (quote fixed)))
+# --
+\begin{equation}
+$>$0
+\end{equation}

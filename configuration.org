@@ -1217,7 +1217,7 @@ Define the custom agenda views.
 		      (org-agenda-sorting-strategy '(todo-state-down priority-down))
 		      (org-agenda-todo-ignore-deadlines ans/hide-scheduled-tasks))))
 	 nil)
-	("r" "Reading list" todo "TODO"
+	("r" "Reading list" todo "TODO|NEXT"
 	 ((org-agenda-files '("~/Dropbox/references/notes.org"))
 	  (org-agenda-sorting-strategy '(todo-state-down priority-down))))
 	("c" "Configuration" tags-todo "-_organization-_project"
@@ -1756,6 +1756,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   ("S" org-save-all-org-buffers "Save all buffers")
   ("x" ans/make-org-scratch "Open scratch")
   ("!" org-reload "Reload")
+  ("&" org-toggle-pretty-entities "Toggle pretty math")
   ("SPC" org-ctrl-c-ctrl-c "C-c"))
 
 (defun ans/org-refile-aware ()
