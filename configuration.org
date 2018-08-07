@@ -1906,7 +1906,8 @@ I still need to set this up.
 (use-package ess
   :ensure t
   :mode ("\\.[rR]\\'" . r-mode)
-  :init
+  :config
+  (require 'ess-rutils)
   (setq comint-move-point-for-output t)	; Scroll R buffer on output
   (setq ess-ask-for-ess-directory nil
         ess-directory-function 'ans-r-file-here
@@ -1920,8 +1921,6 @@ I still need to set this up.
 	  ("param" . "")
 	  ("return" . "")
 	  ("author" . "Alexey Shiklomanov")))
-  :config
-  (require 'ess-rutils)
   (add-to-list 'ess-R-font-lock-keywords
                '(ess-fl-keyword:fun-calls . t) t)
   (ans/add-evil-maps 'ess-help-mode-map)
