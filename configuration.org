@@ -406,42 +406,25 @@ I also tried to expand it to R, but it doesn't currently work.
                      evilmi-sdk-extract-keyword-howtos))
   (plist-put evilmi-plugins 'r-mode '((ans/evilmi-r-get-tag ans/evilmi-r-jump))))
 #+END_SRC
-** Global keybindings
-    
-Evaluate lisp at point.    
+** Universal argument
+
+Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
 
 #+BEGIN_SRC emacs-lisp
-(general-def
-  :keymaps 'lisp-mode-shared-map
-  :states '(motion insert)
-  "<C-return>" 'eval-defun)
+(general-def "M-u" 'universal-argument)
 #+END_SRC
-
-Other keymaps (need to be sorted and cleaned up).
-
+** Insert state
 #+BEGIN_SRC emacs-lisp
-(defun ans/add-evil-maps (keymap)
-  "Add some basic navigation mappings (including hjkl) to KEYMAP."
-  (general-def
-    :keymaps keymap
-    "h" 'evil-backward-char
-    "l" 'evil-forward-char
-    "k" 'evil-previous-visual-line
-    "j" 'evil-next-visual-line
-    "C-u" 'evil-scroll-up
-    "C-d" 'evil-scroll-down
-    "/" 'evil-search-forward
-    "n" 'evil-search-next
-    "N" 'evil-search-previous))
-
-(ans/add-evil-maps 'occur-mode-map)
-
 (general-def
   :states 'insert
   "j" (general-key-dispatch 'self-insert-command
         :timeout 0.25
         "k" 'evil-normal-state))
+#+END_SRC
 
+** Normal, visual, and motion states
+
+#+BEGIN_SRC emacs-lisp
 (general-def
   :states '(motion normal visual)
   ;; Move by visual lines
@@ -457,12 +440,11 @@ Other keymaps (need to be sorted and cleaned up).
   "C-)" 'shrink-window-if-larger-than-buffer
   "C-d" 'evil-scroll-down
   "C-u" 'evil-scroll-up)
+#+END_SRC
 
-(general-def
-  :states 'normal
-  "S" (general-predicate-dispatch nil
-	(buffer-file-name) 'save-buffer))
+** Leader mappings
 
+#+BEGIN_SRC emacs-lisp
 (ans-leader-def
   :states '(motion normal visual emacs)
   :keymaps 'override
@@ -477,7 +459,6 @@ Other keymaps (need to be sorted and cleaned up).
   "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
   "ss" 'delete-trailing-whitespace
   "'" 'comment-dwim			; Insert right comment
-  "*" 'universal-argument		; Emacs's C-u
   "vl" 'visual-line-mode
   "/" 'helm-occur
   "\"" 'helm-show-kill-ring
@@ -486,6 +467,15 @@ Other keymaps (need to be sorted and cleaned up).
   "p" 'ans/projectile-hydra/body
   "h" 'ans/help-hydra/body
   "o" 'ans/org-mode-hydra/body)
+#+END_SRC
+
+** Quick save with "S"
+
+#+BEGIN_SRC emacs-lisp
+(general-def
+  :states 'normal
+  "S" (general-predicate-dispatch nil
+	(buffer-file-name) 'save-buffer))
 #+END_SRC
 
 *** Hydra for emacs help
@@ -556,6 +546,35 @@ Other keymaps (need to be sorted and cleaned up).
   ("gh" evil-window-move-far-left)
   ("z" winner-undo)
   ("Z" winner-redo))
+#+END_SRC
+** Evaluate lisp at point
+    
+Evaluate lisp at point.    
+
+#+BEGIN_SRC emacs-lisp
+(general-def
+  :keymaps 'lisp-mode-shared-map
+  :states '(motion insert)
+  "<C-return>" 'eval-defun)
+#+END_SRC
+** Evil-like movement in other modes
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/add-evil-maps (keymap)
+  "Add some basic navigation mappings (including hjkl) to KEYMAP."
+  (general-def
+    :keymaps keymap
+    "h" 'evil-backward-char
+    "l" 'evil-forward-char
+    "k" 'evil-previous-visual-line
+    "j" 'evil-next-visual-line
+    "C-u" 'evil-scroll-up
+    "C-d" 'evil-scroll-down
+    "/" 'evil-search-forward
+    "n" 'evil-search-next
+    "N" 'evil-search-previous))
+
+(ans/add-evil-maps 'occur-mode-map)
 #+END_SRC
 * Buffer and window management
    
@@ -1874,6 +1893,30 @@ I still need to set this up.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-habit-show-habits nil)
+#+END_SRC
+
+** Convert org-mode table to format in place 
+
+Instead of creating a new file, just replace the current table.
+Sourced from [[https://gist.github.com/ShingoFukuyama/7887053][this GitHub gist]].
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/get-string-from-file (file-path)
+  "Return contents of FILE-PATH as a string."
+  (with-temp-buffer
+    (insert-file-contents file-path)
+    (buffer-string)))
+
+(defun ans/org-table-convert-replace ()
+  "Convert org table to CSV in place"
+  (interactive)
+  (unless (org-at-table-p) (user-error "No table at point"))
+  (let* ((target-file (make-temp-file "orgtbl"))
+	 (beg (org-table-begin))
+	 (end (org-table-end)))
+    (org-table-export target-file "orgtbl-to-csv")
+    (delete-region beg end)
+    (insert-file-contents target-file)))
 #+END_SRC
 
 * yasnippet
