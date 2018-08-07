@@ -737,6 +737,20 @@ Function to check if I'm inside of a projectile project.
   :ensure t
   :mode "\\.yml\\'")
 #+END_SRC
+** csv-mode
+
+Currently disabled.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(defun ans/csv-mode-settings ()
+  "Custom settings for CSV mode."
+  (toggle-truncate-lines -1))
+
+(use-package csv-mode
+  :ensure t
+  :mode "\\.csv\\'"
+  :hook (csv-mode . ans/csv-mode-settings))
+#+END_SRC
 * Utility functions
 ** Rename buffer and file
 
