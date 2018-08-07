@@ -1,4 +1,4 @@
-#+TITLE: My Emacs dotfiles
+#+TITLE: My Emacs configuration
 #+AUTHOR: Alexey Shiklomanov
 #+PROPERTY: header-args :tangle yes :results silent :comments both
 
