@@ -156,7 +156,9 @@ Related to bibtex references.
 (defun ans-prog-mode-setup ()
   "My custom setup for prog mode."
   (toggle-truncate-lines 1)
-  (flyspell-prog-mode))
+  (flyspell-prog-mode)
+  (setq comment-auto-fill-only-comments t)
+  (auto-fill-mode 1))
 (defun ans-text-mode-setup ()
   "My custom configuration for text mode."
   (visual-line-mode)
