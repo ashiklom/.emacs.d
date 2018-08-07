@@ -939,7 +939,9 @@ Core helm configuration.
 #+BEGIN_SRC emacs-lisp
 (use-package helm-org-rifle
   :ensure t
-  :commands helm-org-rifle-agenda-files)
+  :init
+  (setq helm-org-rifle-test-against-path t)
+  :commands (helm-org-rifle-agenda-files helm-org-rifle-current-buffer))
 #+END_SRC
 ** helm-swoop
 
