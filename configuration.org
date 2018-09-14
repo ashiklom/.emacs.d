@@ -2147,7 +2147,7 @@ Sourced from [[https://gist.github.com/ShingoFukuyama/7887053][this GitHub gist]
   "Use here::here to determine path for R buffer."
   (shell-command-to-string
    (concat
-    "Rscript -e \""
+    "/usr/local/bin/Rscript -e \""
     "my_dir <- dirname('"(buffer-file-name)"');"
     "t <- tryCatch(setwd(my_dir), error = function(e) NULL);"
     "cat(here::here())"
