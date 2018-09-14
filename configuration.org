@@ -1194,17 +1194,11 @@ IGNORED are arguments ignored by company."
    
 I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I split other aspects of the configuration out into their own blocks.
 
-Note that instead of the default ~org-mode~, I use ~org-plus-contrib~, which has some additional contributed features.
-The one I'm currently interested in is ~ignore-headlines~, which allows me to make certain headlines invisible upon export.
-This is useful for leveraging org mode organizational features while exporting simplified documents.
-   
 #+BEGIN_SRC emacs-lisp
-(use-package org-plus-contrib
+(use-package org
   :ensure t
   :config
-  (require 'ox-md)
-  (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines)))
+  (require 'ox-md))
 #+END_SRC
 
 ** Agenda files
