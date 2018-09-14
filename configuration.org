@@ -8,7 +8,6 @@
 (setq user-full-name "Alexey Shiklomanov"
       user-mail-address "alexey.shiklomanov@gmail.com")
 #+END_SRC
-
 * Package management
 ** Core emacs package manager
   
@@ -61,6 +60,7 @@ For installing packages from source (e.g. GitHub).
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 #+END_SRC
+
 * Native emacs settings
 ** custom.el file
    
@@ -84,6 +84,26 @@ Save them in "~/.emacs.d/backups".
       make-backup-files t
       vc-make-backup-files t		; Backup files even if they are version controlled
       auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t))) ; Save file name changes
+#+END_SRC
+
+** Start emacs server
+
+This allows me to open Emacs quickly from external programs, most importantly the command line.
+
+#+BEGIN_SRC emacs-lisp
+(server-start)
+#+END_SRC
+
+Also, configure the server for remote editing, based on [[https://andy.wordpress.com/2013/01/03/automatic-emacsclient/][this guide.]]
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(setq server-use-tcp t
+      server-port 9999)
+(defun ans/server-start-and-copy ()
+  "Start emacs server and copy file to PIC."
+  (interactive)
+  (server-start)
+  (copy-file "~/.emacs.d/server/server" "/ssh:pic:.emacs.d/server/server" t))
 #+END_SRC
 
 ** Other settings
@@ -133,6 +153,18 @@ At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll o
 (global-hl-line-mode)
 (winner-mode)				; Remember window configurations
 (electric-pair-mode 1)
+#+END_SRC
+
+** PNNL mac settings
+
+#+BEGIN_SRC emacs-lisp
+(when (equal user-login-name "shik544")
+  (setq exec-path (append exec-path '("/usr/local/bin")))
+  (setq mac-option-modifier 'meta)
+  (use-package exec-path-from-shell
+    :ensure t)
+  (setq exec-path-from-shell-check-startup-files nil)
+  (exec-path-from-shell-initialize))
 #+END_SRC
 
 * Global variables
@@ -268,6 +300,13 @@ My leader key is SPACE.
   :config
   (evil-mode)
   (defalias #'forward-evil-word #'forward-evil-symbol))
+#+END_SRC
+
+** hydra
+
+#+BEGIN_SRC emacs-lisp
+(use-package hydra
+  :ensure t)
 #+END_SRC
 ** Evil extensions
 *** evil-collection
