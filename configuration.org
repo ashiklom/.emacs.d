@@ -738,7 +738,7 @@ Function to check if I'm inside of a projectile project.
 #+BEGIN_SRC emacs-lisp
 (use-package pdf-tools
   :ensure t
-  :mode (("\\.pdf\\'" . pdf-view-mode))
+  ;; :mode (("\\.pdf\\'" . pdf-view-mode))
   :config
   (pdf-tools-install)
   (general-def
