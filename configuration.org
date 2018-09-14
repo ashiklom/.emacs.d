@@ -2111,6 +2111,16 @@ Sourced from [[https://gist.github.com/ShingoFukuyama/7887053][this GitHub gist]
 	   venue)))
 #+END_SRC
 
+*** ~Rcpp::compileAttributes()~
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-compile-attributes ()
+  "Run ~Rcpp::compileAttributes~ on the package in the current directory."
+  (interactive)
+  (ess-send-string
+   (ess-get-process)
+   "Rcpp::compileAttributes()"))
+#+END_SRC
 *** Size of symbol at point
 
 #+BEGIN_SRC emacs-lisp
