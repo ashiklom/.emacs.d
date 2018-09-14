@@ -1975,6 +1975,18 @@ Sourced from [[https://gist.github.com/ShingoFukuyama/7887053][this GitHub gist]
     (insert-file-contents target-file)))
 #+END_SRC
 
+** Remove headlines but keep content
+
+Use org mode outline for organization, but hide this organization from exported documents.
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/org-remove-headlines (backend)
+  "Remove headlines with :no_title tag."
+  (org-map-entries (lambda () (delete-region (point-at-bol) (point-at-eol)))
+		   "no_title"))
+
+(add-hook 'org-export-before-processing-hook #'ans/org-remove-headlines)
+#+END_SRC
 * yasnippet
    
 #+BEGIN_SRC emacs-lisp
