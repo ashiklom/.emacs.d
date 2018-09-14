@@ -1800,12 +1800,19 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
              :END:
 
             ")
+  (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
   :config
   (general-def
     :states 'normal
     "\\\\" 'org-ref-bibtex-hydra/body))
 #+END_SRC
-    
+** citeproc-org
+
+#+BEGIN_SRC emacs-lisp
+(use-package citeproc-org
+  :config
+  (setq citeproc-org-ignore-backends nil))
+#+END_SRC
 ** Hydras for org mode tasks
 
 *** Main org-mode hydra
