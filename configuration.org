@@ -809,6 +809,18 @@ Currently disabled.
   :mode "\\.csv\\'"
   :hook (csv-mode . ans/csv-mode-settings))
 #+END_SRC
+** open with
+
+Set default external programs for certain filetypes.
+
+#+BEGIN_SRC emacs-lisp
+(use-package openwith
+  :ensure t
+  :init
+  (setq openwith-associations '(("\\.pdf\\'" "open" (file))))
+  :config
+  (openwith-mode t))
+#+END_SRC
 * Utility functions
 ** Rename buffer and file
 
@@ -1181,14 +1193,18 @@ IGNORED are arguments ignored by company."
 * Org-mode
    
 I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I split other aspects of the configuration out into their own blocks.
+
+Note that instead of the default ~org-mode~, I use ~org-plus-contrib~, which has some additional contributed features.
+The one I'm currently interested in is ~ignore-headlines~, which allows me to make certain headlines invisible upon export.
+This is useful for leveraging org mode organizational features while exporting simplified documents.
    
 #+BEGIN_SRC emacs-lisp
-(use-package org
+(use-package org-plus-contrib
   :ensure t
-  :demand t
-  :mode ("\\.org\\'" . org-mode)
   :config
-  (require 'ox-md))
+  (require 'ox-md)
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines)))
 #+END_SRC
 
 ** Agenda files
