@@ -10,7 +10,7 @@
 #+END_SRC
 * Package management
 ** Core emacs package manager
-  
+
 Load Emacs's internal package manager and tell it where to look for packages.
 
 #+BEGIN_SRC emacs-lisp
@@ -38,7 +38,7 @@ Bootstrap the ~use-package~ package manager.
 #+END_SRC
 
 ** quelpa
-   
+
 For installing packages from source (e.g. GitHub).
 
 #+BEGIN_SRC emacs-lisp
@@ -63,7 +63,7 @@ For installing packages from source (e.g. GitHub).
 
 * Native emacs settings
 ** custom.el file
-   
+
 Configure the ~custom.el~ file.
 Mostly, I avoid this in favor of ~setq~ settings.
 
@@ -73,10 +73,10 @@ Mostly, I avoid this in favor of ~setq~ settings.
 #+END_SRC
 
 ** Backups and history
-   
+
 Create version-controlled backups of all files Emacs touches.
 Save them in =~/.emacs.d/backups=.
-    
+
 #+BEGIN_SRC emacs-lisp
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
       delete-old-versions -1		; Don't delete old versions
@@ -107,7 +107,7 @@ Also, configure the server for remote editing, based on [[https://andy.wordpress
 #+END_SRC
 
 ** Other settings
-    
+
 Sentences should end with a single space, not a double space.
 
 #+BEGIN_SRC emacs-lisp
@@ -168,9 +168,9 @@ At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll o
 #+END_SRC
 
 * Global variables
-  
-Related to bibtex references. 
-   
+
+Related to bibtex references.
+
 #+BEGIN_SRC emacs-lisp
 (defvar ans/reference-dir (file-name-as-directory "~/Dropbox/references")
   "Root directory for storing my bibliography.")
@@ -183,7 +183,7 @@ Related to bibtex references.
 #+END_SRC
 
 * Text and prog mode hooks
-   
+
 #+BEGIN_SRC emacs-lisp
 (defun ans-prog-mode-setup ()
   "My custom setup for prog mode."
@@ -201,7 +201,7 @@ Related to bibtex references.
 
 * Aesthetics
 ** Color scheme and font
-   
+
 #+BEGIN_SRC emacs-lisp
 (use-package color-theme-sanityinc-tomorrow
   :ensure t)
@@ -210,7 +210,7 @@ Related to bibtex references.
 #+END_SRC
 ** Cursor type
 
-Don't show cursor in non-selected window. 
+Don't show cursor in non-selected window.
 This is mostly to avoid annoying visual artifacts of a hollow box cursor.
 
 #+BEGIN_SRC emacs-lisp
@@ -259,7 +259,7 @@ Customize how major and minor modes appear in the modeline.
 #+END_SRC
 * Keybindings
 ** general
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package general
   :ensure t)
@@ -322,7 +322,7 @@ My leader key is SPACE.
   (evil-collection-init))
 #+END_SRC
 *** evil-surround
-     
+
 #+BEGIN_SRC emacs-lisp
 (use-package evil-surround
   :ensure t
@@ -344,7 +344,7 @@ My leader key is SPACE.
 #+END_SRC
 
 *** evil-indent-textobject
-     
+
 #+BEGIN_SRC emacs-lisp
 (use-package evil-indent-textobject
   :ensure t
@@ -361,9 +361,9 @@ My leader key is SPACE.
     :states '(normal visual)
     ";" 'evilnc-comment-or-uncomment-lines))
 #+END_SRC
-     
+
 *** evil-easymotion
-     
+
 #+BEGIN_SRC emacs-lisp
 (use-package evil-easymotion
   :ensure t
@@ -375,7 +375,7 @@ My leader key is SPACE.
 #+END_SRC
 
 *** evil-exchange
-     
+
 #+BEGIN_SRC emacs-lisp
 (use-package evil-exchange
   :ensure t
@@ -385,7 +385,7 @@ My leader key is SPACE.
 #+END_SRC
 
 *** evil-numbers
-     
+
 #+BEGIN_SRC emacs-lisp
 (use-package evil-numbers
   :ensure t
@@ -592,8 +592,8 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   ("Z" winner-redo))
 #+END_SRC
 ** Evaluate lisp at point
-    
-Evaluate lisp at point.    
+
+Evaluate lisp at point.
 
 #+BEGIN_SRC emacs-lisp
 (general-def
@@ -621,9 +621,9 @@ Evaluate lisp at point.
 (ans/add-evil-maps 'occur-mode-map)
 #+END_SRC
 * Buffer and window management
-   
+
 ** ace-window
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package ace-window
   :ensure t
@@ -634,14 +634,14 @@ Evaluate lisp at point.
   (general-def "M-o" 'ace-window))
 #+END_SRC
 ** buffer-move
-    
+
 Swap buffer positions.
 
 #+BEGIN_SRC emacs-lisp
 (use-package buffer-move :ensure t)
 #+END_SRC
 ** dired-single
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package dired-single
   :ensure t
@@ -881,7 +881,7 @@ Major modes for editing ~docker~ and ~docker-compose~ files.
 (evil-ex-define-cmd "rename" 'rename-this-buffer-and-file)
 #+END_SRC
 ** Delete buffer and file
-    
+
 #+BEGIN_SRC emacs-lisp
 (defun ans/delete-file-and-buffer ()
   "Kill the current buffer and delete the associated file."
@@ -896,7 +896,7 @@ Major modes for editing ~docker~ and ~docker-compose~ files.
 (evil-ex-define-cmd "dkill" 'ans/delete-file-and-buffer)
 #+END_SRC
 ** Switch to most recently used buffer
-    
+
 #+BEGIN_SRC emacs-lisp
 (defun ans-switch-to-mru-buffer ()
   "Switch to most-recently-used (MRU) buffer."
@@ -912,7 +912,7 @@ Major modes for editing ~docker~ and ~docker-compose~ files.
   (load-file (expand-file-name "init.el" user-emacs-directory)))
 #+END_SRC
 ** Edit init file
-    
+
 #+BEGIN_SRC emacs-lisp
 (defun ans--edit-initfile ()
   "Edit the Emacs init file."
@@ -920,7 +920,7 @@ Major modes for editing ~docker~ and ~docker-compose~ files.
   (find-file (expand-file-name "init.el" user-emacs-directory)))
 #+END_SRC
 ** Toggle "minimized" window
-    
+
 #+BEGIN_SRC emacs-lisp
 (defvar ans-window-minimized '()
   "Configuration of currently minimized windows.
@@ -938,7 +938,7 @@ See `ans-toggle-minimize'.")
     ))
 #+END_SRC
 ** Pop window into own frame
-    
+
 #+BEGIN_SRC emacs-lisp
 (defun ans/pop-window-into-frame ()
   "Pop current window into its own frame."
@@ -1004,7 +1004,7 @@ Core helm configuration.
   )
 #+END_SRC
 ** Split windows for helm
-    
+
 #+BEGIN_SRC emacs-lisp
 (defun ans/hsplit-frame ()
   "Split window entirely below the current frame."
@@ -1065,7 +1065,7 @@ Core helm configuration.
     "i0" 'helm-swoop-back-to-last-point))
 #+END_SRC
 ** helm-descbinds
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package helm-descbinds
   :ensure t
@@ -1237,7 +1237,7 @@ IGNORED are arguments ignored by company."
   (citeproc-org-setup))
 #+END_SRC
 ** Core package
-  
+
 I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I split other aspects of the configuration out into their own blocks.
 
 Note that this is loaded /after/ ~citeproc-org~ because that has to add hooks before org-mode is loaded.
@@ -1251,9 +1251,9 @@ Otherwise, I have to manually reload Org to get ~citeproc-org~ to work.
 #+END_SRC
 
 ** Agenda files
-    
+
 I keep my core org files backed up using Dropbox.
-    
+
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-files '("~/Dropbox/Notes/" "~/Dropbox/references/notes.org"))
 #+END_SRC
@@ -1278,7 +1278,7 @@ I have my core org-mode files organized as follows:
                    + Unix :: Things related to Unix in general, including shells (bash, zsh), various utilities (awk, grep, ssh), and anything related to Linux configuration.
                    + Miscellaneous programming :: Other stuff related to programming
 - life.org :: Notes and tasks that are not work-related, organized as follows:
-              - Chores :: Chores that need to get done 
+              - Chores :: Chores that need to get done
               - Events :: Upcoming life/personal events
               - Music :: Things related to my music hobbies
               - Personal notes :: Random notes-to-self
@@ -1304,17 +1304,17 @@ I have my core org-mode files organized as follows:
                    #+END_SRC
 
 ** Agenda views
-    
+
 Exclude the following tags from inheritance.
 This will make it easier to exclude top level headers from Agenda views.
-    
+
 #+BEGIN_SRC emacs-lisp
 (setq org-tags-exclude-from-inheritance '("_project" "_organize"))
 #+END_SRC
 
 Toggle showing scheduled/deadline tasks in the default agenda view (by default, don't show these tasks).
 This is nice because tasks scheduled for some point in the future shouldn't take up room in my to-do list.
-    
+
 #+BEGIN_SRC emacs-lisp
 (setq ans/hide-scheduled-tasks t)
 (setq org-agenda-tags-todo-honor-ignore-options t)
@@ -1409,7 +1409,7 @@ My agenda places higher-priority tasks at the top and lower-priority tasks at th
 #+END_SRC
 
 *** org-capture-pop-frame
-    
+
 Run ~org-capture~ in its own frame.
 This is temporarily disabled because it interferes with ~perspective~ in some edge cases.
 
@@ -1419,14 +1419,14 @@ This is temporarily disabled because it interferes with ~perspective~ in some ed
 #+END_SRC
 
 ** Default to-do keywords
-    
+
 All my org files have these to-do keywords by default.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
       '((sequence "TODO" "NEXT" "|" "DONE" "CANCELED")))
 #+END_SRC
-    
+
 However, these can be set on a file-specific basis as well via the ~#+TODO~ property.
 
 #+BEGIN_EXAMPLE
@@ -1434,9 +1434,9 @@ However, these can be set on a file-specific basis as well via the ~#+TODO~ prop
 #+END_EXAMPLE
 
 ** Formatting and aesthetics
-    
+
 Show emphasis markers by default, but also quickly toggle them with a custom function.
-    
+
 #+BEGIN_SRC emacs-lisp
 (setq org-hide-emphasis-markers nil)
 
@@ -1448,7 +1448,7 @@ Show emphasis markers by default, but also quickly toggle them with a custom fun
     (setq org-hide-emphasis-markers t))
   (font-lock-flush))
 #+END_SRC
-    
+
 By default, hide line numbers in org-mode buffers, and disable adaptive prefix mode.
 
 #+BEGIN_SRC emacs-lisp
@@ -1492,7 +1492,7 @@ End of line should ignore tags.
 #+END_SRC
 
 ** Source code (babel)
-    
+
 Automatically fontify source code, and edit source code in the current window (rather than opening a new one).
 
 #+BEGIN_SRC emacs-lisp
@@ -1507,21 +1507,21 @@ Automatically fontify source code, and edit source code in the current window (r
 (with-eval-after-load 'org
   (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t) (R . t))))
 #+END_SRC
-    
+
 Don't prompt for confirmation on babel evaluation.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-confirm-babel-evaluate nil)
 #+END_SRC
-    
+
 Set some language-specific default settings.
-    
+
 #+BEGIN_SRC emacs-lisp
 (defvar org-babel-default-header-args:R '((:session . "*org-R*")))
 #+END_SRC
 
 ** Refile
-    
+
 #+BEGIN_SRC emacs-lisp
 (setq org-refile-targets '((nil :maxlevel . 9)
                            (org-agenda-files :maxlevel . 9))
@@ -1534,11 +1534,11 @@ Set some language-specific default settings.
   "Exclude TODO keywords with a done state from refile targets."
   (not (member (nth 2 (org-heading-components)) org-done-keywords)))
 #+END_SRC
-    
+
 ** Clocking
-    
+
 Use the clocking settings from "Organize your life in plain text".
-    
+
 #+BEGIN_SRC emacs-lisp
 (setq
  ;; Resume clocking task on clock in if it's already open
@@ -1636,16 +1636,16 @@ Clock into a default task ("organization").
 #+END_SRC
 
 ** Custom structure templates
-    
+
 These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
-    
+
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'org-structure-template-alist
              '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
 (add-to-list 'org-structure-template-alist
              '("p" ":PROPERTIES:\n?\n:END:"))
 #+END_SRC
-    
+
 ** Org-mode keybindings
 
 #+BEGIN_SRC emacs-lisp
@@ -1724,7 +1724,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 #+END_SRC
 
 *** evil-org
-     
+
 #+BEGIN_SRC emacs-lisp
 (use-package evil-org
   :ensure t
@@ -1827,7 +1827,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 (evil-ex-define-cmd "now" 'org-journal-new-entry)
 #+END_SRC
 ** toc-org
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package toc-org
   :ensure t
@@ -1835,7 +1835,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
 ** org-ref
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package org-ref
   :ensure t
@@ -1993,7 +1993,7 @@ I still need to set this up.
 (setq org-habit-show-habits nil)
 #+END_SRC
 
-** Convert org-mode table to format in place 
+** Convert org-mode table to format in place
 
 Instead of creating a new file, just replace the current table.
 Sourced from [[https://gist.github.com/ShingoFukuyama/7887053][this GitHub gist]].
@@ -2030,7 +2030,7 @@ Use org mode outline for organization, but hide this organization from exported 
 (add-hook 'org-export-before-processing-hook #'ans/org-remove-headlines)
 #+END_SRC
 * yasnippet
-   
+
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
   :ensure t
@@ -2054,7 +2054,7 @@ Use org mode outline for organization, but hide this organization from exported 
     "ur" 'yas-reload-all))
 #+END_SRC
 * ESS -- Emacs Speaks Statistics
-   
+
 ** ESS core configuration
 
 #+BEGIN_SRC emacs-lisp
@@ -2147,7 +2147,7 @@ Use org mode outline for organization, but hide this organization from exported 
 #+END_SRC
 
 ** Custom functions
-    
+
 *** Eval current symbol
 
 #+BEGIN_SRC emacs-lisp
@@ -2262,12 +2262,12 @@ The general idea is that a script or function will have an imports list that loo
 import::from(dplyr, select, mutate, bind_rows, .into = "")
 import::from(tidyr, gather, spread, .into = "")
 # end imports
-#+END_SRC 
+#+END_SRC
 
 My function searches for ~begin imports/end imports~, then converts them lists where the first element is the package and every subsequent element is a function.
 The objective is to get a system where, with the point over ~package::function~, I run an interactive function ~ans/imports/add-to-imports~, which will check if the package-function combination is in the imports, and if not, add it intelligently.
 
-This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (string manipulation) and [[https://github.com/magnars/dash.el][dash.el]] (list manipulation) libraries. 
+This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (string manipulation) and [[https://github.com/magnars/dash.el][dash.el]] (list manipulation) libraries.
 
 #+BEGIN_SRC emacs-lisp
 ;; dplyr::select
@@ -2378,7 +2378,7 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
 
 * LaTeX
 ** LaTeX core configuration
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package tex
   :defer t
@@ -2404,7 +2404,7 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
   (setq paragraph-separate "[ 	\f]*$"))
 #+END_SRC
 ** auctex-latexmk
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package auctex-latexmk
   :ensure t
@@ -2415,7 +2415,7 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
   (auctex-latexmk-setup))
 #+END_SRC
 ** helm-bibtex
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package helm-bibtex
   :ensure t
@@ -2469,7 +2469,7 @@ Custom function to insert bibtex entry at the end of my ~library.bib~ file.
   (biblio--selection-forward-bibtex #'ans/biblio--selection-insert-at-end-of-bibfile-callback))
 #+END_SRC
 ** ebib
-    
+
 In general, [[helm-bibtex][helm-bibtex]] and [[org-ref]] provide a pretty solid interface for working with references.
 However, it's nice to have a more sophisticated solution for organizing a bibtex file.
 Ebib provides a nice, Zotero-like interface to bib files that is easier to work with than the raw bibfiles.
@@ -2494,9 +2494,9 @@ Here, I tell Ebib to grab my default, global library, and modify its default key
 #+END_SRC
 * Editing tools
 ** rebox2
-    
+
 Edit comment boxes.
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package rebox2
   :ensure t
@@ -2633,7 +2633,7 @@ Here's a hydra for navigating lisp code.
     "gs" 'fill-function-arguments-dwim))
 #+END_SRC
 ** aggressive-indent
-    
+
 #+BEGIN_SRC emacs-lisp
 (use-package aggressive-indent
   :ensure t
@@ -2645,7 +2645,7 @@ Here's a hydra for navigating lisp code.
     "I" 'aggressive-indent-mode))
 #+END_SRC
 ** undo-tree
-    
+
 NOTE: This is temporarily disabled.
 
 #+BEGIN_SRC emacs-lisp :tangle no
