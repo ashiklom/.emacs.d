@@ -1662,10 +1662,8 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   :states '(motion normal)
   :keymaps 'org-mode-map
   "<backspace>" 'outline-hide-subtree
-  "{" 'org-up-element
-  "}" 'org-down-element
-  "g]" 'evil-forward-paragraph
-  "g[" 'evil-backward-paragraph
+  "gh" 'org-up-element
+  "gl" 'org-down-element
   "gt" 'org-todo
   "g$" 'evil-end-of-line
   "g%" 'ans/org-realign-tags
