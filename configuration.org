@@ -822,6 +822,20 @@ Set default external programs for certain filetypes.
   :config
   (openwith-mode t))
 #+END_SRC
+** Docker
+
+Major modes for editing ~docker~ and ~docker-compose~ files.
+
+#+BEGIN_SRC emacs-lisp
+(use-package dockerfile-mode
+  :ensure t)
+
+(use-package docker-compose-mode
+  :ensure t)
+#+END_SRC
+
+
+
 * Utility functions
 ** Rename buffer and file
 
