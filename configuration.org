@@ -855,8 +855,6 @@ Major modes for editing ~docker~ and ~docker-compose~ files.
   :ensure t)
 #+END_SRC
 
-
-
 * Utility functions
 ** Rename buffer and file
 
