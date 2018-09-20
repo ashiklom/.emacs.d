@@ -291,6 +291,12 @@ My leader key is SPACE.
   :prefix-map 'ans-leader-map)
 #+END_SRC
 
+** hydra
+
+#+BEGIN_SRC emacs-lisp
+(use-package hydra
+  :ensure t)
+#+END_SRC
 ** evil
 #+BEGIN_SRC emacs-lisp
 (use-package evil
@@ -303,12 +309,6 @@ My leader key is SPACE.
   (defalias #'forward-evil-word #'forward-evil-symbol))
 #+END_SRC
 
-** hydra
-
-#+BEGIN_SRC emacs-lisp
-(use-package hydra
-  :ensure t)
-#+END_SRC
 ** Evil extensions
 *** evil-collection
 #+BEGIN_SRC emacs-lisp
@@ -459,7 +459,9 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   :states 'insert
   "j" (general-key-dispatch 'self-insert-command
         :timeout 0.25
-        "k" 'evil-normal-state))
+        "k" 'evil-normal-state)
+  "C-s" '(lambda ()(interactive)(upcase-word -1))
+  "C-S-s" '(lambda ()(interactive)(capitalize-word -1)))
 #+END_SRC
 
 ** Normal, visual, and motion states
