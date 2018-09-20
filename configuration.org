@@ -275,7 +275,8 @@ Unbind keys that I'll need elsewhere.
   :states '(motion normal visual)
   "SPC"
   "C-u"
-  "\\")
+  "\\"
+  "K")
 (general-unbind "M-SPC")
 #+END_SRC
 
