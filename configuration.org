@@ -641,17 +641,6 @@ Swap buffer positions.
 #+BEGIN_SRC emacs-lisp
 (use-package buffer-move :ensure t)
 #+END_SRC
-** dired-single
-
-#+BEGIN_SRC emacs-lisp
-(use-package dired-single
-  :ensure t
-  :config
-  (general-def
-    :keymaps 'dired-mode-map
-    "RET" 'dired-single-buffer
-    "^" (lambda () (interactive) (dired-single-buffer ".."))))
-#+END_SRC
 ** projectile
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
