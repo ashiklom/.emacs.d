@@ -497,6 +497,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "df" 'treemacs-find-file
   "dw" 'treemacs-select-window
   "dp" 'treemacs-projectile
+  "db" 'treemacs-bookmark
   "x" 'helm-M-x
   "sv" 'ans--reload-initfile
   "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
