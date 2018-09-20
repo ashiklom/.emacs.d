@@ -75,7 +75,7 @@ Mostly, I avoid this in favor of ~setq~ settings.
 ** Backups and history
    
 Create version-controlled backups of all files Emacs touches.
-Save them in "~/.emacs.d/backups".
+Save them in =~/.emacs.d/backups=.
     
 #+BEGIN_SRC emacs-lisp
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
@@ -542,6 +542,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "Projectile"
   ("p" helm-projectile "Helm projectile")
   ("o" helm-projectile-switch-project "Switch project")
+  ("b" helm-projectile-switch-to-buffer "Switch buffer")
   ("f" helm-projectile-find-file "Find file")
   ("F" helm-projectile-find-file-in-known-projects "Find file in known projects")
   ("d" projectile-dired "Dired")
