@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: org active timestamp
+# key: tstamp
+# type: command
+# --
+(org-time-stamp-inactive 4)
