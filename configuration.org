@@ -1847,7 +1847,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 
             ")
   (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-  :config
+  :general
   (general-def
     :states 'normal
     "\\\\" 'org-ref-bibtex-hydra/body))
