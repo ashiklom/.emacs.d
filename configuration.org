@@ -1833,19 +1833,18 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
         org-ref-pdf-directory ans/reference-dir-pdfs
         org-ref-bibtex-hydra-key-binding nil
         org-ref-note-title-format "** TODO %2a %y - %T
-             :PROPERTIES:
-              :Custom_ID: %k
-              :AUTHOR: %9a
-              :FULL_TITLE: %t
-              :JOURNAL: %j
-              :YEAR: %y
-              :VOLUME: %v
-              :PAGES: %p
-              :DOI: %D
-              :URL: %U
-             :END:
-
-            ")
+:PROPERTIES:
+:Custom_ID: %k
+:AUTHOR: %9a
+:FULL_TITLE: %t
+:JOURNAL: %j
+:YEAR: %y
+:VOLUME: %v
+:PAGES: %p
+:DOI: %D
+:URL: %U
+:END:
+")
   (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
   :general
   (general-def
@@ -2455,6 +2454,32 @@ Custom function to insert bibtex entry at the end of my ~library.bib~ file.
   (interactive)
   (biblio--selection-forward-bibtex #'ans/biblio--selection-insert-at-end-of-bibfile-callback))
 #+END_SRC
+
+When automatically creating a bibtex key, replace non-ASCII characters to avoid invalid key errors.
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/asciify-string (string)
+  "Use iconv to convert non-ASCII characters in STRING to ASCII equivalents."
+  (with-temp-buffer
+    (insert string)
+    (call-process-region (point-min) (point-max)
+			 "iconv" t t nil "--to-code=ASCII//TRANSLIT")
+    (buffer-substring-no-properties (point-min) (point-max))))
+
+(defun ans/custom-org-clean-function (key)
+  "Remove special characters from Bibtex key."
+  (replace-regexp-in-string ":" "" key)
+  (ans/asciify-string key)
+  (replace-regexp-in-string "^" "" key)
+  (replace-regexp-in-string "\\\\" "" key))
+
+(setq org-ref-clean-bibtex-key-function 'ans/custom-org-clean-function)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(ans/asciify-string "côte_2012_fine")
+#+END_SRC
+
 ** ebib
 
 In general, [[helm-bibtex][helm-bibtex]] and [[org-ref]] provide a pretty solid interface for working with references.
