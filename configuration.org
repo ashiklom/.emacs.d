@@ -1026,7 +1026,8 @@ Core helm configuration.
   (ans-leader-def
     :states '(motion normal)
     "rg" (general-predicate-dispatch 'helm-ag
-           (ans/in-project-p) 'helm-projectile-ag)))
+           (ans/in-project-p) 'helm-projectile-ag)
+    "rG" 'helm-do-ag))
 #+END_SRC
 ** helm-org-rifle
 
