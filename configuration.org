@@ -182,6 +182,12 @@ Related to bibtex references.
   "Full path to reference-related notes.")
 #+END_SRC
 
+Automatically don't save before compiling.
+
+#+BEGIN_SRC emacs-lisp
+(setq compilation-save-buffers-predicate 'ignore)
+#+END_SRC
+
 * Text and prog mode hooks
 
 #+BEGIN_SRC emacs-lisp
