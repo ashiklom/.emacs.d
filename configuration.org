@@ -1387,20 +1387,22 @@ My agenda places higher-priority tasks at the top and lower-priority tasks at th
 (setq org-capture-templates
       '(("E" "Emacs config" entry
          (file+headline "~/Dropbox/Notes/computers.org" "TODO Emacs configuration")
-         "** TODO %?")
+         "** TODO %?" :clock-in t :clock-resume t)
         ("e" "Emacs note" entry
          (file+headline "~/Dropbox/Notes/computers.org" "Emacs")
-         "** %?")
+         "** %?" :clock-in t :clock-resume t)
         ("t" "TODO" entry
          (file "~/Dropbox/Notes/unsorted.org")
-         "* TODO %?\nCaptured %U\nFrom file %a\n")
+         "* TODO %?\nCaptured %U\nFrom file %a\n" :clock-in t :clock-resume t)
         ("u" "Miscellaneous note" entry
          (file "~/Dropbox/Notes/unsorted.org")
-         "* %? :NOTE:\nCaptured %U\n%a\n")
+         "* %? :NOTE:\nCaptured %U\n%a\n" :clock-in t :clock-resume t)
+        ("i" "Interruption" entry (file "~/Dropbox/Notes/unsorted.org")
+         "* %? \nCaptured %U" :clock-in t :clock-resume t)
         ("m" "Meeting" entry (file "~/Dropbox/Notes/unsorted.org")
          "* Meeting with %? \nCaptured %U" :clock-in t :clock-resume t)
         ("s" "Schedule event" entry (file "~/Dropbox/Notes/unsorted.org")
-         "* %^{Event}t %? :NOTE:\nCaptured %U")))
+         "* %^{Event}t %? :NOTE:\nCaptured %U" :clock-in t :clock-resume t)))
 #+END_SRC
 
 *** org-capture-pop-frame
