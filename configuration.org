@@ -992,10 +992,17 @@ Core helm configuration.
     "C-z" 'helm-select-action
     "C-n" 'helm-next-line
     "C-p" 'helm-previous-line
+    "C-d" 'helm-next-page
+    "C-u" 'helm-previous-page
     "C-S-n" 'helm-next-source
     "C-S-p" 'helm-previous-source
-    "C-l" 'helm-yank-selection)
-  )
+    "C-l" 'helm-yank-selection
+    "<C-backspace>" 'backward-kill-word)
+  (general-def
+    :keymaps '(helm-find-files-map helm-projectile-find-file-map)
+    "<right>" 'right-char
+    "<left>" 'left-char
+    "<C-backspace>" 'backward-kill-word))
 #+END_SRC
 ** Split windows for helm
 
