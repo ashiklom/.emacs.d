@@ -690,7 +690,18 @@ Better file and project manager.
   :after treemacs projectile
   :ensure t)
 #+END_SRC
+** zoom-window
 
+Temporarily "zoom" windows into full screen, like in ~tmux~.
+
+#+BEGIN_SRC emacs-lisp
+(use-package zoom-window
+  :ensure t
+  :config
+  (ans-leader-def
+    :states '(normal motion)
+    "z" 'zoom-window-zoom))
+#+END_SRC
 * Version control
 ** magit
 
