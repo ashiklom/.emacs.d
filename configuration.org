@@ -309,7 +309,8 @@ My leader key is SPACE.
   :ensure t
   :demand
   :init
-  (setq evil-want-integration nil)
+  (setq evil-want-integration t
+        evil-want-keybinding nil)
   :config
   (evil-mode)
   (defalias #'forward-evil-word #'forward-evil-symbol))
