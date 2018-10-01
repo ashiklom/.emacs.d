@@ -1961,19 +1961,19 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   ("d" ans/org-deadline-aware "Deadline")
   ("s" ans/org-schedule-aware "Schedule"))
 
-(defun ans/org-deadline-aware ()
+(defun ans/org-deadline-aware (arg)
   "Context-aware org-deadline."
-  (interactive)
+  (interactive "P")
   (if (ans/org-agenda-mode-p)
       (call-interactively 'org-agenda-deadline)
-    (org-deadline)))
+    (org-deadline arg)))
 
-(defun ans/org-schedule-aware ()
+(defun ans/org-schedule-aware (arg)
   "Context-aware org-schedule."
-  (interactive)
+  (interactive "P")
   (if (ans/org-agenda-mode-p)
       (call-interactively 'org-agenda-schedule)
-    (org-schedule)))
+    (org-schedule arg)))
 #+END_SRC
 
 *** Hydra for org-babel
