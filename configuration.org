@@ -874,7 +874,7 @@ The [[https://github.com/Silex/docker.el][docker]] package for performing docker
 #+BEGIN_SRC emacs-lisp
 (use-package docker
   :ensure t
-  :config
+  :general
   (ans-leader-def
     :states 'normal
     "D" 'docker))
