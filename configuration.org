@@ -785,6 +785,8 @@ Edit code blocks in a separate window.
 #+END_SRC
 ** mmm-mode
 
+Currently disabled.
+
 #+BEGIN_SRC emacs-lisp :tangle no :eval no
 (use-package mmm-mode
   :ensure t
@@ -879,7 +881,35 @@ The [[https://github.com/Silex/docker.el][docker]] package for performing docker
     :states 'normal
     "D" 'docker))
 #+END_SRC
+** Polymode
 
+Multiple major modes in a single file.
+Mostly useful for R markdown files (R + markdown).
+
+#+BEGIN_SRC emacs-lisp
+(use-package polymode
+  :ensure t
+  :config
+  (general-def
+    :states '(normal motion)
+    :keymaps 'polymode-mode-map
+    "g]" 'polymode-next-chunk
+    "g[" 'polymode-previous-chunk
+    "g-" 'polymode-kill-chunk))
+
+(use-package poly-markdown
+  :ensure t
+  :mode
+  (("\\.md" . poly-markdown-mode)
+   ("\\.Rmd" . poly-markdown-mode)))
+
+;; Other modes that could be useful
+;; (use-package poly-R
+;;   :ensure t)
+
+;; (use-package poly-org
+;;   :ensure t)
+#+END_SRC
 * Utility functions
 ** Rename buffer and file
 

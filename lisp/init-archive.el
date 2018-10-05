@@ -92,9 +92,9 @@
 
 ;; ;; Alternative: Polymode
 ;; ;; Currently feels buggy
-;; (use-package polymode
-;;   :ensure t
-;;   :mode
-;;   (("\\.Rnw" . poly-noweb+r-mode)
-;;    ("\\.Rmd" . poly-markdown+r-mode)
-;;    ("\\.md" . poly-markdown-mode)))
+(use-package polymode
+  :ensure t
+  :mode
+  (("\\.Rnw" . poly-noweb+r-mode)
+   ("\\.Rmd" . poly-markdown+r-mode)
+   ("\\.md" . poly-markdown-mode)))
