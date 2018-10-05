@@ -748,10 +748,16 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
    ("\\.Rmd\\'" . markdown-mode)
    ("\\.markdown\\'" . markdown-mode))
   :init
-  (setq markdown-command "pandoc")
+  (setq markdown-command "pandoc"))
+#+END_SRC
+** fence-edit
+
+Edit code blocks in a separate window.
+
+#+BEGIN_SRC emacs-lisp
+(use-package fence-edit
+  :quelpa (fence-edit :fetcher github :repo "aaronbieber/fence-edit.el")
   :config
-  ;; From aaronbieber/fence-edit.el
-  (require 'fence-edit)
   (add-to-list 'fence-edit-blocks '("^```{r.*}" "^```$" R))
   (add-to-list 'fence-edit-blocks '("^```{tikz.*}" "^```$" latex))
   (general-def
@@ -1257,6 +1263,7 @@ IGNORED are arguments ignored by company."
 
 #+BEGIN_SRC emacs-lisp
 (use-package citeproc-org
+  :quelpa (citeproc-org :fetcher github :repo "andras-simonyi/citeproc-org")
   :config
   (setq citeproc-org-ignore-backends nil)
   (citeproc-org-setup))
