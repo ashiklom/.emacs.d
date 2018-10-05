@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: PEcAn logger
+# key: logger
+# --
+PEcAn::logger
