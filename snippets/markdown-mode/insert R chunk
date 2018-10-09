@@ -1,0 +1,6 @@
+# key: `r
+# name: insert R chunk
+# --
+```{r $1}
+$0
+```
