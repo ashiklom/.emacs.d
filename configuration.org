@@ -865,7 +865,14 @@ Major modes for editing ~docker~ and ~docker-compose~ files.
 
 #+BEGIN_SRC emacs-lisp
 (use-package dockerfile-mode
-  :ensure t)
+  :quelpa (dockerfile-mode :fetcher github :repo "ashiklom/dockerfile-mode"))
+
+(defun ans/dockerfile-settings ()
+  "Settings for dockerfile-mode"
+  (aggressive-indent-mode -1)
+  (setq indent-tabs-mode nil))
+
+(add-hook 'dockerfile-mode-hook 'ans/dockerfile-settings)
 
 (use-package docker-compose-mode
   :ensure t)
