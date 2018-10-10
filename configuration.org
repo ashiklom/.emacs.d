@@ -1473,7 +1473,7 @@ My agenda places higher-priority tasks at the top and lower-priority tasks at th
          "** %?" :clock-in t :clock-resume t)
         ("t" "TODO" entry
          (file "~/Dropbox/Notes/unsorted.org")
-         "* TODO %?\nCaptured %U\nFrom file %a\n" :clock-in t :clock-resume t)
+         "* TODO %?\nCaptured %U\nFrom file %a\n" :clock-in t :clock-keep t)
         ("u" "Miscellaneous note" entry
          (file "~/Dropbox/Notes/unsorted.org")
          "* %? :NOTE:\nCaptured %U\n%a\n" :clock-in t :clock-resume t)
