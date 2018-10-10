@@ -936,7 +936,8 @@ Mostly useful for R markdown files (R + markdown).
   ("`" (ans/insert-chunk-and-enter "") "Plain")
   ("r" (ans/insert-chunk-and-enter "{r}") "R (knitr)")
   ("R" (ans/insert-chunk-and-enter "r") "R (plain)")
-  ("-" ans/poly-split-chunk-here "Split"))
+  ("-" ans/poly-split-chunk-here "Split")
+  ("SPC" polymode-toggle-chunk-narrowing))
 
 (defun ans/poly-split-chunk-here ()
   "Split chunk into two chunks at point."
