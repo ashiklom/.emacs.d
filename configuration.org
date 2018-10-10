@@ -1975,9 +1975,9 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 (defun ans/org-refile-aware ()
   "Context-aware org refile."
   (interactive)
-  (if (ans/org-agenda-mode-p)
-      (org-agenda-refile)
-    (org-refile)))
+  (cond ((ans/org-agenda-mode-p) (org-agenda-refile))
+	((bound-and-true-p org-capture-mode) (org-capture-refile))
+	(t (org-refile))))
 
 (defun ans/org-toggle-narrow ()
   "Narrow if widened, otherwise widen."
