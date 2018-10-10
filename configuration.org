@@ -914,7 +914,37 @@ Mostly useful for R markdown files (R + markdown).
   :ensure t
   :mode
   (("\\.md" . poly-markdown-mode)
-   ("\\.Rmd" . poly-markdown-mode)))
+   ("\\.Rmd" . poly-markdown-mode))
+  :config
+  (ans-leader-def
+    :states 'normal
+    :keymaps 'poly-markdown-mode-map
+    "`" 'ans/chunk-hydra/body)
+  (general-def
+    :states 'insert
+    :keymaps 'poly-markdown-mode-map
+    "C-'" 'ans/chunk-hydra/body))
+
+(defun ans/insert-chunk-and-enter (chunktype)
+  "Insert chunk of type CHUNKTYPE and enter it."
+  (insert "```" chunktype "\n\n```")
+  (previous-line)
+  (beginning-of-line))
+
+(defhydra ans/chunk-hydra (:exit t)
+  "Insert chunks."
+  ("`" (ans/insert-chunk-and-enter "") "Plain")
+  ("r" (ans/insert-chunk-and-enter "{r}") "R (knitr)")
+  ("R" (ans/insert-chunk-and-enter "r") "R (plain)")
+  ("-" ans/poly-split-chunk-here "Split"))
+
+(defun ans/poly-split-chunk-here ()
+  "Split chunk into two chunks at point."
+  (interactive)
+  (beginning-of-line)
+  (insert "```\n\n```")
+  (previous-line)
+  (beginning-of-line))
 
 ;; Other modes that could be useful
 ;; (use-package poly-R
