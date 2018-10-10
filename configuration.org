@@ -2645,8 +2645,8 @@ Edit comment boxes.
   (require 'smartparens-config)
   (general-def
     :states 'insert
-    "M-e" 'ans/sp-slurp-and-end
-    "M-w" 'sp-forward-barf-sexp)
+    "C-0" 'ans/sp-slurp-and-end
+    "C-9" 'sp-forward-barf-sexp)
   (general-def
     :states '(motion normal visual insert)
     "M-]" 'sp-end-of-sexp
