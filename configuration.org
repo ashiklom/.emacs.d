@@ -188,6 +188,12 @@ Automatically don't save before compiling.
 (setq compilation-save-buffers-predicate 'ignore)
 #+END_SRC
 
+By default, use spaces instead of tabs.
+
+#+BEGIN_SRC emacs-lisp
+(setq indent-tabs-mode nil)
+#+END_SRC
+
 * Text and prog mode hooks
 
 #+BEGIN_SRC emacs-lisp
