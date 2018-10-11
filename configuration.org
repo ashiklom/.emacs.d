@@ -2869,3 +2869,17 @@ Automatically detect current file indent (similar to =vim-sleuth=).
   :ensure t)
 #+END_SRC
 
+** ANSI colors in compilation buffer
+
+So the output doesn't come out as jumbled.
+Based on [[https://stackoverflow.com/questions/13397737/ansi-coloring-in-compilation-mode][this Stack Overflow question]].
+
+#+BEGIN_SRC emacs-lisp
+(require 'ansi-color)
+(defun ans/colorize-compilation-buffer ()
+  "Add ANSI colors to compilation buffer."
+  (toggle-read-only)
+  (ansi-color-apply-on-region compilation-filter-start (point))
+  (toggle-read-only))
+(add-hook 'compilation-filter-hook 'ans/colorize-compilation-buffer)
+#+END_SRC
