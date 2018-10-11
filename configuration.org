@@ -756,6 +756,15 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
   :init
   (setq markdown-command "pandoc"))
 #+END_SRC
+
+Also, add Pandoc support.
+
+#+BEGIN_SRC emacs-lisp
+(use-package pandoc-mode
+  :ensure t
+  :config
+  (add-hook 'markdown-mode-hook 'pandoc-mode))
+#+END_SRC
 ** fence-edit
 
 Edit code blocks in a separate window.
