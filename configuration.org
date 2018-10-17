@@ -55,6 +55,11 @@ For installing packages from source (e.g. GitHub).
 #+BEGIN_SRC emacs-lisp
 (use-package dash :ensure t)
 #+END_SRC
+** f -- working with files
+
+#+BEGIN_SRC emacs-lisp
+(use-package f :ensure t)
+#+END_SRC
 ** Custom libraries
 
 #+BEGIN_SRC emacs-lisp
@@ -66,9 +71,11 @@ For installing packages from source (e.g. GitHub).
 
 Configure the ~custom.el~ file.
 Mostly, I avoid this in favor of ~setq~ settings.
+Note the use of ~f-touch~ to ensure that the file exists.
 
 #+BEGIN_SRC emacs-lisp
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(f-touch custom-file)
 (load custom-file)
 #+END_SRC
 
