@@ -900,7 +900,8 @@ Major modes for editing ~docker~ and ~docker-compose~ files.
 
 #+BEGIN_SRC emacs-lisp
 (use-package dockerfile-mode
-  :quelpa (dockerfile-mode :fetcher github :repo "ashiklom/dockerfile-mode"))
+  :quelpa (dockerfile-mode :fetcher github :repo "ashiklom/dockerfile-mode")
+  :mode "\\`Dockerfile")
 
 (defun ans/dockerfile-settings ()
   "Settings for dockerfile-mode"
