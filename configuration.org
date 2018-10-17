@@ -1345,15 +1345,6 @@ IGNORED are arguments ignored by company."
 #+END_SRC
 * Org-mode
 
-** citeproc-org
-
-#+BEGIN_SRC emacs-lisp
-(use-package citeproc-org
-  :quelpa (citeproc-org :fetcher github :repo "andras-simonyi/citeproc-org")
-  :config
-  (setq citeproc-org-ignore-backends nil)
-  (citeproc-org-setup))
-#+END_SRC
 ** Core package
 
 I use ~use-package~ to load ~org-mode~, but, to make it easier to annotate, I split other aspects of the configuration out into their own blocks.
@@ -1984,6 +1975,21 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   (general-def
     :states 'insert
     "C-\\" 'org-ref-bibtex-hydra/body))
+#+END_SRC
+** citeproc-org
+
+Note that this is lazily loaded when ~citeproc-org-setup~ is called.
+Note also that loading this package triggers ~org-reload~.
+
+#+BEGIN_SRC emacs-lisp
+(use-package citeproc-org
+  :quelpa (citeproc-org :fetcher github :repo "andras-simonyi/citeproc-org")
+  :commands citeproc-org-setup
+  :init
+  (setq citeproc-org-ignore-backends nil)
+  :config
+  (citeproc-org-setup)
+  (org-reload))
 #+END_SRC
 ** Hydras for org mode tasks
 
