@@ -518,11 +518,6 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "b" 'helm-mini
   "f" 'helm-find-files
   ":" 'eval-expression
-  "dd" 'treemacs
-  "df" 'treemacs-find-file
-  "dw" 'treemacs-select-window
-  "dp" 'treemacs-projectile
-  "db" 'treemacs-bookmark
   "x" 'helm-M-x
   "sv" 'ans--reload-initfile
   "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
@@ -696,10 +691,19 @@ Function to check if I'm inside of a projectile project.
 ** treemacs
 
 Better file and project manager.
+Note that all of these are lazy-loaded thanks to the =:general= keyword.
 
 #+BEGIN_SRC emacs-lisp
 (use-package treemacs
-  :ensure t)
+  :ensure t
+  :general
+  (ans-leader-def
+    :states 'normal
+    "dd" 'treemacs
+    "df" 'treemacs-find-file
+    "dw" 'treemacs-select-window
+    "dp" 'treemacs-projectile
+    "db" 'treemacs-bookmark))
 
 (use-package treemacs-evil
   :after treemacs evil
