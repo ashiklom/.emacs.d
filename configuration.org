@@ -223,9 +223,14 @@ By default, use spaces instead of tabs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package color-theme-sanityinc-tomorrow
-  :ensure t)
-(color-theme-sanityinc-tomorrow-night)
-(set-face-attribute 'default nil :font "Input Mono Narrow-12")
+  :ensure t
+  :config
+  (color-theme-sanityinc-tomorrow-night))
+
+(defvar target-font "Input Mono Narrow-12" "My preferred Emacs font.")
+
+(if (x-list-fonts target-font)
+    (set-face-attribute 'default nil :font target-font))
 #+END_SRC
 ** Cursor type
 
