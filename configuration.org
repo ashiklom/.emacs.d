@@ -984,6 +984,14 @@ Mostly useful for R markdown files (R + markdown).
 ;; (use-package poly-org
 ;;   :ensure t)
 #+END_SRC
+** web-mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package web-mode
+  :ensure t
+  :mode (("\\.php\\'" . web-mode)
+	 ("\\.html\\'" . web-mode)))
+#+END_SRC
 * Utility functions
 ** Rename buffer and file
 
