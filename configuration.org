@@ -1612,11 +1612,16 @@ Automatically fontify source code, and edit source code in the current window (r
       org-src-tab-acts-natively t
       org-src-window-setup 'other-window
       org-src-preserve-indentation t)
+
 (set-face-attribute 'org-block nil :foreground nil :background "Gray15")
 (set-face-attribute 'org-block-begin-line nil :background "#001436")
 
-(with-eval-after-load 'org
-  (org-babel-do-load-languages 'org-babel-load-languages '((emacs-lisp . t) (R . t))))
+(condition-case ans/babel-error
+    (with-eval-after-load 'org
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((emacs-lisp . t) (R . t))))
+  ((debug error) (message "Failed with error %s" ans/babel-error)))
 #+END_SRC
 
 Don't prompt for confirmation on babel evaluation.
