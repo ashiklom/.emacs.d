@@ -1046,24 +1046,6 @@ Mostly useful for R markdown files (R + markdown).
   (interactive)
   (find-file (expand-file-name "init.el" user-emacs-directory)))
 #+END_SRC
-** Toggle "minimized" window
-
-#+BEGIN_SRC emacs-lisp
-(defvar ans-window-minimized '()
-  "Configuration of currently minimized windows.
-See `ans-toggle-minimize'.")
-
-(defun ans-toggle-minimize ()
-  "Toggle the maximization state of a window."
-  (interactive)
-  (if ans-window-minimized
-      (progn (set-window-configuration (pop ans-window-minimized))
-             (message "Windows restored."))
-    (progn (push (current-window-configuration) ans-window-minimized)
-           (delete-other-windows)
-           (message "Window minimized."))
-    ))
-#+END_SRC
 ** Pop window into own frame
 
 #+BEGIN_SRC emacs-lisp
