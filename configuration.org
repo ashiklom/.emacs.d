@@ -680,13 +680,17 @@ Function to check if I'm inside of a projectile project.
 #+END_SRC
 ** perspective
 
+Like "tabs" in Emacs.
+Note that this is lazy-loaded on =persp-switch= thanks to the =:commands= keyword.
+
 #+BEGIN_SRC emacs-lisp
 (use-package perspective
   :ensure t
   :init
   (setq persp-mode-prefix-key (kbd "<C-SPC>"))
   :config
-  (persp-mode))
+  (persp-mode)
+  :commands persp-switch)
 #+END_SRC
 ** treemacs
 
