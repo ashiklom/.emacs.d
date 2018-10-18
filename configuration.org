@@ -768,11 +768,6 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
-  :mode
-  (("README\\.md\\'" . gfm-mode)
-   ("\\.md\\'" . markdown-mode)
-   ("\\.Rmd\\'" . markdown-mode)
-   ("\\.markdown\\'" . markdown-mode))
   :init
   (setq markdown-command "pandoc"))
 #+END_SRC
@@ -942,9 +937,6 @@ Mostly useful for R markdown files (R + markdown).
 
 (use-package poly-markdown
   :ensure t
-  :mode
-  (("\\.md" . poly-markdown-mode)
-   ("\\.Rmd" . poly-markdown-mode))
   :config
   (ans-leader-def
     :states 'normal
