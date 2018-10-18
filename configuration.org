@@ -2210,6 +2210,9 @@ Use org mode outline for organization, but hide this organization from exported 
   (add-to-list 'ess-R-font-lock-keywords
                '(ess-fl-keyword:fun-calls . t) t)
   (ans/add-evil-maps 'ess-help-mode-map)
+  ;; Temporarily disable because of bug
+  ;; See emacs-ess/ESS issue #720
+  (setq ess-use-tracebug nil)
   :general
   (general-def
     :keymaps 'ess-mode-map
