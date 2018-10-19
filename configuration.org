@@ -165,12 +165,16 @@ At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll o
 ** PNNL mac settings
 
 #+BEGIN_SRC emacs-lisp
-(when (equal user-login-name "shik544")
+(when (string-equal system-type "darwin")
   (setq exec-path (append exec-path '("/usr/local/bin")))
-  (setq mac-option-modifier 'meta)
-  (use-package exec-path-from-shell
-    :ensure t)
+  (setq mac-option-modifier 'meta))
+
+(use-package exec-path-from-shell
+  :if (string-equal system-type "darwin")
+  :ensure t
+  :init
   (setq exec-path-from-shell-check-startup-files nil)
+  :config
   (exec-path-from-shell-initialize))
 #+END_SRC
 
