@@ -1526,10 +1526,25 @@ Some custom keybindings for org agenda mode.
   :states 'motion
   :keymaps 'org-agenda-mode-map
   "gl" 'org-agenda-log-mode
+  "ga" 'ans/org-agenda-toggle-archive
   "gwd" 'org-agenda-day-view
   "gww" 'org-agenda-week-view
   "gwm" 'org-agenda-month-view
   "@" 'ans/toggle-show-scheduled-tasks)
+#+END_SRC
+
+This is the function for toggling display of archived entries in agenda.
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/org-agenda-toggle-archive ()
+  "Toggle showing archived entries in agenda mode."
+  (interactive)
+  (if org-agenda-archives-mode
+      (progn (setq org-agenda-archives-mode nil)
+             (message "Agenda archive mode disabled."))
+    (setq org-agenda-archives-mode t)
+    (message "Agenda archive mode enabled."))
+  (org-agenda-redo))
 #+END_SRC
 
 Configure priorities.
