@@ -461,7 +461,7 @@ I also tried to expand it to R, but it doesn't currently work.
 
 #+BEGIN_SRC emacs-lisp
 (use-package evil-matchit
-  :disable
+  :disabled
   :ensure t
   :after evil
   :config
@@ -829,7 +829,7 @@ Currently disabled.
 
 #+BEGIN_SRC emacs-lisp
 (use-package mmm-mode
-  :disable
+  :disabled
   :ensure t
   :init
   (setq mmm-global-mode 'maybe
@@ -884,7 +884,7 @@ Currently disabled.
   (toggle-truncate-lines -1))
 
 (use-package csv-mode
-  :disable
+  :disabled
   :ensure t
   :mode "\\.csv\\'"
   :hook (csv-mode . ans/csv-mode-settings))
@@ -1590,7 +1590,7 @@ This is temporarily disabled because it interferes with ~perspective~ in some ed
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-capture-pop-frame
-  :disable
+  :disabled
   :ensure t)
 #+END_SRC
 
@@ -2876,7 +2876,7 @@ NOTE: This is temporarily disabled.
 
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
-  :disable
+  :disabled
   :ensure t
   :init
   (setq undo-tree-history-directory-alist `(("." . "~/.emacs.d/undo"))
