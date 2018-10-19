@@ -1130,8 +1130,43 @@ Core helm configuration.
     :keymaps '(helm-find-files-map helm-projectile-find-file-map)
     "<right>" 'right-char
     "<left>" 'left-char
-    "<C-backspace>" 'backward-kill-word))
+    "<C-backspace>" 'backward-kill-word)
+  (general-def
+    :keymaps '(helm-buffer-map)
+    "C-;" 'ans/helm-buffer-hydra/body))
 #+END_SRC
+
+Buffer mode hydra.
+See [[https://github.com/abo-abo/hydra/wiki/Helm-2][here]] and [[https://github.com/abo-abo/hydra/wiki/Helm-2][here]] for inspiration.
+
+#+BEGIN_SRC emacs-lisp
+(defhydra ans/helm-buffer-hydra (:color pink)
+  "Helm buffer"
+  ("k" helm-previous-line "Previous")
+  ("j" helm-next-line "Next")
+  ("{" helm-previous-source "Previous source")
+  ("}" helm-next-source "Next source")
+  ("C-d" helm-next-page "Pg Down")
+  ("C-u" helm-previous-page "Pg Up")
+  ("gg" helm-beginning-of-buffer "Top")
+  ("G" helm-end-of-buffer "Bottom")
+  ("m" helm-toggle-visible-mark "Mark")
+  ("M" helm-toggle-all-marks "Mark all")
+  ("A" helm-mark-all "Mark all")
+  ("U" helm-unmark-all "Unmark all")
+  ("x" helm-buffer-run-kill-persistent "Kill")
+  ("gr" helm-buffer-run-grep "Grep")
+  ("r" helm-buffer-run-rename-buffer "Rename")
+  ("y" helm-yank-selection "Yank")
+  ("v" helm-execute-persistent-action "View")
+  ("f" helm-follow-mode "Follow")
+  ("K" helm-scroll-other-window-down "Scroll down")
+  ("J" helm-scroll-other-window "Scroll up")
+  ("C-z" helm-select-action "Select action")
+  ("i" nil "Insert")
+  ("<escape>" 'helm-keyboard-quit "Back"))
+#+END_SRC
+
 ** Split windows for helm
 
 #+BEGIN_SRC emacs-lisp
