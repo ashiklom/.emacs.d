@@ -49,6 +49,12 @@ For installing packages from source (e.g. GitHub).
 (use-package quelpa-use-package :ensure t)
 #+END_SRC
 
+** Restart Emacs in place
+
+#+BEGIN_SRC emacs-lisp
+(use-package restart-emacs
+  :ensure t)
+#+END_SRC
 * Lisp libraries
 ** dash -- list manipulation
 
