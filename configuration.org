@@ -1525,9 +1525,10 @@ Some custom keybindings for org agenda mode.
 (general-def
   :states 'motion
   :keymaps 'org-agenda-mode-map
-  "wd" 'org-agenda-day-view
-  "ww" 'org-agenda-week-view
-  "wm" 'org-agenda-month-view
+  "gl" 'org-agenda-log-mode
+  "gwd" 'org-agenda-day-view
+  "gww" 'org-agenda-week-view
+  "gwm" 'org-agenda-month-view
   "@" 'ans/toggle-show-scheduled-tasks)
 #+END_SRC
 
