@@ -2636,7 +2636,17 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
   :commands helm-bibtex
   :config
   (helm-delete-action-from-source "Edit notes" helm-source-bibtex)
-  (helm-add-action-to-source "Edit notes" 'ans/org-ref-notes-function helm-source-bibtex 7))
+  (helm-add-action-to-source "Edit notes" 'ans/org-ref-notes-function helm-source-bibtex 7)
+  (defun bibtex-completion-fallback-candidates ()
+    "Custom list of bibtex fallback options. This is the same as the
+one that ships with helm-bibtex, except that
+`bibtex-completion-fallback-options` comes first."
+    (let ((bib-files (bibtex-completion-normalize-bibliography 'main)))
+      (-concat
+       bibtex-completion-fallback-options
+       (--map (cons (s-concat "Create new entry in " (f-filename it))
+                    `(lambda (_search-expression) (find-file ,it) (goto-char (point-max)) (newline)))
+              bib-files)))))
 (evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
 #+END_SRC
 
