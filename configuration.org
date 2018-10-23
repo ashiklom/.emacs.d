@@ -269,7 +269,6 @@ Customize how major and minor modes appear in the modeline.
              (flyspell-mode " 𝐀𝐁𝐂" flyspell)
              (visual-line-mode " ↩" simple)
              (adaptive-wrap-prefix-mode " ⥱" adaptive-wrap)
-             (aggressive-indent-mode " ➠" aggressive-indent)
              (auto-revert-mode " ↻" autorevert)
              (undo-tree-mode nil undo-tree)
              (eldoc-mode nil eldoc)
@@ -913,7 +912,6 @@ Major modes for editing ~docker~ and ~docker-compose~ files.
 
 (defun ans/dockerfile-settings ()
   "Settings for dockerfile-mode"
-  (aggressive-indent-mode -1)
   (setq indent-tabs-mode nil))
 
 (add-hook 'dockerfile-mode-hook 'ans/dockerfile-settings)
@@ -2869,13 +2867,27 @@ Here's a hydra for navigating lisp code.
   :general
   (general-def
     :states 'normal
-    "gs" 'fill-function-arguments-dwim))
+    "gs" 'ans/fill-function-arguements-and-indent))
 #+END_SRC
+
+Define a custom function that calls ~fill-function-arguments~ and then re-indents the expression.
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/fill-function-arguements-and-indent ()
+  "Fill function arguments and indent."
+  (interactive)
+  (fill-function-arguments-dwim)
+  (let ((start (save-excursion (sp-beginning-of-sexp) (point)))
+        (end (save-excursion (sp-end-of-sexp) (point))))
+    (indent-region start end)))
+#+END_SRC
+
 ** aggressive-indent
 
 #+BEGIN_SRC emacs-lisp
 (use-package aggressive-indent
-  :ensure t
+  :disabled
+  ;; :ensure t
   :hook (prog-mode . aggressive-indent-mode)
   :config
   (add-to-list 'aggressive-indent-excluded-modes 'makefile-mode)
