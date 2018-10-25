@@ -2632,6 +2632,21 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
         bibtex-autokey-titlewords 1
         bibtex-autokey-titleword-length nil
         bibtex-autokey-titleword-case-convert-function 'downcase)
+  (setq bibtex-completion-notes-template-one-file
+"** TODO ${author-abbrev} (${year}): ${title}
+:PROPERTIES:
+:Custom_ID: ${=key=}
+:AUTHOR: ${author-or-editor}
+:FULL_TITLE: ${title}
+:JOURNAL: ${journal}
+:YEAR: ${year}
+:VOLUME: ${volume}
+:PAGES: ${pages}
+:DOI: ${doi}
+:URL: ${url}
+:END:
+cite:${=key=}
+")
   :commands helm-bibtex
   :config
   (helm-delete-action-from-source "Edit notes" helm-source-bibtex)
