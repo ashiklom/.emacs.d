@@ -2732,21 +2732,18 @@ When automatically creating a bibtex key, replace non-ASCII characters to avoid 
   (with-temp-buffer
     (insert string)
     (call-process-region (point-min) (point-max)
-			 "iconv" t t nil "--to-code=ASCII//TRANSLIT")
-    (buffer-substring-no-properties (point-min) (point-max))))
+                         "iconv" t t nil "--to-code=ASCII//TRANSLIT")
+    (let* 
+        ((result (buffer-substring-no-properties (point-min) (point-max)))
+         (result (replace-regexp-in-string "[^[:alnum:][:blank:]_-]" "" result)))
+      result)))
 
 (defun ans/custom-org-clean-function (key)
   "Remove special characters from Bibtex key."
   (replace-regexp-in-string ":" "" key)
-  (ans/asciify-string key)
-  (replace-regexp-in-string "^" "" key)
-  (replace-regexp-in-string "\\\\" "" key))
+  (ans/asciify-string key))
 
 (setq org-ref-clean-bibtex-key-function 'ans/custom-org-clean-function)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(ans/asciify-string "côte_2012_fine")
 #+END_SRC
 
 ** ebib
