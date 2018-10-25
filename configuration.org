@@ -2022,7 +2022,8 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
         org-ref-default-bibliography `(,ans/reference-bibfile)
         org-ref-pdf-directory ans/reference-dir-pdfs
         org-ref-bibtex-hydra-key-binding nil
-        org-ref-note-title-format "** TODO %2a %y - %T
+        org-ref-note-title-format
+"** TODO %2a %y - %T
 :PROPERTIES:
 :Custom_ID: %k
 :AUTHOR: %9a
