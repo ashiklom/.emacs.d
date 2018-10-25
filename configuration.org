@@ -2305,7 +2305,11 @@ Use org mode outline for organization, but hide this organization from exported 
     "r g" 'ans/ess-glimpse-symbol
     "r s" 'ans/ess-symbol-size
     "k r" 'ans/rmarkdown-render
-    "x " 'ess-interrupt)
+    "x " 'ess-interrupt
+    "o p" 'ans/ess-plot-symbol-scatter
+    "o l" 'ans/ess-plot-symbol-line
+    "O p" 'ans/ess-matplot-symbol-points
+    "O l" 'ans/ess-matplot-symbol-lines)
   (general-def
     :keymaps 'ess-mode-map
     "M-RET" 'ess-newline-and-indent)
@@ -2326,7 +2330,8 @@ Use org mode outline for organization, but hide this organization from exported 
     "_" 'self-insert-command
     "M-m" (lambda() (interactive)(insert " %>%"))
     "M--" 'ess-insert-S-assign
-    "C-c" (lambda() (interactive)(insert "#'")))
+    "C-c" (lambda() (interactive)(insert "#'"))
+    "C-8" (lambda() (interactive)(insert " %*% ")))
   (general-def
     :keymaps 'ess-help-mode-map
     :states 'emacs
@@ -2393,6 +2398,38 @@ Use org mode outline for organization, but hide this organization from exported 
   (ess-send-string
    (ess-get-process)
    "Rcpp::compileAttributes()"))
+#+END_SRC
+
+*** Plot and matplot
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-plot-symbol-scatter ()
+  "Do a base R scatter plot on the symbol at point."
+  (interactive)
+  (ess-send-string
+   (ess-get-process)
+   (format "plot(%s)" (symbol-at-point))))
+
+(defun ans/ess-plot-symbol-line ()
+  "Do a base R plot on the symbol at point."
+  (interactive)
+  (ess-send-string
+   (ess-get-process)
+   (format "plot(%s, type = 'l')" (symbol-at-point))))
+
+(defun ans/ess-matplot-symbol-points ()
+  "Do a matrix plot on the symbol at point."
+  (interactive)
+  (ess-send-string
+   (ess-get-process)
+   (format "matplot(%s)" (symbol-at-point))))
+
+(defun ans/ess-matplot-symbol-lines ()
+  "Do a matrix plot on the symbol at point."
+  (interactive)
+  (ess-send-string
+   (ess-get-process)
+   (format "matplot(%s, type = 'l')" (symbol-at-point))))
 #+END_SRC
 *** Size of symbol at point
 
