@@ -995,6 +995,29 @@ Mostly useful for R markdown files (R + markdown).
   :mode (("\\.php\\'" . web-mode)
 	 ("\\.html\\'" . web-mode)))
 #+END_SRC
+** Python
+Configure Elpy -- interactive Python development environment.
+
+#+BEGIN_SRC emacs-lisp
+(use-package elpy
+  :ensure t
+  :hook python-mode
+  :init
+  (setq python-shell-interpreter "jupyter"
+        python-shell-interpreter-args "console --simple-prompt"
+        python-shell-prompt-detect-failure-warning nil)
+  :config
+  (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter")
+  (elpy-enable)
+  (general-def
+    :states 'normal
+    :keymaps 'elpy-mode-map
+    :prefix "\\"
+    "rf" 'run-python
+    "l" 'elpy-shell-send-statement
+    "d" 'elpy-shell-send-statement-and-step
+    "aa" 'elpy-shell-send-buffer))
+#+END_SRC
 * Utility functions
 ** Rename buffer and file
 
