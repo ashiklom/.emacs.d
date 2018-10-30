@@ -2039,6 +2039,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 #+BEGIN_SRC emacs-lisp
 (use-package org-ref
   :ensure t
+  :after helm-bibtex
   :init
   (setq org-ref-bibliography-notes ans/reference-notes
         reftex-default-bibliography `(,ans/reference-bibfile)
