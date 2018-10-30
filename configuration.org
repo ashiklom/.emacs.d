@@ -2304,7 +2304,7 @@ Use org mode outline for organization, but hide this organization from exported 
   ;; Temporarily disable because of bug
   ;; See emacs-ess/ESS issue #720
   (setq ess-use-tracebug nil)
-  :general
+  :config
   (general-def
     :keymaps 'ess-mode-map
     :states 'normal
