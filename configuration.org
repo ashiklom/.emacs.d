@@ -2060,7 +2060,6 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 #+BEGIN_SRC emacs-lisp
 (use-package org-ref
   :ensure t
-  :after helm-bibtex
   :init
   (setq org-ref-bibliography-notes ans/reference-notes
         reftex-default-bibliography `(,ans/reference-bibfile)
@@ -2068,7 +2067,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
         org-ref-pdf-directory ans/reference-dir-pdfs
         org-ref-bibtex-hydra-key-binding nil
         org-ref-note-title-format
-"** TODO %2a %y - %T
+        "** TODO %2a %y - %T
 :PROPERTIES:
 :Custom_ID: %k
 :AUTHOR: %9a
@@ -2703,6 +2702,7 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
 #+BEGIN_SRC emacs-lisp
 (use-package helm-bibtex
   :ensure t
+  :after org-ref
   :init
   (setq bibtex-completion-bibliography ans/reference-bibfile
         bibtex-completion-library-path ans/reference-dir-pdfs
@@ -2729,7 +2729,7 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
 :END:
 cite:${=key=}
 ")
-  :commands helm-bibtex
+  :commands (helm-bibtex)
   :config
   (helm-delete-action-from-source "Edit notes" helm-source-bibtex)
   (helm-add-action-to-source "Edit notes" 'ans/org-ref-notes-function helm-source-bibtex 7)
