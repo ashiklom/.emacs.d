@@ -1104,6 +1104,27 @@ This is useful for complex R ~tribbles~.
 		"\\(\\s-*\\)," 1 1 t))
 
 #+END_SRC
+** Run shell commands
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/shell-send-line ()
+  "Run line at point as shell command."
+  (interactive)
+  (shell-command (buffer-substring-no-properties (line-beginning-position) (line-end-position))))
+
+(defun ans/shell-send-region (start end)
+  "Run selection as shell command."
+  (interactive "r")
+  (shell-command (buffer-substring-no-properties start end)))
+
+(ans-leader-def
+  :states 'normal
+  "@" 'ans/shell-send-line)
+
+(ans-leader-def
+  :states 'visual
+  "@" 'ans/shell-send-region)
+#+END_SRC
 * Helm
 
 Core helm configuration.
