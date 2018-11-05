@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: DBI::dbSendQuery
+# key: dbq
+# --
+DBI::dbSendQuery($0)

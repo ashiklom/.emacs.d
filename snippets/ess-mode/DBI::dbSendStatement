@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: DBI::dbSendStatement
+# key: dbs
+# --
+DBI::dbSendStatement($0)
