@@ -2348,6 +2348,8 @@ Use org mode outline for organization, but hide this organization from exported 
     "r g" 'ans/ess-glimpse-symbol
     "r s" 'ans/ess-symbol-size
     "k r" 'ans/rmarkdown-render
+    "r H" 'ans/ess-head
+    "r T" 'ans/ess-tail
     "x " 'ess-interrupt
     "o p" 'ans/ess-plot-symbol-scatter
     "o l" 'ans/ess-plot-symbol-line
@@ -2481,6 +2483,19 @@ Use org mode outline for organization, but hide this organization from exported 
   "Run 'pryr::object_size' on symbol at point."
   (interactive)
   (ess-send-string (ess-get-process) (format "pryr::object_size(%s)" (symbol-at-point))))
+#+END_SRC
+*** Head and tail
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-head ()
+  "Run 'base::head' on symbol at point."
+  (interactive)
+  (ess-send-string (ess-get-process) (format "head(%s)" (symbol-at-point))))
+
+(defun ans/ess-tail ()
+  "Run 'base::head' on symbol at point."
+  (interactive)
+  (ess-send-string (ess-get-process) (format "tail(%s)" (symbol-at-point))))
 #+END_SRC
 *** Other
 #+BEGIN_SRC emacs-lisp
