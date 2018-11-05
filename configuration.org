@@ -239,8 +239,8 @@ By default, use spaces instead of tabs.
 
 (defvar target-font "Input Mono Narrow-12" "My preferred Emacs font.")
 
-(if (x-list-fonts target-font)
-    (set-face-attribute 'default nil :font target-font))
+(if (and (display-graphic-p) (x-list-fonts target-font))
+     (set-face-attribute 'default nil :font target-font))
 #+END_SRC
 ** Cursor type
 
