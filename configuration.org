@@ -813,6 +813,7 @@ Edit code blocks in a separate window.
 #+BEGIN_SRC emacs-lisp
 (use-package pdf-tools
   :ensure t
+  :disabled
   ;; :mode (("\\.pdf\\'" . pdf-view-mode))
   :config
   (pdf-tools-install)
