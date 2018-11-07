@@ -709,6 +709,7 @@ Note that all of these are lazy-loaded thanks to the =:general= keyword.
 
 #+BEGIN_SRC emacs-lisp
 (use-package treemacs
+  :disabled
   :ensure t
   :general
   (ans-leader-def
@@ -720,10 +721,12 @@ Note that all of these are lazy-loaded thanks to the =:general= keyword.
     "db" 'treemacs-bookmark))
 
 (use-package treemacs-evil
+  :disabled
   :after treemacs evil
   :ensure t)
 
 (use-package treemacs-projectile
+  :disabled
   :after treemacs projectile
   :ensure t)
 #+END_SRC
