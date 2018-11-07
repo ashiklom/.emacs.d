@@ -596,7 +596,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
 (defhydra ans/buffer-window-hydra (:exit t :hint nil)
   "
   Buffers: _w_:quit _W_:kill    Windows: _d_elete  _D_elete and kill    Frames: _f_:pop _F_:new     Split: _\\_:vert  _-_:horiz
-  Switch:  _h__j__k__l_  Move (far = g): _H__J__K__L_    Misc: _r_evert   _s_ave as   _z_:undo   _Z_:redo"
+  Switch:  _h__j__k__l_  Move (far = g): _H__J__K__L_    Misc: _r_evert   _s_ave as   _z_:undo   _Z_:redo   _SPC_: Last"
   ("w" quit-window)
   ("W" (kill-buffer (current-buffer)))
   ("d" delete-window)
@@ -620,7 +620,8 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   ("gl" evil-window-move-far-right)
   ("gh" evil-window-move-far-left)
   ("z" winner-undo)
-  ("Z" winner-redo))
+  ("Z" winner-redo)
+  ("SPC" ans/mru-window))
 #+END_SRC
 ** Evaluate lisp at point
 
@@ -757,6 +758,20 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
   (ans-leader-def
     :states '(normal motion)
     "z" 'zoom-window-zoom))
+#+END_SRC
+** Custom functions
+*** Most recently used window
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/mru-window ()
+  "Switch to most recently used window."
+  (interactive)
+  (let ((win (get-mru-window t t t)))
+    (unless win (error "Last window not found"))
+    (let ((frame (window-frame win)))
+      (raise-frame frame)
+      (select-frame frame)
+      (select-window win))))
 #+END_SRC
 * Version control
 ** magit
