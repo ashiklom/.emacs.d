@@ -1796,7 +1796,7 @@ Use the clocking settings from "Organize your life in plain text".
  org-clock-report-include-clocking-task t
  ;; Show current clock time in frame title
  org-clock-mode-line-total 'current
- org-clock-clocked-in-display 'frame-title)
+ org-clock-clocked-in-display 'mode-line)
 
 (org-clock-persistence-insinuate)
 #+END_SRC
