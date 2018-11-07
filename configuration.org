@@ -539,7 +539,8 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "w"  'ans/buffer-window-hydra/body
   "p" 'ans/projectile-hydra/body
   "h" 'ans/help-hydra/body
-  "o" 'ans/org-mode-hydra/body)
+  "o" 'ans/org-mode-hydra/body
+  "*" 'ans/replace-symbol-at-point)
 #+END_SRC
 
 ** Quick save with "S"
@@ -1125,6 +1126,15 @@ This is useful for complex R ~tribbles~.
 (ans-leader-def
   :states 'visual
   "@" 'ans/shell-send-region)
+#+END_SRC
+** Find-replace symbol at point
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/replace-symbol-at-point (replacement)
+  "Replace symbol at point with value."
+  (interactive "sReplacement: ")
+  (save-excursion
+    (query-replace (symbol-name (symbol-at-point)) replacement t)))
 #+END_SRC
 * Helm
 
