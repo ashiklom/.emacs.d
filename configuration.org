@@ -653,6 +653,22 @@ Evaluate lisp at point.
 #+END_SRC
 * Buffer and window management
 
+** dired
+
+#+BEGIN_SRC emacs-lisp
+(use-package dired
+  :init
+  (add-to-list 'evil-emacs-state-modes 'dired-mode)
+  (setq evil-collection-mode-list (remove 'dired evil-collection-mode-list))
+  :config
+  (ans-leader-def
+    :states 'normal
+    "dd" 'dired
+    "dw" 'dired-other-window)
+  (general-def
+    :keymaps 'dired-mode-map
+    "SPC" 'ans-leader-command))
+#+END_SRC
 ** ace-window
 
 #+BEGIN_SRC emacs-lisp
