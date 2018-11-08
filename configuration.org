@@ -2135,7 +2135,13 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
     "C-\\" 'org-ref-bibtex-hydra/body)
   (general-def
     :keymaps 'org-ref-bibtex-hydra/keymap
-    "n" '(lambda ()(interactive) (org-ref-open-bibtex-notes) (hydra-keyboard-quit))))
+    "n" '(lambda ()(interactive) (org-ref-open-bibtex-notes) (hydra-keyboard-quit)))
+  (general-def
+    :states 'normal
+    :keymaps 'bibtex-mode-map
+    :prefix "\\"
+    "d" 'doi-insert-bibtex
+    "D" '(lambda () (interactive) (doi-insert-bibtex (simpleclip-get-contents)))))
 #+END_SRC
 ** citeproc-org
 
