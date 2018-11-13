@@ -1646,6 +1646,13 @@ My agenda places higher-priority tasks at the top and lower-priority tasks at th
       org-lowest-priority 67)
 #+END_SRC
 
+Use the current buffer for the agenda window.
+The default (~reorganize-frame~) blows up my existing window configuration, which is annoying.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-window-setup 'current-window)
+#+END_SRC
+
 ** Org capture
 
 #+BEGIN_SRC emacs-lisp
