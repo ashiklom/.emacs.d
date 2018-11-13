@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: import::here
+# key: imh
+# --
+import::here($0, .from = $1)
