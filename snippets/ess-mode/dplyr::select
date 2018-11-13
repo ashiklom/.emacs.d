@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dplyr::select
+# key: select
+# --
+dplyr::select($0)

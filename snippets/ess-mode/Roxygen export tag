@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Roxygen export tag
+# key: rexp
+# --
+#' @export

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dplyr::tbl
+# key: tbl
+# --
+dplyr::tbl($0)

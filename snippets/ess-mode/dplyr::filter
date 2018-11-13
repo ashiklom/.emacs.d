@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dplyr::filter
+# key: filter
+# --
+dplyr::filter($0)
