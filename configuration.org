@@ -2415,7 +2415,7 @@ Use org mode outline for organization, but hide this organization from exported 
     "o l" 'ans/ess-plot-symbol-line
     "O p" 'ans/ess-matplot-symbol-points
     "O l" 'ans/ess-matplot-symbol-lines
-    "!" 'ans/ess-toggle-debug,
+    "!" 'ans/ess-toggle-debug
     "z p" 'ans/ess-usethis-package)
   (general-def
     :keymaps 'ess-mode-map
