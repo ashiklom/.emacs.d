@@ -2473,6 +2473,15 @@ Use org mode outline for organization, but hide this organization from exported 
     (deactivate-mark)))
 #+END_SRC
 
+*** Run command with symbol at point
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-do-with-symbol-at-point (command-string)
+  "Run R expression in COMMAND-STRING using symbol-at-point."
+  (ess-send-string
+   (ess-get-process)
+   (format command-string (symbol-at-point))))
+#+END_SRC
 *** ~dplyr::glimpse~
 
 #+BEGIN_SRC emacs-lisp
@@ -2512,30 +2521,22 @@ Use org mode outline for organization, but hide this organization from exported 
 (defun ans/ess-plot-symbol-scatter ()
   "Do a base R scatter plot on the symbol at point."
   (interactive)
-  (ess-send-string
-   (ess-get-process)
-   (format "plot(%s)" (symbol-at-point))))
+  (ans/ess-do-with-symbol-at-point "plot(%s)"))
 
 (defun ans/ess-plot-symbol-line ()
   "Do a base R plot on the symbol at point."
   (interactive)
-  (ess-send-string
-   (ess-get-process)
-   (format "plot(%s, type = 'l')" (symbol-at-point))))
+  (ans/ess-do-with-symbol-at-point "plot(%s, type = 'l')"))
 
 (defun ans/ess-matplot-symbol-points ()
   "Do a matrix plot on the symbol at point."
   (interactive)
-  (ess-send-string
-   (ess-get-process)
-   (format "matplot(%s)" (symbol-at-point))))
+  (ans/ess-do-with-symbol-at-point "matplot(%s)"))
 
 (defun ans/ess-matplot-symbol-lines ()
   "Do a matrix plot on the symbol at point."
   (interactive)
-  (ess-send-string
-   (ess-get-process)
-   (format "matplot(%s, type = 'l')" (symbol-at-point))))
+  (ans/ess-do-with-symbol-at-point "matplot(%s, type = 'l')"))
 #+END_SRC
 *** Size of symbol at point
 
@@ -2543,7 +2544,7 @@ Use org mode outline for organization, but hide this organization from exported 
 (defun ans/ess-symbol-size ()
   "Run 'pryr::object_size' on symbol at point."
   (interactive)
-  (ess-send-string (ess-get-process) (format "pryr::object_size(%s)" (symbol-at-point))))
+  (ans/ess-do-with-symbol-at-point "pryr::object_size(%s)"))
 #+END_SRC
 *** Head and tail
 
