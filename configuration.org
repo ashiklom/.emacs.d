@@ -528,6 +528,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "f" 'helm-find-files
   ":" 'eval-expression
   "x" 'helm-M-x
+  "X" 'shell-command
   "sv" 'ans--reload-initfile
   "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
   "ss" 'delete-trailing-whitespace
