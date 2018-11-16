@@ -2414,7 +2414,8 @@ Use org mode outline for organization, but hide this organization from exported 
     "o p" 'ans/ess-plot-symbol-scatter
     "o l" 'ans/ess-plot-symbol-line
     "O p" 'ans/ess-matplot-symbol-points
-    "O l" 'ans/ess-matplot-symbol-lines)
+    "O l" 'ans/ess-matplot-symbol-lines
+    "!" 'ans/ess-toggle-debug)
   (general-def
     :keymaps 'ess-mode-map
     "M-RET" 'ess-newline-and-indent)
@@ -2556,6 +2557,26 @@ Use org mode outline for organization, but hide this organization from exported 
   "Run 'base::head' on symbol at point."
   (interactive)
   (ess-send-string (ess-get-process) (format "tail(%s)" (symbol-at-point))))
+#+END_SRC
+*** Toggle debug function 
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-toggle-debug ()
+  "Toggle debugging function at point."
+  (interactive)
+  (ess-send-string
+   (ess-get-process)
+   (format
+    "if (isdebugged(%1$s)) {\n message('Undebug %1$s') \n undebug(%1$s) \n} else { \n message('Debug %1$s') \n debug(%1$s)}"
+    (symbol-at-point))))
+#+END_SRC
+*** ~usethis~ utilities
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-usethis-package ()
+  "Run `usethis::use_package` on symbol at point."
+  (interactive)
+  (ans/ess-do-with-symbol-at-point "usethis::use_package(%s)"))
 #+END_SRC
 *** Other
 #+BEGIN_SRC emacs-lisp
