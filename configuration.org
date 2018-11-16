@@ -813,6 +813,7 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
+  :mode ".Rmd"
   :init
   (setq markdown-command "pandoc"))
 #+END_SRC
