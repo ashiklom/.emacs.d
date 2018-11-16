@@ -2578,7 +2578,7 @@ Use org mode outline for organization, but hide this organization from exported 
 (defun ans/ess-usethis-package ()
   "Run `usethis::use_package` on symbol at point."
   (interactive)
-  (ans/ess-do-with-symbol-at-point "usethis::use_package(%s)"))
+  (ans/ess-do-with-symbol-at-point "usethis::use_package('%s')"))
 #+END_SRC
 *** Other
 #+BEGIN_SRC emacs-lisp
