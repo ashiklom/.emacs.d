@@ -935,7 +935,14 @@ Set default external programs for certain filetypes.
   :if (string-equal system-type "darwin")
   :ensure t
   :init
-  (setq openwith-associations '(("\\.pdf\\'" "open" (file))))
+  (setq openwith-associations
+        (list
+         (list (openwith-make-extension-regexp
+                '("pdf" "png" "jpg" "tiff" "svg"
+                  "doc" "xls" "ppt"
+                  "odt" "ods" "odp"
+                  "mpg" "mpeg" "mp3" "mp4" "avi"))
+               "open" '(file))))
   :config
   (openwith-mode t))
 #+END_SRC
