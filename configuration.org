@@ -3099,7 +3099,7 @@ Define a custom function that calls ~fill-function-arguments~ and then re-indent
   (interactive)
   (fill-function-arguments-dwim)
   (let ((start (save-excursion (sp-beginning-of-sexp) (point)))
-        (end (save-excursion (sp-end-of-sexp) (point))))
+        (end (save-excursion (sp-end-of-sexp) (+ (point) 1))))
     (indent-region start end)))
 #+END_SRC
 
