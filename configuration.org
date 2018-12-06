@@ -806,6 +806,18 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
     :states 'normal
     "gu" 'magithub-dashboard-show-read-notifications-toggle))
 #+END_SRC
+** gists
+
+Quickly create and manipulate GitHub gists.
+
+#+BEGIN_SRC emacs-lisp
+(use-package gist
+  :ensure t
+  :general
+  (ans-leader-def
+    :states 'normal
+    "gg" 'gist-list))
+#+END_SRC
 * Filetype modes
 ** markdown-mode
 
