@@ -946,7 +946,7 @@ Set default external programs for certain filetypes.
 (use-package openwith
   :if (string-equal system-type "darwin")
   :ensure t
-  :init
+  :config
   (setq openwith-associations
         (list
          (list (openwith-make-extension-regexp
@@ -955,7 +955,6 @@ Set default external programs for certain filetypes.
                   "odt" "ods" "odp"
                   "mpg" "mpeg" "mp3" "mp4" "avi"))
                "open" '(file))))
-  :config
   (openwith-mode t))
 #+END_SRC
 ** Docker
