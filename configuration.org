@@ -2417,14 +2417,14 @@ Use org mode outline for organization, but hide this organization from exported 
     :prefix "\\"
     "r f" 'R
     "r q" 'ans-quit-R
-    "l" 'ess-eval-line
-    "d" 'ess-eval-line-and-step
-    "f f" 'ess-eval-function
-    "p p" 'ess-eval-paragraph
-    "p d" 'ess-eval-paragraph-and-step
-    "a a" 'ess-eval-buffer
-    "a d" 'ess-eval-buffer-from-here-to-end
-    "a s" 'ess-eval-buffer-from-beg-to-here
+    "l" 'ans/r-send-line
+    "d" 'ans/r-send-line-and-down
+    "f f" 'ans/r-send-function-or-paragraph
+    "p p" 'ans/r-send-function-or-paragraph
+    "p d" 'ans/r-send-function-or-para-and-down
+    "a a" 'ans/r-send-buffer
+    "a d" 'ans/r-send-current-line-to-end
+    "a s" 'ans/r-send-beginning-to-current-line
     "v i" 'ess-r-devtools-install-package
     "v d" 'ess-r-devtools-document-package
     "v l" 'ess-r-devtools-load-package
@@ -2451,7 +2451,7 @@ Use org mode outline for organization, but hide this organization from exported 
     :states 'visual
     :keymaps 'ess-mode-map
     :prefix "\\"
-    "s s" 'ess-eval-region
+    "s s" 'ans/r-send-region-source
     "r x" 'ans/ess-reprex-region)
   (general-def
     :states 'insert
@@ -2490,6 +2490,60 @@ Use org mode outline for organization, but hide this organization from exported 
 
 (add-hook 'inferior-ess-mode-hook 'ans/inferior-ess-mode-setup)
 (add-hook 'ess-r-mode-hook 'ans/ess-r-mode-setup)
+#+END_SRC
+
+** Send region using R "source" function
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(defun ans/r-send-region-source (start end)
+  "Use R source function to run region from START to END."
+  (interactive "r")
+  (let* ((temp-file (make-temp-file "/tmp/")))
+    (write-region start end temp-file)
+    (ess-send-string (ess-get-process) (format "source('%s', echo = TRUE)" temp-file))))
+
+(defun ans/r-send-line ()
+  "Send current line to R."
+  (interactive)
+  (ans/r-send-region-source (line-beginning-position) (line-end-position)))
+
+(defun ans/r-send-buffer ()
+  "Send entire current buffer to R."
+  (interactive)
+  (ans/r-send-region-source (point-min) (point-max)))
+
+(defun ans/r-send-beginning-to-current-line ()
+  "Run from beginning of buffer through end of current line."
+  (interactive)
+  (ans/r-send-region-source (point-min) (line-end-position)))
+
+(defun ans/r-send-current-line-to-end ()
+  "Run from beginning of current line to end of buffer."
+  (interactive)
+  (ans/r-send-region-source (line-beginning-position) (point-max)))
+
+(defun ans/r-send-function-or-paragraph ()
+  "Send current function definition."
+  (interactive)
+  (save-excursion
+    (ess-mark-function-or-para)
+    (ans/r-send-region-source (point) (mark))
+    (deactivate-mark)))
+
+(defun ans/r-send-line-and-down ()
+  "Send current line to R and advance one line down."
+  (interactive)
+  (ans/r-send-line)
+  (ess-next-code-line))
+
+(defun ans/r-send-function-or-para-and-down ()
+  "Send current function or paragraph and advance one line."
+  (interactive)
+  (ess-mark-function-or-para)
+  (exchange-point-and-mark)
+  (ans/r-send-region-source (mark) (point))
+  (deactivate-mark)
+  (ess-next-code-line))
 #+END_SRC
 
 ** Custom functions
