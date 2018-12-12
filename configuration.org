@@ -2495,11 +2495,19 @@ Use org mode outline for organization, but hide this organization from exported 
 
 #+BEGIN_SRC emacs-lisp :tangle no
 (defun ans/r-send-region-source (start end)
-  "Use R source function to run region from START to END."
+  "Send region from START to END to R using source function."
   (interactive "r")
-  (let* ((temp-file (make-temp-file "/tmp/")))
-    (write-region start end temp-file)
-    (ess-send-string (ess-get-process) (format "source('%s', echo = TRUE)" temp-file))))
+  (let* ((code (buffer-substring-no-properties start end))
+         (nlines (count-lines start end)))
+    (ess-send-string
+     (ess-get-process)
+     (format "
+.esstmpfile <- tempfile()
+.essstring <- readLines(con = stdin(), n = %d)
+%s
+writeLines(.essstring, .esstmpfile)
+source(.esstmpfile, echo = TRUE)
+" nlines code))))
 
 (defun ans/r-send-line ()
   "Send current line to R."
