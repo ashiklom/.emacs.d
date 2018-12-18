@@ -2494,7 +2494,7 @@ Use org mode outline for organization, but hide this organization from exported 
 
 ** Send region using R "source" function
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
 (defun ans/r-send-region-source (start end)
   "Send region from START to END to R using source function."
   (interactive "r")
