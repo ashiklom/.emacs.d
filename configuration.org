@@ -597,14 +597,14 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
 (defhydra ans/buffer-window-hydra (:exit t :hint nil)
   "
   Buffers: _w_:quit _W_:kill    Windows: _d_elete  _D_elete and kill    Frames: _f_:pop _F_:new     Split: _\\_:vert  _-_:horiz
-  Switch:  _h__j__k__l_  Move (far = g): _H__J__K__L_    Misc: _r_evert   _s_ave as   _z_:undo   _Z_:redo   _SPC_: Last"
+  Switch:  _h__j__k__l_  Move (far = g): _H__J__K__L_    Misc: _u_ revert   _s_ave as   _z_:undo   _Z_:redo   _SPC_: Last  _r_:Rotate"
   ("w" quit-window)
   ("W" (kill-buffer (current-buffer)))
   ("d" delete-window)
   ("D" kill-buffer-and-window)
   ("f" ans/pop-window-into-frame)
   ("F" make-frame-command)
-  ("r" revert-buffer)
+  ("u" revert-buffer)
   ("s" write-file)
   ("\\" evil-window-vsplit)
   ("-" evil-window-split)
@@ -622,8 +622,16 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   ("gh" evil-window-move-far-left)
   ("z" winner-undo)
   ("Z" winner-redo)
+  ("+" zoom-window-zoom)
+  ("r" ans/rotate-window-hydra/body)
   ("SPC" ans/mru-window))
+
+(defhydra ans/rotate-window-hydra (:color 'pink)
+  "Rotate window or layout"
+  ("l" rotate-layout "Layout")
+  ("w" rotate-window "Window"))
 #+END_SRC
+
 ** Evaluate lisp at point
 
 Evaluate lisp at point.
@@ -759,6 +767,13 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
   (ans-leader-def
     :states '(normal motion)
     "z" 'zoom-window-zoom))
+#+END_SRC
+** Rotate window layout (`rotate.el`)
+
+#+BEGIN_SRC emacs-lisp
+(use-package rotate
+  :ensure t
+  :commands (rotate-layout rotate-window))
 #+END_SRC
 ** Custom functions
 *** Most recently used window
