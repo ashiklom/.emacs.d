@@ -480,6 +480,29 @@ I also tried to expand it to R, but it doesn't currently work.
                      evilmi-sdk-extract-keyword-howtos))
   (plist-put evilmi-plugins 'r-mode '((ans/evilmi-r-get-tag ans/evilmi-r-jump))))
 #+END_SRC
+*** evil-mc (multiple cursors)
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil-mc
+  :ensure t
+  :config
+  (global-evil-mc-mode 1)
+  (general-def
+    :states 'visual
+    "grn" 'evil-mc-make-and-goto-next-match
+    "grp" 'evil-mc-make-and-goto-prev-match
+    "grN" 'evil-mc-skip-and-goto-next-match
+    "grP" 'evil-mc-skip-and-goto-next-match)
+  (general-def
+    :states 'normal
+    "gru" 'evil-mc-undo-all-cursors
+    "grh" (lambda() (interactive) (evil-mc-make-cursor-here) (evil-mc-pause-cursors))
+    "grp" 'evil-mc-pause-cursors
+    "grr" 'evil-mc-resume-cursors
+    "grN" 'evil-mc-skip-and-goto-next-match
+    "grP" 'evil-mc-skip-and-goto-next-match))
+#+END_SRC
+
 ** Universal argument
 
 Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
@@ -3039,7 +3062,7 @@ Edit comment boxes.
 (use-package rebox2
   :ensure t
   :general
-  (general-def
+  (ans-leader-def
     :states 'normal
     "gR" 'rebox-mode
     "gr" 'rebox-dwim)
