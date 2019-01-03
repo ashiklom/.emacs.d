@@ -495,6 +495,7 @@ I also tried to expand it to R, but it doesn't currently work.
     "grP" 'evil-mc-skip-and-goto-next-match)
   (general-def
     :states 'normal
+    "grg" 'evil-mc-mode
     "gru" 'evil-mc-undo-all-cursors
     "grh" (lambda() (interactive) (evil-mc-make-cursor-here) (evil-mc-pause-cursors))
     "grp" 'evil-mc-pause-cursors
