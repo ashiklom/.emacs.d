@@ -1363,7 +1363,7 @@ See [[https://github.com/abo-abo/hydra/wiki/Helm-2][here]] and [[https://github.
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-swoop
-  :ensure t
+  :quelpa (helm-swoop :fetcher github :repo "ashiklom/helm-swoop")
   :init
   (setq helm-swoop-split-direction 'split-window-horizontally)
   :general
