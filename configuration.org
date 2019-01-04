@@ -819,6 +819,7 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
 #+BEGIN_SRC emacs-lisp
 (use-package magit
   :ensure t
+  :commands '(magithub-clone)
   :general
   (ans-leader-def
     :states 'normal
@@ -835,6 +836,7 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
 (use-package magithub
   :ensure t
   :after magit
+  :commands '(magithub-clone)
   :config
   (magithub-feature-autoinject t)
   (ans-leader-def
