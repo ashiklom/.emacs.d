@@ -648,7 +648,9 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   ("Z" winner-redo)
   ("+" zoom-window-zoom)
   ("r" ans/rotate-window-hydra/body)
-  ("SPC" ans/mru-window))
+  ("SPC" ans/mru-window)
+  ("0" (balance-windows (window-parent)))
+  ("=" balance-windows))
 
 (defhydra ans/rotate-window-hydra (:color 'pink)
   "Rotate window or layout"
