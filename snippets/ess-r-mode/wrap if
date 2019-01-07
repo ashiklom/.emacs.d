@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: wrap if
+# binding: C-c C-i
+# --
+if (FALSE) {
+  `yas-selected-text`
+}
