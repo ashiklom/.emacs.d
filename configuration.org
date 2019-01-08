@@ -2158,7 +2158,7 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-journal
-  :ensure t
+  :disabled
   :init
   (setq org-journal-dir "~/Dropbox/Notes/journal"
         org-journal-file-format "%Y-%m-%d"
