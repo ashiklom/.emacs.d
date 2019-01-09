@@ -2465,8 +2465,8 @@ Use org mode outline for organization, but hide this organization from exported 
     "l" 'ans/r-send-line
     "d" 'ans/r-send-line-and-down
     "f f" 'ans/r-send-function-or-paragraph
-    "p p" 'ans/r-send-function-or-paragraph
-    "p d" 'ans/r-send-function-or-para-and-down
+    "p p" 'ans/r-send-paragraph
+    "p d" 'ans/r-send-paragraph-and-down
     "a a" 'ans/r-send-buffer
     "a d" 'ans/r-send-current-line-to-end
     "a s" 'ans/r-send-beginning-to-current-line
@@ -2583,6 +2583,23 @@ source(.esstmpfile, echo = TRUE)
     (ess-mark-function-or-para)
     (ans/r-send-region-source (point) (mark))
     (deactivate-mark)))
+
+(defun ans/r-send-paragraph ()
+  "Send current paragraph."
+  (interactive)
+  (save-excursion
+    (mark-paragraph)
+    (ans/r-send-region-source (point) (mark))
+    (deactivate-mark)))
+
+(defun ans/r-send-paragraph-and-down ()
+  "Send current paragraph."
+  (interactive)
+  (save-excursion
+    (mark-paragraph)
+    (ans/r-send-region-source (point) (mark))
+    (deactivate-mark))
+  (ess-next-code-line))
 
 (defun ans/r-send-line-and-down ()
   "Send current line to R and advance one line down."
