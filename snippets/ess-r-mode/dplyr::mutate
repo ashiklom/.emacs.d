@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dplyr::mutate
+# key: mutate
+# --
+dplyr::mutate
