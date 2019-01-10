@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: purrr::map 
+# key: map
+# --
+purrr::map

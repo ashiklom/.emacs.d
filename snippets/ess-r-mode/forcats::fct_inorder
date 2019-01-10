@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: forcats::fct_inorder
+# key: forder
+# --
+forcats::fct_inorder($0)
