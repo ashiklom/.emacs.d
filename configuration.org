@@ -2450,8 +2450,7 @@ Use org mode outline for organization, but hide this organization from exported 
 	  ("param" . "")
 	  ("return" . "")
 	  ("author" . "Alexey Shiklomanov")))
-  (add-to-list 'ess-R-font-lock-keywords
-               '(ess-fl-keyword:fun-calls . t) t)
+  (setf (alist-get 'ess-fl-keyword:fun-calls ess-R-font-lock-keywords) t)
   (ans/add-evil-maps 'ess-help-mode-map)
   ;; Temporarily disable because of bug
   ;; See emacs-ess/ESS issue #720
