@@ -565,7 +565,8 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "p" 'ans/projectile-hydra/body
   "h" 'ans/help-hydra/body
   "o" 'ans/org-mode-hydra/body
-  "*" 'ans/replace-symbol-at-point)
+  "*" 'ans/replace-symbol-at-point
+  "C-'" #'ans/kill-ring-to-clipboard)
 #+END_SRC
 
 ** Quick save with "S"
@@ -1232,6 +1233,16 @@ This is useful for complex R ~tribbles~.
   (interactive "sReplacement: ")
   (save-excursion
     (query-replace (symbol-name (symbol-at-point)) replacement t)))
+#+END_SRC
+** Copy register to system clipboard
+
+#+BEGIN_SRC emacs-lisp
+(setq select-enable-clipboard t)
+
+(defun ans/kill-ring-to-clipboard ()
+  "Copy current kill ring to system clipboard"
+  (interactive)
+  (gui-select-text (current-kill 0)))
 #+END_SRC
 * Helm
 
