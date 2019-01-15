@@ -549,6 +549,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   :states '(motion normal visual emacs)
   :keymaps 'override
   "b" 'helm-mini
+  "B" 'helm-bookmarks
   "f" 'helm-find-files
   ":" 'eval-expression
   "x" 'helm-M-x
