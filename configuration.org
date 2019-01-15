@@ -1406,10 +1406,7 @@ For easier unicode entry.
 #+BEGIN_SRC emacs-lisp
 (use-package helm-unicode
   :ensure t
-  :general
-  (general-def
-    :states 'insert
-    "C-u" 'helm-unicode))
+  :commands (helm-unicode))
 #+END_SRC
 * Company
 
