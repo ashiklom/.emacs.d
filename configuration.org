@@ -2997,7 +2997,7 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
         bibtex-autokey-titleword-case-convert-function 'downcase)
   (setq bibtex-completion-additional-search-fields '(journal keywords))
   (setq bibtex-completion-display-formats
-        '((t . "${author:36} ${journal:40} ${title:*} ${year:4} ${=has-pdf=:1}${=has-note=:1} ${=type=:7} ${keywords:31}")))
+        '((t . "${author:36} ${journal:30} ${title:*} ${year:4} ${=has-pdf=:1}${=has-note=:1} ${keywords:20}")))
   (setq bibtex-completion-notes-template-one-file
 "** TODO ${author-abbrev} (${year}): ${title}
 :PROPERTIES:
