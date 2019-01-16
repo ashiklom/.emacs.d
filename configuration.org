@@ -3027,6 +3027,8 @@ one that ships with helm-bibtex, except that
        (--map (cons (s-concat "Create new entry in " (f-filename it))
                     `(lambda (_search-expression) (find-file ,it) (goto-char (point-max)) (newline)))
               bib-files))))
+  (advice-add 'bibtex-completion-candidates
+              :filter-return 'reverse)
   (evil-ex-define-cmd "bib[tex]" 'helm-bibtex)
   (general-def
     :states 'emacs
