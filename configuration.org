@@ -3088,6 +3088,11 @@ Here, I tell Ebib to grab my default, global library, and modify its default key
   (add-to-list 'evil-emacs-state-modes 'ebib-index-mode)
   (setq ebib-preload-bib-files '("~/Dropbox/references/library.bib"))
   :config
+  (setq ebib-index-columns '(("Entry Key" 40 t)
+                             ("Author/Editor" 40 t)
+                             ("Year" 6 t)
+                             ("Journal" 20 t)
+                             ("Title" 80 t)))
   (general-def
     :keymaps 'ebib-index-mode-map
     :states 'emacs
