@@ -828,7 +828,8 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
   :general
   (ans-leader-def
     :states 'normal
-    "g s" 'magit-status)
+    "g s" 'magit-status
+    "g b" 'magit-blame)
   :config
   (general-def
     :states 'normal
