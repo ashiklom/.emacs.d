@@ -756,7 +756,10 @@ Note that this is lazy-loaded on =persp-switch= thanks to the =:commands= keywor
   (setq persp-mode-prefix-key (kbd "<C-SPC>"))
   :config
   (persp-mode)
-  :commands persp-switch)
+  :general
+  (general-def
+    :states 'normal
+    "C-S-s" 'persp-switch))
 #+END_SRC
 ** treemacs
 
