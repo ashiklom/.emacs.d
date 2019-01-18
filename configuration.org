@@ -845,7 +845,6 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
 (use-package magithub
   :ensure t
   :after magit
-  :commands (magithub-clone)
   :config
   (magithub-feature-autoinject t)
   (ans-leader-def
