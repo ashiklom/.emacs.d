@@ -834,6 +834,7 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
     "g s" 'magit-status
     "g b" 'magit-blame)
   :config
+  (use-package magithub)
   (general-def
     :states 'normal
     :keymaps 'magit-status-mode-map
@@ -844,16 +845,30 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
 #+BEGIN_SRC emacs-lisp
 (use-package magithub
   :ensure t
-  :after magit
-  :config
-  (magithub-feature-autoinject t)
+  :general
   (ans-leader-def
     :states '(normal motion emacs)
     "gd" 'magithub-dashboard)
+  :config
+  (magithub-feature-autoinject t)
   (general-def
     :keymaps 'magithub-dash-map
     :states 'normal
     "gu" 'magithub-dashboard-show-read-notifications-toggle))
+#+END_SRC
+** forge
+
+Currently disabled while functionality is evolving, but may revisit at a later point.
+
+#+BEGIN_SRC emacs-lisp
+(use-package forge
+  :disabled
+  :after magit
+  :config
+  (general-def
+    :states 'normal
+    :keymaps 'magit-status-mode-map
+    "h" #'forge-dispatch))
 #+END_SRC
 ** gists
 
