@@ -1296,7 +1296,6 @@ Core helm configuration.
   (helm-mode 1)
   (helm-autoresize-mode 1)
   ;; (use-package helm-rg :ensure t)
-  :general
   (ans-leader-def
     :states 'normal
     "f" 'helm-find-files
