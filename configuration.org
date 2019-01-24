@@ -570,7 +570,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "h" 'ans/help-hydra/body
   "o" 'ans/org-mode-hydra/body
   "*" 'ans/replace-symbol-at-point
-  "C-'" #'ans/kill-ring-to-clipboard)
+  ">" #'ans/kill-ring-to-clipboard)
 #+END_SRC
 
 ** Quick save with "S"
@@ -1258,7 +1258,8 @@ This is useful for complex R ~tribbles~.
 ** Copy register to system clipboard
 
 #+BEGIN_SRC emacs-lisp
-(setq select-enable-clipboard t)
+(setq select-enable-clipboard t
+      x-select-enable-clipboard t)
 
 (defun ans/kill-ring-to-clipboard ()
   "Copy current kill ring to system clipboard"
@@ -3173,7 +3174,9 @@ Edit comment boxes.
 (use-package simpleclip
   :ensure t
   :config
-  (simpleclip-mode 1))
+  (simpleclip-mode 1)
+  (setq select-enable-clipboard t
+        x-select-enable-clipboard t))
 #+END_SRC
 ** smartparens
 
