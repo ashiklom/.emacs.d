@@ -692,6 +692,19 @@ Evaluate lisp at point.
 
 (ans/add-evil-maps 'occur-mode-map)
 #+END_SRC
+** avy
+
+#+BEGIN_SRC emacs-lisp
+(use-package avy
+  :ensure t
+  :general
+  (general-def
+    :states 'motion
+    :prefix "SPC SPC"
+    "c" #'avy-goto-word-or-subword-1
+    "SPC" #'avy-goto-char-timer
+    "l" #'avy-goto-line))
+#+END_SRC
 * Buffer and window management
 
 ** dired
@@ -710,6 +723,7 @@ Evaluate lisp at point.
     :keymaps 'dired-mode-map
     "SPC" 'ans-leader-command))
 #+END_SRC
+
 ** ace-window
 
 #+BEGIN_SRC emacs-lisp
