@@ -1207,14 +1207,6 @@ Configure Elpy -- interactive Python development environment.
   (interactive)
   (load-file (expand-file-name "init.el" user-emacs-directory)))
 #+END_SRC
-** Edit init file
-
-#+BEGIN_SRC emacs-lisp
-(defun ans--edit-initfile ()
-  "Edit the Emacs init file."
-  (interactive)
-  (find-file (expand-file-name "init.el" user-emacs-directory)))
-#+END_SRC
 ** Pop window into own frame
 
 #+BEGIN_SRC emacs-lisp
