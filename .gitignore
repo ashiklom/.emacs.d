@@ -27,3 +27,4 @@ configuration.elc
 init.elc
 abbrev_defs
 /org-clock-save.el
+/var/

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dplyr::count
+# key: count
+# --
+dplyr::count($0)
