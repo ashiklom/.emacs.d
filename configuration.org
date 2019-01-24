@@ -1303,8 +1303,6 @@ Core helm configuration.
   (general-def
     :keymaps 'helm-map
     "TAB" 'helm-execute-persistent-action
-    "<right>" 'right-char
-    "<left>" 'left-char
     "C-z" 'helm-select-action
     "C-n" 'helm-next-line
     "C-p" 'helm-previous-line
@@ -1312,10 +1310,14 @@ Core helm configuration.
     "C-u" 'helm-previous-page
     "C-S-n" 'helm-next-source
     "C-S-p" 'helm-previous-source
-    "C-l" 'helm-yank-selection
-    "<C-backspace>" 'backward-kill-word)
+    "C-l" 'helm-yank-selection)
   (general-def
-    :keymaps '(helm-find-files-map helm-projectile-find-file-map)
+    :keymaps '(helm-map
+               helm-major-mode-map
+               helm--minor-mode-map
+               helm-find-files-map
+               helm-projectile-find-file-map
+               helm-read-file-map)
     "<right>" 'right-char
     "<left>" 'left-char
     "<C-backspace>" 'backward-kill-word)
