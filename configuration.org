@@ -2784,7 +2784,7 @@ source(.esstmpfile, echo = TRUE)
   (interactive)
   (ess-send-string (ess-get-process) (format "tail(%s)" (symbol-at-point))))
 #+END_SRC
-*** Toggle debug function 
+*** Toggle debug function
 
 #+BEGIN_SRC emacs-lisp
 (defun ans/ess-toggle-debug ()
@@ -3087,7 +3087,7 @@ When automatically creating a bibtex key, replace non-ASCII characters to avoid 
     (insert string)
     (call-process-region (point-min) (point-max)
                          "iconv" t t nil "--to-code=ASCII//TRANSLIT")
-    (let* 
+    (let*
         ((result (buffer-substring-no-properties (point-min) (point-max)))
          (result (replace-regexp-in-string "[^[:alnum:][:blank:]_-]" "" result)))
       result)))
