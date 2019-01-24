@@ -582,7 +582,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
 	(buffer-file-name) 'save-buffer))
 #+END_SRC
 
-*** Hydra for emacs help
+** Hydra for emacs help
 
 #+BEGIN_SRC emacs-lisp
 (defhydra ans/help-hydra (:exit t)
@@ -600,7 +600,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   ("M" (describe-variable current-major-mode) "Major mode")
   ("i" helm-info "Helm info"))
 #+END_SRC
-*** Hydra for projectile
+** Hydra for projectile
 
 #+BEGIN_SRC emacs-lisp
 (defhydra ans/projectile-hydra (:exit t)
@@ -620,7 +620,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   ("Q" projectile-kill-buffers "Kill buffers")
   ("!" projectile-commander))
 #+END_SRC
-*** Hydra for buffer and window operations
+** Hydra for buffer and window operations
 
 #+BEGIN_SRC emacs-lisp
 (defhydra ans/buffer-window-hydra (:exit t :hint nil)
