@@ -1790,8 +1790,6 @@ The default (~reorganize-frame~) blows up my existing window configuration, whic
          "* %? :NOTE:\nCaptured %U\n%a\n" :clock-in t :clock-resume t)
         ("i" "Interruption" entry (file "~/Dropbox/Notes/unsorted.org")
          "* %? \nCaptured %U" :clock-in t :clock-resume t)
-        ("m" "Meeting" entry (file "~/Dropbox/Notes/unsorted.org")
-         "* Meeting with %? \nCaptured %U" :clock-in t :clock-resume t)
         ("s" "Schedule event" entry (file "~/Dropbox/Notes/unsorted.org")
          "* %^{Event}t %? :NOTE:\nCaptured %U" :clock-in t :clock-resume t)))
 #+END_SRC
