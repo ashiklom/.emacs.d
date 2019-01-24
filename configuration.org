@@ -895,7 +895,23 @@ Quickly create and manipulate GitHub gists.
   :general
   (ans-leader-def
     :states 'normal
-    "gg" 'gist-list))
+    "gg" #'gist-list)
+  (ans-leader-def
+    :states '(normal visual)
+    "gG" #'gist-region-or-buffer)
+  :config
+  (general-def
+    :states 'emacs
+    :keymaps 'gist-list-menu-mode-map
+    "SPC" #'ans-leader-command
+    "j" #'next-line
+    "k" #'previous-line
+    "d" #'gist-kill-current
+    "w" #'gist-browse-current-url)
+  (general-def
+    :states 'normal
+    :keymaps 'gist-mode-map
+    "C-c C-c" #'gist-mode-save-buffer))
 #+END_SRC
 * Filetype modes
 ** markdown-mode
