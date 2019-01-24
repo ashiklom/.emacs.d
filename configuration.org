@@ -104,7 +104,8 @@ Save them in =~/.emacs.d/backups=.
 This allows me to open Emacs quickly from external programs, most importantly the command line.
 
 #+BEGIN_SRC emacs-lisp
-(server-start)
+(if (not (server-running-p))
+    (server-start))
 #+END_SRC
 
 Also, configure the server for remote editing, based on [[https://andy.wordpress.com/2013/01/03/automatic-emacsclient/][this guide.]]
