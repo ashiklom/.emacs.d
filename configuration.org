@@ -2511,35 +2511,37 @@ Use org mode outline for organization, but hide this organization from exported 
     :keymaps 'ess-mode-map
     :states 'normal
     :prefix "\\"
-    "r f" 'R
-    "r q" 'ans-quit-R
-    "l" 'ans/r-send-line
-    "d" 'ans/r-send-line-and-down
-    "f f" 'ans/r-send-function-or-paragraph
-    "p p" 'ans/r-send-paragraph
-    "p d" 'ans/r-send-paragraph-and-down
-    "a a" 'ans/r-send-buffer
-    "a d" 'ans/r-send-current-line-to-end
-    "a s" 'ans/r-send-beginning-to-current-line
-    "v i" 'ess-r-devtools-install-package
-    "v d" 'ess-r-devtools-document-package
-    "v l" 'ess-r-devtools-load-package
-    "v t" 'ess-r-devtools-test-package
-    "r h" 'ess-display-help-on-object
-    "r o" 'ess-rutils-objs
-    "r p" 'ans/ess-eval-symbol
-    "r g" 'ans/ess-glimpse-symbol
-    "r s" 'ans/ess-symbol-size
-    "k r" 'ans/rmarkdown-render
-    "r H" 'ans/ess-head
-    "r T" 'ans/ess-tail
-    "x " 'ess-interrupt
-    "o p" 'ans/ess-plot-symbol-scatter
-    "o l" 'ans/ess-plot-symbol-line
-    "O p" 'ans/ess-matplot-symbol-points
-    "O l" 'ans/ess-matplot-symbol-lines
-    "!" 'ans/ess-toggle-debug
-    "z p" 'ans/ess-usethis-package
+    "r f" #'R
+    "r q" #'ans-quit-R
+    "l" #'ans/r-send-line
+    "d" #'ans/r-send-line-and-down
+    "f f" #'ans/r-send-function-or-paragraph
+    "p p" #'ans/r-send-paragraph
+    "p d" #'ans/r-send-paragraph-and-down
+    "a a" #'ans/r-send-buffer
+    "a d" #'ans/r-send-current-line-to-end
+    "a s" #'ans/r-send-beginning-to-current-line
+    "v i" #'ess-r-devtools-install-package
+    "v d" #'ess-r-devtools-document-package
+    "v l" #'ess-r-devtools-load-package
+    "v t" #'ess-r-devtools-test-package
+    "r h" #'ess-display-help-on-object
+    "r o" #'ess-rutils-objs
+    "r p" #'ans/ess-eval-symbol
+    "r g" #'ans/ess-glimpse-symbol
+    "r s" #'ans/ess-str
+    "r z" #'ans/ess-symbol-size
+    "r n" #'ans/ess-names
+    "k r" #'ans/rmarkdown-render
+    "r H" #'ans/ess-head
+    "r T" #'ans/ess-tail
+    "x " #'ess-interrupt
+    "o p" #'ans/ess-plot-symbol-scatter
+    "o l" #'ans/ess-plot-symbol-line
+    "O p" #'ans/ess-matplot-symbol-points
+    "O l" #'ans/ess-matplot-symbol-lines
+    "!" #'ans/ess-toggle-debug
+    "z p" #'ans/ess-usethis-package
     "r l" #'ans/ess-drake-loadd
     "r d" #'ans/ess-drake-readd)
   (general-def
@@ -2846,6 +2848,21 @@ source(.esstmpfile, echo = TRUE)
   "Run `drake::loadd` on symbol at point."
   (interactive)
   (ans/ess-do-with-symbol-at-point "drake::loadd('%s')"))
+#+END_SRC
+*** Object names and structure
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-names ()
+  "Run `names` on symbol at point."
+  (interactive)
+  (ans/ess-do-with-symbol-at-point "names(%s)"))
+
+(defun ans/ess-str (arg)
+  "Run `names` on symbol at point. Optional prefix argument sets `max.level`."
+  (interactive "P")
+  (let* ((m (if arg (number-to-string arg) "NA"))
+         (do-string (concat "str(%s, max.level = " m ")")))
+    (ans/ess-do-with-symbol-at-point do-string)))
 #+END_SRC
 ** ox-ravel
 
