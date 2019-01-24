@@ -760,7 +760,7 @@ Note that this is lazy-loaded on =persp-switch= thanks to the =:commands= keywor
   :general
   (general-def
     :states 'normal
-    "C-S-s" 'persp-switch))
+    "C-SPC s" 'persp-switch))
 #+END_SRC
 ** treemacs
 
