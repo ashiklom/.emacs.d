@@ -3461,5 +3461,7 @@ Based on [[https://stackoverflow.com/questions/13397737/ansi-coloring-in-compila
   :general
   (ans-leader-def
     :states '(normal visual)
-    "rg" #'deadgrep))
+    "rg" #'deadgrep)
+  :config
+  (setq deadgrep-project-root-function #'projectile-project-root))
 #+END_SRC
