@@ -860,6 +860,7 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
 #+BEGIN_SRC emacs-lisp
 (use-package magithub
   :ensure t
+  :commands (magithub-clone)
   :general
   (ans-leader-def
     :states '(normal motion emacs)
