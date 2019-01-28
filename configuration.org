@@ -37,6 +37,28 @@ Bootstrap the ~use-package~ package manager.
 (eval-when-compile (require 'use-package))
 #+END_SRC
 
+** System packages
+
+#+BEGIN_SRC emacs-lisp
+(use-package use-package-ensure-system-package
+  :ensure t)
+#+END_SRC
+
+Declare that system packages are required with code like the following:
+
+#+BEGIN_SRC emacs-lisp :tangle no :eval no
+(use-package rg
+  :ensure-system-package rg)
+
+(use-package tern
+  :ensure-system-package (tern . "npm i -g tern"))
+
+(use-package ruby-mode
+  :ensure-system-package
+  ((rubocop . "gem install rubocop")
+   (ruby-lint . "gem install ruby-lint")))
+#+END_SRC
+
 ** quelpa
 
 For installing packages from source (e.g. GitHub).
@@ -55,6 +77,7 @@ For installing packages from source (e.g. GitHub).
 (use-package restart-emacs
   :ensure t)
 #+END_SRC
+
 * Lisp libraries
 ** dash -- list manipulation
 
@@ -3433,6 +3456,7 @@ Based on [[https://stackoverflow.com/questions/13397737/ansi-coloring-in-compila
 
 #+BEGIN_SRC emacs-lisp
 (use-package deadgrep
+  :ensure-system-package rg
   :ensure t
   :general
   (ans-leader-def
