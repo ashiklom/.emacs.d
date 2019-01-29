@@ -2544,6 +2544,7 @@ Use org mode outline for organization, but hide this organization from exported 
     "v d" #'ess-r-devtools-document-package
     "v l" #'ess-r-devtools-load-package
     "v t" #'ess-r-devtools-test-package
+    "v c" #'ess-r-devtools-check-package
     "r h" #'ess-display-help-on-object
     "r o" #'ess-rutils-objs
     "r p" #'ans/ess-eval-symbol
