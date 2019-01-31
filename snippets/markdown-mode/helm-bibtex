@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: helm-bibtex
+# key: cite
+# type: command
+# --
+(helm-bibtex)
