@@ -2466,6 +2466,28 @@ Use org mode outline for organization, but hide this organization from exported 
 
 (add-hook 'org-export-before-processing-hook #'ans/org-remove-headlines)
 #+END_SRC
+** Remove link (but keep description)
+
+Basically, replace a link with its description.
+Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/org-replace-link-by-link-description ()
+  "Replace an org link by its description or if empty its address"
+  (interactive)
+  (if (org-in-regexp org-bracket-link-regexp 1)
+      (let ((remove (list (match-beginning 0) (match-end 0)))
+            (description (if (match-end 3) 
+                             (org-match-string-no-properties 3)
+                           (org-match-string-no-properties 1))))
+        (apply 'delete-region remove)
+        (insert description))))
+
+(general-def
+  :keymaps 'org-mode-map
+  :states 'normal
+  "C-c C-." #'ans/org-replace-link-by-link-description)
+#+END_SRC
 * yasnippet
 
 #+BEGIN_SRC emacs-lisp
