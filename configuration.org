@@ -3486,7 +3486,14 @@ Based on [[https://stackoverflow.com/questions/13397737/ansi-coloring-in-compila
     :states '(normal visual)
     "rg" #'deadgrep)
   :config
-  (setq deadgrep-project-root-function #'projectile-project-root))
+  (setq deadgrep-project-root-function #'ans/try-projectile-project-root))
+
+(defun ans/try-projectile-project-root ()
+  "Use project"
+  (let* ((dir (projectile-project-root)))
+    (if dir dir
+      (deadgrep--project-root))))
+#+END_SRC
 * Terminal
 ** Multi-term
 
