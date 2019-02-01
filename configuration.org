@@ -3242,7 +3242,7 @@ Edit comment boxes.
     "]A" 'flycheck-first-error)
   (ans-leader-def
     :states '(motion normal)
-    "!" 'flycheck-list-errors)
+    "&" 'flycheck-list-errors)
   (defun disable-flycheck-in-org-src-edit ()
     "Disable some Flycheck features when editing an org src block."
     (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
@@ -3487,4 +3487,33 @@ Based on [[https://stackoverflow.com/questions/13397737/ansi-coloring-in-compila
     "rg" #'deadgrep)
   :config
   (setq deadgrep-project-root-function #'projectile-project-root))
+* Terminal
+** Multi-term
+
+Better terminal emulator inside Emacs.
+Based on [[http://paralambda.org/2012/07/02/using-gnu-emacs-as-a-terminal-emulator/][this guide]].
+
+Currently disabled.
+
+#+BEGIN_SRC emacs-lisp
+(use-package multi-term
+  :ensure t
+  :disabled
+  :init
+  (setq multi-term-buffer-name "*term*"
+        multi-term-program "/bin/bash")
+  :general
+  (ans-leader-def
+    :states 'normal
+    "!" #'multi-term))
+#+END_SRC
+** Eshell
+
+Terminal emulator in Emacs lisp.
+Currently using this one.
+
+#+BEGIN_SRC emacs-lisp
+(ans-leader-def
+  :states 'normal
+  "!" #'eshell)
 #+END_SRC
