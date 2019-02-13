@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: requireNamespace
+# key: rn
+# --
+requireNamespace($0, quietly = TRUE)
