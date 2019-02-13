@@ -1987,7 +1987,8 @@ Use the clocking settings from "Organize your life in plain text".
  org-clock-report-include-clocking-task t
  ;; Show current clock time in frame title
  org-clock-mode-line-total 'current
- org-clock-clocked-in-display 'mode-line)
+ org-clock-clocked-in-display 'mode-line
+ org-clock-history-length 10)
 
 (org-clock-persistence-insinuate)
 #+END_SRC
@@ -2379,7 +2380,9 @@ Note also that loading this package triggers ~org-reload~.
   ("g" org-clock-goto "Go to current clock")
   ("l" org-clock-in-last "Go to most recent clock")
   ("h" (org-clock-in-last '(4)) "Clock from history")
-  ("r" org-clock-report "Insert clock report"))
+  ("r" org-clock-report "Insert clock report")
+  ("<up>" org-clock-timestamps-up "Adjust time up")
+  ("<down>" org-clock-timestamps-down "Adjust time down"))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
