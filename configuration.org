@@ -946,7 +946,19 @@ Quickly create and manipulate GitHub gists.
   :commands (markdown-mode gfm-mode)
   :mode ".Rmd"
   :init
-  (setq markdown-command "pandoc"))
+  (setq markdown-command "pandoc")
+  :config
+  (ans-leader-def
+    :states 'normal
+    :keymaps 'markdown-mode-map
+    "R" #'ans/reload-polymode))
+
+(defun ans/reload-polymode ()
+  "Revert buffer and load poly-markdown-mode."
+  (interactive)
+  (save-buffer)
+  (revert-buffer nil t)
+  (poly-markdown-mode 1))
 #+END_SRC
 
 Also, add Pandoc support.
@@ -1123,6 +1135,8 @@ Mostly useful for R markdown files (R + markdown).
 
 (use-package poly-markdown
   :ensure t
+  :requires polymode
+  :commands (poly-markdown-mode)
   :config
   (ans-leader-def
     :states 'normal
