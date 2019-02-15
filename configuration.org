@@ -78,6 +78,21 @@ For installing packages from source (e.g. GitHub).
   :ensure t)
 #+END_SRC
 
+** Recursively unload package
+
+Unload a feature and all of its dependencies.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(defun ans/unload-feature-recursive (feature)
+  "Unload a feature and all of its dependents."
+  (interactive
+   (list (read-feature "Unload feature: " t)))
+  (let* ((file (feature-file feature))
+         (dependents (delete file (copy-sequence (file-dependents file))))) 
+    (if dependents
+        (mapc #'ans/unload-feature-recursive (mapcan #'file-provides dependents))
+      (unload-feature feature))))
+#+END_SRC
 * Lisp libraries
 ** dash -- list manipulation
 
@@ -375,7 +390,7 @@ My leader key is SPACE.
   :init
   (setq evil-collection-company-use-tng nil)
   :config
-  (setq evil-collection-mode-list (remove 'company evil-collection-mode-list))
+  (setq evil-collection-mode-list (remove '(company magit) evil-collection-mode-list))
   (evil-collection-init))
 #+END_SRC
 *** evil-surround
@@ -462,6 +477,7 @@ My leader key is SPACE.
 
 #+BEGIN_SRC emacs-lisp
 (use-package evil-magit
+  :disabled
   :ensure t
   :after magit)
 #+END_SRC
@@ -872,7 +888,6 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
     "g s" 'magit-status
     "g b" 'magit-blame)
   :config
-  (use-package magithub)
   (general-def
     :states 'normal
     :keymaps 'magit-status-mode-map
@@ -882,6 +897,7 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
 
 #+BEGIN_SRC emacs-lisp
 (use-package magithub
+  :disabled
   :ensure t
   :commands (magithub-clone)
   :general
@@ -901,7 +917,7 @@ Currently disabled while functionality is evolving, but may revisit at a later p
 
 #+BEGIN_SRC emacs-lisp
 (use-package forge
-  :disabled
+  :ensure t
   :after magit
   :config
   (general-def
@@ -1111,6 +1127,7 @@ The [[https://github.com/Silex/docker.el][docker]] package for performing docker
 
 #+BEGIN_SRC emacs-lisp
 (use-package docker
+  :disabled
   :ensure t
   :general
   (ans-leader-def
