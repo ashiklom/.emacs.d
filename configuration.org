@@ -1150,6 +1150,7 @@ Mostly useful for R markdown files (R + markdown).
 #+BEGIN_SRC emacs-lisp
 (use-package polymode
   :ensure t
+  :commands (polymode-minor-mode)
   :config
   (general-def
     :states '(normal motion)
