@@ -2790,8 +2790,7 @@ source(.esstmpfile, echo = TRUE)
 (defun ans-quit-R ()
   "Quit R process and close buffer."
   (interactive)
-  (ess-quit 4)
-  (quit-window))
+  (ess-quit 4))
 #+END_SRC
 *** Eval current symbol
 
