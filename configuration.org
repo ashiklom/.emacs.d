@@ -2740,7 +2740,7 @@ source(.esstmpfile, echo = TRUE)
     (mark-paragraph)
     (ans/r-send-region-source (point) (mark))
     (deactivate-mark))
-  (ess-next-code-line))
+  (evil-forward-paragraph))
 
 (defun ans/r-send-line-and-down ()
   "Send current line to R and advance one line down."
