@@ -62,20 +62,12 @@ Declare that system packages are required with code like the following:
 ** quelpa
 
 For installing packages from source (e.g. GitHub).
-Note that BSD ~tar~ (the default for MacOS) gets tripped up by certain package names, so when running on MacOS, I use GNU tar (~gtar~) instead.
 
 #+BEGIN_SRC emacs-lisp
 (use-package quelpa
   :ensure t
   :init
-  (setq quelpa-update-melpa-p nil)
-  (if (string-equal system-type "darwin")
-      (let* ((gtar (executable-find "gtar")))
-        (if gtar
-            (setq quelpa-build-tar-executable gtar)
-          (warn (concat "Did not find gtar executable. "
-                        "Some packages may not install properly. "
-                        "Please install 'gnu-tar' with 'brew install gnu-tar'"))))))
+  (setq quelpa-update-melpa-p nil))
 (use-package quelpa-use-package :ensure t)
 #+END_SRC
 
@@ -217,11 +209,21 @@ At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll o
 
 ** PNNL mac settings
 
+Note that BSD ~tar~ (the default for MacOS) gets tripped up by certain package names, so when running on MacOS, I use GNU tar (~gtar~) instead.
+
 #+BEGIN_SRC emacs-lisp
 (when (string-equal system-type "darwin")
   (setq exec-path (append exec-path '("/usr/local/bin")))
-  (setq mac-option-modifier 'meta))
+  (setq mac-option-modifier 'meta)
+  (let* ((gtar (executable-find "gtar")))
+    (if gtar
+        (setq quelpa-build-tar-executable gtar)
+      (warn (concat "Did not find gtar executable. "
+                    "Some packages may not install properly. "
+                    "Please install 'gnu-tar' with 'brew install gnu-tar'")))))
+#+END_SRC
 
+#+BEGIN_SRC emacs-lisp
 (use-package exec-path-from-shell
   :if (string-equal system-type "darwin")
   :ensure t
