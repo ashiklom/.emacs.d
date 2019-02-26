@@ -968,21 +968,15 @@ Quickly create and manipulate GitHub gists.
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
-  :mode ".Rmd"
+  :mode ("\\.Rmd$" "\\.md$" "\\.markdown$")
   :init
   (setq markdown-command "pandoc")
   :config
-  (ans-leader-def
+  (general-def
     :states 'normal
     :keymaps 'markdown-mode-map
-    "R" #'ans/reload-polymode))
-
-(defun ans/reload-polymode ()
-  "Revert buffer and load poly-markdown-mode."
-  (interactive)
-  (save-buffer)
-  (revert-buffer nil t)
-  (poly-markdown-mode 1))
+    :prefix "\\"
+    "p" #'ans/toggle-poly-markdown-mode))
 #+END_SRC
 
 Also, add Pandoc support.
@@ -1150,8 +1144,7 @@ Mostly useful for R markdown files (R + markdown).
 #+BEGIN_SRC emacs-lisp
 (use-package polymode
   :ensure t
-  :commands (polymode-minor-mode)
-  :config
+  :general
   (general-def
     :states '(normal motion)
     :keymaps 'polymode-mode-map
@@ -1161,13 +1154,16 @@ Mostly useful for R markdown files (R + markdown).
 
 (use-package poly-markdown
   :ensure t
-  :requires polymode
+  :after polymode
   :commands (poly-markdown-mode)
   :config
-  (ans-leader-def
+  (general-def
     :states 'normal
-    :keymaps 'poly-markdown-mode-map
-    "`" 'ans/chunk-hydra/body)
+    :keymaps '(poly-markdown-mode-map)
+    :prefix "\\"
+    "p" #'ans/toggle-poly-markdown-mode
+    "r" #'ans/reload-polymode
+    "`" #'ans/chunk-hydra/body)
   (general-def
     :states 'insert
     :keymaps 'poly-markdown-mode-map
@@ -1186,6 +1182,36 @@ Mostly useful for R markdown files (R + markdown).
   ("R" (ans/insert-chunk-and-enter "r") "R (plain)")
   ("-" ans/poly-split-chunk-here "Split")
   ("SPC" polymode-toggle-chunk-narrowing))
+
+(defun ans/poly-to-markdown-mode ()
+  "Switch from polymode to markdown mode and kill polymode buffers."
+  (interactive)
+  (markdown-mode)
+  (ans/kill-polymode-buffers))
+
+(defun ans/toggle-poly-markdown-mode ()
+  "Toggle poly-markdown mode."
+  (interactive)
+  (if poly-markdown-mode
+      (ans/poly-to-markdown-mode)
+    (poly-markdown-mode)))
+
+(defun ans/reload-polymode ()
+  "Revert buffer and load poly-markdown-mode."
+  (interactive)
+  (save-buffer)
+  (revert-buffer nil t)
+  (poly-markdown-mode 1))
+
+(defun ans/kill-polymode-buffers ()
+  "List all polymode implementation buffers."
+  (interactive)
+  (let* ((b (buffer-name))
+         (pattern (concat b "\\[.+\\]"))
+         (matched-buffers (-filter (lambda (buf) (s-matches? pattern (buffer-name buf))) (buffer-list)))
+         (n-matched (length matched-buffers)))
+    (-map #'kill-buffer matched-buffers)
+    (message "Killed %d polymode buffers." n-matched)))
 
 (defun ans/poly-split-chunk-here ()
   "Split chunk into two chunks at point."
