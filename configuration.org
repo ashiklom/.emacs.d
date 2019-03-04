@@ -606,7 +606,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "x" 'helm-M-x
   "X" 'shell-command
   "sv" 'ans--reload-initfile
-  "sx" (lambda() (interactive)(switch-to-buffer "*scratch*"))
+  "sx" (lambda() (interactive) (switch-to-buffer "*scratch*"))
   "ss" 'delete-trailing-whitespace
   "'" 'comment-dwim			; Insert right comment
   "vl" 'visual-line-mode
@@ -618,7 +618,16 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "h" 'ans/help-hydra/body
   "o" 'ans/org-mode-hydra/body
   "*" 'ans/replace-symbol-at-point
-  ">" #'ans/kill-ring-to-clipboard)
+  ">" #'ans/kill-ring-to-clipboard
+  "_" #'universal-argument)
+#+END_SRC
+
+Add ~-~ to ~universal-argument~ map.
+
+#+BEGIN_SRC emacs-lisp
+(general-def
+  :keymaps 'universal-argument-map
+  "_" #'universal-argument-more)
 #+END_SRC
 
 ** Quick save with "S"
