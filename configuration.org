@@ -2993,17 +2993,17 @@ source(.esstmpfile, echo = TRUE)
 (require 'ox-ravel)
 #+END_SRC
 
-** Custom imports functions (WIP)
+** Custom imports functions
 
 Parse, and quickly add to, ~import::from(package, function, ...)~ lists.
 This was a nice opportunity to play with some more serious Lisp coding.
 
 The general idea is that a script or function will have an imports list that looks something like:
 
-#+BEGIN_SRC R
+#+BEGIN_SRC R :eval no :tangle no
 # begin imports
-import::from(dplyr, select, mutate, bind_rows, .into = "")
-import::from(tidyr, gather, spread, .into = "")
+import::from("dplyr", "select", "mutate", "bind_rows", .into = "")
+import::from("tidyr", "gather", "spread", .into = "")
 # end imports
 #+END_SRC
 
@@ -3145,9 +3145,6 @@ Unless called with prefix argument ARG, also delete the namespace from the curre
                         current-imports)))))
             (ans/import/replace-imports (ans/import/find-import-lists) new-imports)))))))
 #+END_SRC
-
-#+RESULTS:
-: ans/import/add-to-imports
 
 * LaTeX
 ** LaTeX core configuration
