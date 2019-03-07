@@ -98,6 +98,7 @@ Unload a feature and all of its dependencies.
 
 #+BEGIN_SRC emacs-lisp
 (use-package dash :ensure t)
+(use-package dash-functional :ensure t)
 #+END_SRC
 ** f -- working with files
 
@@ -2664,7 +2665,8 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     "!" #'ans/ess-toggle-debug
     "z p" #'ans/ess-usethis-package
     "r l" #'ans/ess-drake-loadd
-    "r d" #'ans/ess-drake-readd)
+    "r d" #'ans/ess-drake-readd
+    "r i" #'ans/import/add-to-imports)
   (general-def
     :keymaps 'ess-mode-map
     "M-RET" 'ess-newline-and-indent)
@@ -2992,9 +2994,6 @@ source(.esstmpfile, echo = TRUE)
 #+END_SRC
 
 ** Custom imports functions (WIP)
-:PROPERTIES:
-:header-args: :tangle no :eval no
-:END:
 
 Parse, and quickly add to, ~import::from(package, function, ...)~ lists.
 This was a nice opportunity to play with some more serious Lisp coding.
@@ -3014,22 +3013,30 @@ The objective is to get a system where, with the point over ~package::function~,
 This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (string manipulation) and [[https://github.com/magnars/dash.el][dash.el]] (list manipulation) libraries.
 
 #+BEGIN_SRC emacs-lisp
-;; dplyr::select
-;; dplyr::bind_rows
-;; tidyr::gather
-;;
-;; # begin imports
-;; import::from(dplyr, select, mutate, bind_rows, .into = "")
-;; import::from(tidyr, gather, spread, .into = "")
-;; # end imports
-
 (defun ans/import/R-pkg-fun-word-at-point ()
   "Select a package::function statement as a word."
-  (let (($temp-syn-table (make-syntax-table ess-r-syntax-table)))
+  (let (($temp-syn-table (make-syntax-table ess-r-mode-syntax-table)))
     (modify-syntax-entry ?: "w" $temp-syn-table)
     (modify-syntax-entry ?_ "w" $temp-syn-table)
     (with-syntax-table $temp-syn-table
-      (word-at-point))))
+      (thing-at-point 'word t))))
+
+(defun ans/import/R-pkg-delete-namespace ()
+  "Replace package::function with just function."
+  (interactive)
+  (save-excursion
+   (let (($temp-syn-table (make-syntax-table ess-r-mode-syntax-table)))
+     (modify-syntax-entry ?: "w" $temp-syn-table)
+     (modify-syntax-entry ?_ "w" $temp-syn-table)
+     (with-syntax-table $temp-syn-table
+       (let* ((bounds (bounds-of-thing-at-point 'word))
+              (start (car bounds))
+              (end (cdr bounds))
+              (thing (ans/import/R-pkg-fun-word-at-point))
+              (fun (nth 1 (ans/import/split-pkg-fun-call thing))))
+         (delete-region start end)
+         (goto-char start)
+         (insert fun))))))
 
 (defun ans/import/split-pkg-fun-call (word)
   "Split WORD containing package::function into package and function."
@@ -3039,11 +3046,12 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
   "Grab IMPORT-STRING and convert to a list.
 
   The first element of this list is the package and the remaining statements are imports."
-  (let ((import-list (s-with import-string
-                       (s-chop-prefix "import::from(")
-                       (s-chop-suffix ")")
-                       (s-split ", +"))))
-    (-remove (lambda (s) (s-matches? "\.into +=" s)) import-list)))
+  (let* ((import-list (s-with import-string
+                        (s-chop-prefix "import::from(")
+                        (s-chop-suffix ")")
+                        (s-split ", +")))
+         (no-into (-remove (lambda (s) (s-matches? "\.into +=" s)) import-list)))
+    (mapcar (lambda (s) (s-with s (s-chop-prefix "\"") (s-chop-suffix "\""))) no-into)))
 
 (defun ans/import/find-import-lists ()
   "Find the nearest imports list from the current buffer, and return
@@ -3084,41 +3092,62 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
 
 (defun ans/import/list-to-import (import-list)
   "Convert import-list to a formatted import string."
-  (let* ((imports-joined (s-join ", " import-list)))
+  (let* ((import-list-q (mapcar (lambda (s) (s-wrap s "\"")) import-list))
+         (imports-joined (s-join ", " import-list-q)))
     (s-with imports-joined (s-prepend "import::from(") (s-append ", .into = \"\")"))))
 
 (defun ans/import/replace-imports (import-start-end new-imports)
   "Replace imports list at IMPORT-START-END with NEW-IMPORTS."
   (delete-region (nth 0 import-start-end) (nth 1 import-start-end))
   (let* ((import-string-list (-map 'ans/import/list-to-import new-imports))
-         (import-string (s-join "\n" import-string-list)))
+         (import-string (s-join "\n" import-string-list))
+         (start (nth 0 import-start-end))
+         (end (nth 1 import-start-end)))
     (save-excursion
-      (goto-char (nth 0 import-start-end))
-      (insert import-string))))
+      (goto-char start)
+      (insert import-string)
+      (indent-region start (max end (point-at-eol))))))
 
-(defun ans/import/add-to-imports ()
-  "Add the current thing to the imports list and update the imports list."
-  (interactive)
+(defun ans/import/add-to-imports (arg)
+  "Add the current thing to the imports list and update the imports list.
+Unless called with prefix argument ARG, also delete the namespace from the current call."
+  (interactive "P")
   (let* ((addition (ans/import/split-pkg-fun-call (ans/import/R-pkg-fun-word-at-point))))
+    ;; If current word isn't parse-able as "package::function", do nothing.
     (when (= (length addition) 2)
-      (let ((current-imports (ans/import/read-imports)))
+      ;; Replace "package::function" with just "function", unless called
+      ;; with a prefix argument.
+      (unless arg (ans/import/R-pkg-delete-namespace))
+      (let ((current-imports (ans/import/read-imports))
+            (import-bounds (ans/import/find-import-lists)))
         (if (= (length current-imports) 0)
-            (ans/import/replace-imports (ans/import/find-import-lists) addition)
-          ;; WORK IN PROGRESS...
-          (let ((current-packages ))))))))
-
-;; Workflow
-;; - Read current pkg::function form into list ADDITION
-;; - Read current imports list into list IMPORTS
-;; - Extract first elements of IMPORTS into PACKAGES
-;; - (if (-contains? PACKAGES (nth 0 ADDITION))...
-;;   - let (NEW-FUNCTION (nth 1 ADDITION))
-;;   - let (ADD-TO-PACKAGE (which PACKAGES == PACKAGES))
-;;   - let (FUNCTIONS (nthcdr 1 (nth ADD-TO-PACKAGE PACKAGES)))
-;;   - If (NEW-FUNCTION not in FUNCTIONS)
-;;     - (-update-at (ADD-TO-PACKAGE) (nth ADD-TO-PACKAGE IMPORTS) (append (nth 1 ADDITION)))
-;;   - ...)
+            ;; There are no current imports. Just add it!
+            (ans/import/replace-imports import-bounds (list addition))
+          ;; There are existing imports
+          (let* ((current-packages (mapcar 'car current-imports))
+                 (addition-package (nth 0 addition))
+                 (i-current-package (-find-index (-partial 's-equals? addition-package) current-packages))
+                 (new-imports
+                  (if (not (-contains? current-packages addition-package))
+                      ;; No other functions imported from this package
+                      ;; yet. Just append to the current imports list.
+                      (append current-imports (list addition))
+                    (let* ((new-function (nth 1 addition))
+                           (add-to-package (nth i-current-package current-imports)))
+                    ;; At least one function has been imported. Is it
+                    ;; this one? (If so, no need to add, so do nothing.)
+                      (if (not (-contains? add-to-package new-function))
+                          ;; Append the current function to the
+                          ;; current package list.
+                          (-replace-at
+                           i-current-package
+                           (append add-to-package (list new-function)) current-imports)
+                        current-imports)))))
+            (ans/import/replace-imports (ans/import/find-import-lists) new-imports)))))))
 #+END_SRC
+
+#+RESULTS:
+: ans/import/add-to-imports
 
 * LaTeX
 ** LaTeX core configuration
