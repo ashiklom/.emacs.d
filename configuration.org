@@ -2666,7 +2666,7 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     "z p" #'ans/ess-usethis-package
     "r l" #'ans/ess-drake-loadd
     "r d" #'ans/ess-drake-readd
-    "r i" #'ans/import/add-to-imports)
+    "r i" (lambda (arg) (interactive "P") (ans/import/add-to-imports arg) (ans/import/source-imports)))
   (general-def
     :keymaps 'ess-mode-map
     "M-RET" 'ess-newline-and-indent)
@@ -3144,6 +3144,14 @@ Unless called with prefix argument ARG, also delete the namespace from the curre
                            (append add-to-package (list new-function)) current-imports)
                         current-imports)))))
             (ans/import/replace-imports (ans/import/find-import-lists) new-imports)))))))
+
+(defun ans/import/source-imports ()
+  "Source the current imports block."
+  (interactive)
+  (let* ((start-end (ans/import/find-import-lists))
+         (start (nth 0 start-end))
+         (end (nth 1 start-end)))
+    (ess-send-region (ess-get-process) start end nil "Re-loaded imports")))
 #+END_SRC
 
 * LaTeX
