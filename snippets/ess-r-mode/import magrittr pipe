@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: import magrittr pipe
+# key: ipipe
+# --
+import::from("magrittr", "%>%", .into = "")
