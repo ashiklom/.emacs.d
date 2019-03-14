@@ -340,6 +340,26 @@ Customize how major and minor modes appear in the modeline.
   :config
   (sml/setup))
 #+END_SRC
+** Fill column indicator
+
+Visual indicator at whatever the current fill column is (usually 80 characters).
+My preferred solution uses only native Emacs's whitespace mode.
+(Note that I currently don't actively use ~whitespace-mode~, so this is never enabled.)
+
+#+BEGIN_SRC emacs-lisp
+(setq-default whitespace-line-column 80
+              whitespace-style '(face lines-tail))
+#+END_SRC
+
+This is another solution using a (no longer maintained, and arguably buggy) package.
+
+#+BEGIN_SRC emacs-lisp
+(use-package fill-column-indicator
+  :disabled
+  :ensure t
+  :commands (fci-mode turn-off-fci-mode turn-on-fci-mode))
+#+END_SRC
+
 * Keybindings
 ** general
 
