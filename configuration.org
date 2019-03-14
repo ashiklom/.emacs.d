@@ -893,6 +893,24 @@ Temporarily "zoom" windows into full screen, like in ~tmux~.
     :states '(normal motion)
     "z" 'zoom-window-zoom))
 #+END_SRC
+** Shackle
+
+Special window rules.
+
+#+BEGIN_SRC emacs-lisp
+(use-package shackle
+  :ensure t
+  :config
+  (setq shackle-rules '((compilation-mode :noselect t)
+                        ("*R*'" :regexp t :noselect t :align ans/align-if-wide-enough :size 0.4)))
+  (shackle-mode))
+
+(defun ans/align-if-wide-enough ()
+  "Split the window to the right if there is sufficient space; otherwise, split vertically."
+  (if (< (window-total-width) 140)
+      'below
+    'right))
+#+END_SRC
 ** Rotate window layout (`rotate.el`)
 
 #+BEGIN_SRC emacs-lisp
