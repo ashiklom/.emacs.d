@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: facet_wrap free_y
+# key: fwy
+# --
+facet_wrap(vars($1), scales = "free_y")

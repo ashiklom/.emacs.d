@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: facet_wrap
+# key: fw
+# --
+facet_wrap(vars($1), scales = "${2:$$(yas-choose-value '("fixed" "free" "free_y" "free_x"))}")
