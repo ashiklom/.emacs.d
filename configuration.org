@@ -1831,13 +1831,26 @@ Define the custom agenda views.
 		((org-agenda-overriding-header "Notes to Refile")
 		 (org-tags-match-list-sublevels nil)))
 	  (tags-todo "-REFILE-config-reading_list-_project-_organization/NEXT!"
-		     ((org-agenda-overriding-header (concat "Next tasks"
-							    (if ans/hide-scheduled-tasks
-								""
-							      " (including scheduled)")))
+		     ((org-agenda-overriding-header
+                       (concat "Next tasks" (if ans/hide-scheduled-tasks "" " (including scheduled)")))
 		      (org-agenda-todo-ignore-scheduled ans/hide-scheduled-tasks)
 		      (org-agenda-sorting-strategy '(priority-down))))
-	  (tags-todo "-REFILE-config-reading_list-_project-_organization/-NEXT!"
+          (tags-todo "forte-_project/-NEXT!"
+                     ((org-agenda-overriding-header
+                       (concat "FoRTE" (if ans/hide-scheduled-tasks "" " (including scheduled)")))
+                      (org-agenda-todo-ignore-scheduled ans/hide-scheduled-tasks)
+                      (org-agenda-sorting-strategy '(priority-down))))
+          (tags-todo "hector-_project/-NEXT!"
+                     ((org-agenda-overriding-header
+                       (concat "Hector" (if ans/hide-scheduled-tasks "" " (including scheduled)")))
+                      (org-agenda-todo-ignore-scheduled ans/hide-scheduled-tasks)
+                      (org-agenda-sorting-strategy '(priority-down))))
+          (tags-todo "pecan-_project/-NEXT!"
+                     ((org-agenda-overriding-header
+                       (concat "PEcAn" (if ans/hide-scheduled-tasks "" " (including scheduled)")))
+                      (org-agenda-todo-ignore-scheduled ans/hide-scheduled-tasks)
+                      (org-agenda-sorting-strategy '(priority-down))))
+	  (tags-todo "-REFILE-config-reading_list-_project-_organization-forte-hector-pecan/-NEXT!"
 		     ((org-agenda-overriding-header (concat "Other tasks"
 							    (if ans/hide-scheduled-tasks
 								""
