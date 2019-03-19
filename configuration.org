@@ -901,15 +901,12 @@ Special window rules.
 (use-package shackle
   :ensure t
   :config
-  (setq shackle-rules '((compilation-mode :noselect t)
-                        ("*R*'" :regexp t :noselect t :align ans/align-if-wide-enough :size 0.4)))
+  (setq shackle-rules '((compilation-mode :noselect t)))
   (shackle-mode))
 
 (defun ans/align-if-wide-enough ()
   "Split the window to the right if there is sufficient space; otherwise, split vertically."
-  (if (< (window-total-width) 140)
-      'below
-    'right))
+  (if (< (window-total-width) 140) 'below 'right))
 #+END_SRC
 ** Rotate window layout (`rotate.el`)
 
@@ -2676,6 +2673,8 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
 	  ("author" . "Alexey Shiklomanov")))
   (setf (alist-get 'ess-fl-keyword:fun-calls ess-R-font-lock-keywords) t)
   (ans/add-evil-maps 'ess-help-mode-map)
+  (add-to-list 'display-buffer-alist `("*R" (display-buffer-reuse-window
+                                             display-buffer-same-window)))
   ;; Temporarily disable because of bug
   ;; See emacs-ess/ESS issue #720
   (setq ess-use-tracebug nil)
@@ -2683,7 +2682,7 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     :keymaps 'ess-mode-map
     :states 'normal
     :prefix "\\"
-    "r f" #'R
+    "r f" #'ans-start-R
     "r q" #'ans-quit-R
     "l" #'ans/r-send-line
     "d" #'ans/r-send-line-and-down
@@ -2853,9 +2852,13 @@ source(.esstmpfile, echo = TRUE)
 (defun ans-split-right-if-wide ()
   "Split the window to the right if there is sufficient space."
   (interactive)
-  (if (< (window-total-width) 140)
-      (split-window-below)
-    (split-window-right (* -4 (/ (window-total-width) 9)))))
+  (let* ((width (window-total-width))
+         (height (window-total-height))
+         (want-width (round (* width -0.4)))
+         (want-height (round (* height -0.4))))
+    (if (< width (* height 2)) ;; was 140
+        (split-window-below want-height)
+      (split-window-right want-width))))
 
 (defun ans-r-file-here ()
   "Use here::here to determine path for R buffer."
@@ -2870,9 +2873,10 @@ source(.esstmpfile, echo = TRUE)
 (defun ans-start-R ()
   "Start R with default options, splitting the window vertically."
   (interactive)
-  (let ((split-window-preferred-function 'ans-split-right-if-wide))
-    (R)
-    (other-window 1)))
+  (ans-split-right-if-wide)
+  (other-window 1)
+  (R)
+  (other-window -1))
 #+END_SRC
 
 *** Quit and close window
