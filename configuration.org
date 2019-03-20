@@ -2708,6 +2708,7 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     "r H" #'ans/ess-head
     "r T" #'ans/ess-tail
     "x " #'ess-interrupt
+    "X" #'ans/ess-dev-off
     "o p" #'ans/ess-plot-symbol-scatter
     "o l" #'ans/ess-plot-symbol-line
     "O p" #'ans/ess-matplot-symbol-points
@@ -3040,6 +3041,16 @@ source(.esstmpfile, echo = TRUE)
   (let* ((m (if arg (number-to-string arg) "NA"))
          (do-string (concat "str(%s, max.level = " m ")")))
     (ans/ess-do-with-symbol-at-point do-string)))
+#+END_SRC
+*** Graphics device
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-dev-off ()
+  "Turn off the current graphics device."
+  (interactive)
+  (ess-send-string
+   (ess-get-process)
+   "dev.off()"))
 #+END_SRC
 ** ox-ravel
 
