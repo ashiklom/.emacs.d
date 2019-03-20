@@ -2,4 +2,4 @@
 # name: PEcAn logger
 # key: logger
 # --
-PEcAn.logger::logger
+PEcAn.logger::logger.${1:$$(yas-choose-value '("debug" "info" "warn" "error" "severe"))}($0)
