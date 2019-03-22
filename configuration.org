@@ -3176,16 +3176,35 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
       (insert import-string)
       (indent-region start (max end (point-at-eol))))))
 
+(defun ans/import/search-function (fun)
+  "Search for R packages containing FUN."
+  (let* ((search-command (format "out <- help.search('^%s$', fields = 'name', ignore.case = TRUE)" fun))
+         (result-command "cat(with(out[['matches']], sprintf('%s::%s', Package, Name)))")
+         (complete-command (concat "Rscript -e \"" search-command ";" result-command "\""))
+         (raw-result (shell-command-to-string complete-command))
+         (split-result (s-split " " raw-result)))
+    (if (> (length split-result) 1)
+        (completing-read "Which package? " split-result)
+      (car split-result))))
+
 (defun ans/import/add-to-imports (arg)
   "Add the current thing to the imports list and update the imports list.
-Unless called with prefix argument ARG, also delete the namespace from the current call."
+Unless called with prefix argument ARG, also delete the namespace from the current call.
+
+If the thing at point is just a bare function without a namespace, try to identify the function's package."
   (interactive "P")
-  (let* ((addition (ans/import/split-pkg-fun-call (ans/import/R-pkg-fun-word-at-point))))
+  (let* (fun addition is_namespaced)
+    (setq fun (ans/import/R-pkg-fun-word-at-point))
+    (setq is_namespaced (s-contains? "::" fun))
+    ;; If it's just a function, try to find it on the search path
+    (when (not is_namespaced)
+      (setq fun (ans/import/search-function fun)))
+    (setq addition (ans/import/split-pkg-fun-call fun))
     ;; If current word isn't parse-able as "package::function", do nothing.
     (when (= (length addition) 2)
       ;; Replace "package::function" with just "function", unless called
       ;; with a prefix argument.
-      (unless arg (ans/import/R-pkg-delete-namespace))
+      (when (and (not arg) is_namespaced) (ans/import/R-pkg-delete-namespace))
       (let ((current-imports (ans/import/read-imports))
             (import-bounds (ans/import/find-import-lists)))
         (if (= (length current-imports) 0)
