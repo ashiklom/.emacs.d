@@ -705,7 +705,7 @@ Add ~-~ to ~universal-argument~ map.
   "
   Buffers: _w_:quit _W_:kill    Windows: _d_elete  _D_elete and kill    Frames: _f_:pop _F_:new     Split: _\\_:vert  _-_:horiz
   Switch:  _h__j__k__l_  Move (far = g): _H__J__K__L_    Misc: _u_ revert   _s_ave as   _z_:undo   _Z_:redo   _SPC_: Last  _r_:Rotate"
-  ("w" (lambda () (interactive) (bury-buffer (current-buffer)) (evil-window-delete)))
+  ("w" evil-window-delete)
   ("W" (kill-buffer (current-buffer)))
   ("d" delete-window)
   ("D" kill-buffer-and-window)
