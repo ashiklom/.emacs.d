@@ -1237,7 +1237,7 @@ Mostly useful for R markdown files (R + markdown).
 (defun ans/toggle-poly-markdown-mode ()
   "Toggle poly-markdown mode."
   (interactive)
-  (if poly-markdown-mode
+  (if (and (boundp 'poly-markdown-mode) poly-markdown-mode)
       (ans/poly-to-markdown-mode)
     (poly-markdown-mode)))
 
