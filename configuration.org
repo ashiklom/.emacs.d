@@ -810,7 +810,9 @@ Evaluate lisp at point.
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   :commands ace-window
   :general
-  (general-def "M-o" 'ace-window))
+  (general-def
+    :keymaps 'override
+    "M-o" 'ace-window))
 #+END_SRC
 ** buffer-move
 
