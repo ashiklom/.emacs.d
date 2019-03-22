@@ -3624,6 +3624,7 @@ Superior Lisp Interaction Mode for Emacs (SLIME)
 #+BEGIN_SRC emacs-lisp
 (use-package slime
   :ensure t
+  :ensure-system-package sbcl
   :commands slime
   :init
   (setq inferior-lisp-program "/usr/bin/sbcl"))
