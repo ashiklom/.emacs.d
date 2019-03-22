@@ -3178,8 +3178,8 @@ This code makes extensive use of the [[https://github.com/magnars/s.el][s.el]] (
 
 (defun ans/import/search-function (fun)
   "Search for R packages containing FUN."
-  (let* ((search-command (format "out <- help.search('^%s$', fields = 'name', ignore.case = TRUE)" fun))
-         (result-command "cat(with(out[['matches']], sprintf('%s::%s', Package, Name)))")
+  (let* ((search-command (format "out <- help.search('^%s$', fields = c('name', 'alias'), ignore.case = TRUE)" fun))
+         (result-command "cat(with(out[['matches']], unique(sprintf('%s::%s', Package, Entry))))")
          (complete-command (concat "Rscript -e \"" search-command ";" result-command "\""))
          (raw-result (shell-command-to-string complete-command))
          (split-result (s-split " " raw-result)))
