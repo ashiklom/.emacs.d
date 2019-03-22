@@ -2728,7 +2728,8 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     :keymaps 'ess-mode-map
     :prefix "\\"
     "s s" 'ans/r-send-region-source
-    "r x" 'ans/ess-reprex-region)
+    "r x" 'ans/ess-reprex-region
+    "=" #'ans/ess-tidy-region)
   (general-def
     :states 'insert
     :keymaps 'inferior-ess-mode-map
@@ -2846,6 +2847,19 @@ source(.esstmpfile, echo = TRUE)
   (ans/r-send-region-source (mark) (point))
   (deactivate-mark)
   (ess-next-code-line))
+
+(defun ans/ess-tidy-region (start end)
+  "Run formatr::tidy_source() on REGION."
+  (interactive "r")
+  (let* (tmp fixed)
+    (setq tmp (make-temp-file "r-tidy"))
+    (write-region start end tmp)
+    (setq fixed (shell-command-to-string (format "Rscript -e 'formatR::tidy_source(\"%s\", width.cutoff = 60)'" tmp)))
+    (delete-region start end)
+    (goto-char start)
+    (insert fixed)
+    (delete-trailing-whitespace start end)
+    (indent-region start end)))
 #+END_SRC
 
 ** Custom functions
@@ -3238,6 +3252,7 @@ If the thing at point is just a bare function without a namespace, try to identi
   (let* ((start-end (ans/import/find-import-lists))
          (start (nth 0 start-end))
          (end (nth 1 start-end)))
+    (ans/ess-tidy-region start end)
     (ess-send-region (ess-get-process) start end nil "Re-loaded imports")))
 #+END_SRC
 
