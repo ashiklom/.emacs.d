@@ -3249,16 +3249,17 @@ If the thing at point is just a bare function without a namespace, try to identi
 (defun ans/import/source-imports ()
   "Source the current imports block."
   (interactive)
-  (let* (start-end start end)
-    (setq start-end (ans/import/find-import-lists))
-    (setq start (nth 0 start-end))
-    (setq end (nth 1 start-end))
-    (ans/ess-tidy-region start (+ end 1))
-    ;; Have to do it again because region has changed
-    (setq start-end (ans/import/find-import-lists))
-    (setq start (nth 0 start-end))
-    (setq end (nth 1 start-end))
-    (ess-send-region (ess-get-process) start end nil "Re-loaded imports"))))
+  (save-excursion
+    (let* (start-end start end)
+      (setq start-end (ans/import/find-import-lists))
+      (setq start (nth 0 start-end))
+      (setq end (nth 1 start-end))
+      (ans/ess-tidy-region start (+ end 1))
+      ;; Have to do it again because region has changed
+      (setq start-end (ans/import/find-import-lists))
+      (setq start (nth 0 start-end))
+      (setq end (nth 1 start-end))
+      (ess-send-region (ess-get-process) start end nil "Re-loaded imports"))))
 #+END_SRC
 
 * LaTeX
