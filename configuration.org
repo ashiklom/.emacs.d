@@ -1914,6 +1914,12 @@ The default (~reorganize-frame~) blows up my existing window configuration, whic
 (setq org-agenda-window-setup 'current-window)
 #+END_SRC
 
+Indent nested agenda items with dots:
+
+#+BEGIN_SRC emacs-lisp
+(setq org-tags-match-list-sublevels 'indented)
+#+END_SRC
+
 ** Org capture
 
 #+BEGIN_SRC emacs-lisp
