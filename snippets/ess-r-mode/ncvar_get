@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ncvar_get
+# key: ncget
+# --
+ncdf4::ncvar_get($0)

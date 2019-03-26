@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: nc_open
+# key: nco
+# --
+ncdf4::nc_open($0)
