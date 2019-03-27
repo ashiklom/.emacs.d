@@ -1592,13 +1592,11 @@ For easier unicode entry.
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :ensure t
-  :commands (global-company-mode company-complete ans/directory-file-backend)
-  :init
-  (setq company-selection-wrap-around t)
-  (setq company-idle-delay nil)
-  (setq company-dabbrev-code-everywhere t
-	company-dabbrev-code-modes t)
   :config
+  (setq company-selection-wrap-around t
+        company-idle-delay nil
+        company-dabbrev-code-everywhere t
+        company-dabbrev-code-modes t)
   (global-company-mode)
   ;; Thanks to this:
   ;; https://github.com/otijhuis/evil-emacs.d/blob/7c122b0e05c367192444a85d12323487422b793b/config/evil-settings.el#L38-L39
@@ -1608,7 +1606,6 @@ For easier unicode entry.
   (add-hook 'company-completion-finished-hook 'ans/unset-company-maps)
   (add-hook 'company-completion-cancelled-hook 'ans/unset-company-maps)
   (add-to-list 'company-backends 'ans/org-keyword-backend)
-  :general
   (general-def
     :states 'insert
     ;; See below for discussion of company-dabbrev-code
