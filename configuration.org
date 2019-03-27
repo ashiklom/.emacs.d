@@ -1667,7 +1667,11 @@ This makes repeat completions easier (e.g. when completing long file paths)."
   :ensure t
   :after company
   :config
-  (company-quickhelp-mode))
+  (setq company-quickhelp-delay nil)
+  (company-quickhelp-mode)
+  (general-def
+    :keymaps 'company-mode-map
+    "?" 'company-quickhelp-manual-begin))
 #+END_SRC
 
 ** Custom backends
