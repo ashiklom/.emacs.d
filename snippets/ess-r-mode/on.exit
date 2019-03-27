@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: on.exit
+# key: exit
+# --
+on.exit($0, add = TRUE)
