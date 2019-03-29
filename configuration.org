@@ -1670,7 +1670,7 @@ This makes repeat completions easier (e.g. when completing long file paths)."
   (setq company-quickhelp-delay nil)
   (company-quickhelp-mode)
   (general-def
-    :keymaps 'company-mode-map
+    :keymaps 'company-active-map
     "?" 'company-quickhelp-manual-begin))
 #+END_SRC
 
