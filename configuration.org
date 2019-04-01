@@ -623,6 +623,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "b" 'helm-mini
   "B" 'helm-bookmarks
   "f" 'helm-find-files
+  "F" #'find-file
   ":" 'eval-expression
   "x" 'helm-M-x
   "X" 'shell-command
@@ -1451,8 +1452,7 @@ Core helm configuration.
   ;; (use-package helm-rg :ensure t)
   (ans-leader-def
     :states 'normal
-    "f" 'helm-find-files
-    "F" 'helm-find)
+    "f" 'helm-find-files)
   (general-def
     :keymaps 'helm-map
     "TAB" 'helm-execute-persistent-action
