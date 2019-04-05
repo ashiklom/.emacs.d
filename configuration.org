@@ -2710,6 +2710,8 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     "a a" #'ans/r-send-buffer
     "a d" #'ans/r-send-current-line-to-end
     "a s" #'ans/r-send-beginning-to-current-line
+    "SPC" #'ess-eval-region-or-function-or-paragraph
+    "RET" #'ess-eval-region-or-function-or-paragraph-and-step
     "v i" #'ess-r-devtools-install-package
     "v d" #'ess-r-devtools-document-package
     "v l" #'ess-r-devtools-load-package
