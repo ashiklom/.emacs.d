@@ -41,7 +41,9 @@ Bootstrap the ~use-package~ package manager.
 
 #+BEGIN_SRC emacs-lisp
 (use-package use-package-ensure-system-package
-  :ensure t)
+  :ensure t
+  :config
+  (setq system-packages-package-manager 'brew))
 #+END_SRC
 
 Declare that system packages are required with code like the following:
