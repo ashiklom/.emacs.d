@@ -1309,6 +1309,13 @@ Configure Elpy -- interactive Python development environment.
     "d" 'elpy-shell-send-statement-and-step
     "aa" 'elpy-shell-send-buffer))
 #+END_SRC
+** Graphviz
+
+#+BEGIN_SRC emacs-lisp
+(use-package graphviz-dot-mode
+  :ensure t
+  :mode "\\.gv\\'")
+#+END_SRC
 * Utility functions
 ** Rename buffer and file
 
