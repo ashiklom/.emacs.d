@@ -1316,6 +1316,13 @@ Configure Elpy -- interactive Python development environment.
   :ensure t
   :mode "\\.gv\\'")
 #+END_SRC
+** Stan
+
+#+BEGIN_SRC emacs-lisp
+(use-package stan-mode
+  :ensure t
+  :mode "\\.stan\\'")
+#+END_SRC
 * Utility functions
 ** Rename buffer and file
 
