@@ -809,13 +809,14 @@ Evaluate lisp at point.
 #+BEGIN_SRC emacs-lisp
 (use-package ace-window
   :ensure t
-  :init
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   :commands ace-window
   :general
   (general-def
     :keymaps 'override
-    "M-o" 'ace-window))
+    "M-o" 'ace-window)
+  :config
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (add-hook 'ace-window-mode (lambda () (toggle-truncate-lines 1))))
 #+END_SRC
 ** buffer-move
 
