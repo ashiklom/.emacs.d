@@ -2482,7 +2482,8 @@ Note also that loading this package triggers ~org-reload~.
   ("!" org-reload "Reload")
   ("&" org-toggle-pretty-entities "Toggle pretty math")
   ("<tab>" org-reveal "Reveal")
-  ("SPC" org-ctrl-c-ctrl-c "C-c"))
+  ("SPC" org-ctrl-c-ctrl-c "C-c")
+  ("=" org-toggle-latex-fragment "Preview LaTeX"))
 
 (defun ans/org-refile-aware ()
   "Context-aware org refile."
