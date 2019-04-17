@@ -95,6 +95,17 @@ Unload a feature and all of its dependencies.
         (mapc #'ans/unload-feature-recursive (mapcan #'file-provides dependents))
       (unload-feature feature))))
 #+END_SRC
+
+** Automatically update packages
+
+This is mainly for the convenience functions it provides.
+I don't actually want packages to be updated automatically.
+
+#+BEGIN_SRC emacs-lisp
+(use-package auto-package-update
+  :ensure t
+  :commands (auto-package-update-now auto-package-update-at-time))
+#+END_SRC
 * Lisp libraries
 ** dash -- list manipulation
 
