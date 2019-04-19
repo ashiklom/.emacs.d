@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: NA_type
+# key: NA_
+# --
+NA_${1:$$(yas-choose-value '("real_" "character_" "integer_" "complex_"))}
