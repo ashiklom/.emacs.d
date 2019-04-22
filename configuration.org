@@ -654,7 +654,8 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "o" 'ans/org-mode-hydra/body
   "*" 'ans/replace-symbol-at-point
   ">" #'ans/kill-ring-to-clipboard
-  "_" #'universal-argument)
+  "_" #'universal-argument
+  "$" #'toggle-truncate-lines)
 #+END_SRC
 
 Add ~-~ to ~universal-argument~ map.
