@@ -3479,8 +3479,8 @@ Edit comment boxes.
   :general
   (ans-leader-def
     :states 'normal
-    "gR" 'rebox-mode
-    "gr" 'rebox-dwim)
+    "|R" 'rebox-mode
+    "|r" 'rebox-dwim)
   :config
   (add-to-list 'rebox-language-character-alist '(7 . "!"))
   (setq rebox-regexp-start (vconcat rebox-regexp-start '("^[ \t]*!+")))
@@ -3677,11 +3677,13 @@ Function to use ~org-ref~ for notes rather than bibtex defaults.
 ** dumb-jump
 
 Quickly jump to definitions based on regular expression search (not tags or anything more robust).
+Currently disabled in favor of ~gtags~, which is more robust.
 
 #+BEGIN_SRC emacs-lisp
 (use-package dumb-jump
   :ensure t
-  :init
+  :disabled
+  :config
   (setq dumb-jump-selector 'helm)
   (setq dumb-jump-force-searcher 'ag)
   :general
@@ -3752,6 +3754,29 @@ Based on [[https://stackoverflow.com/questions/13397737/ansi-coloring-in-compila
   (let* ((dir (projectile-project-root)))
     (if dir dir
       (deadgrep--project-root))))
+#+END_SRC
+** Tags
+
+#+BEGIN_SRC emacs-lisp
+(use-package ggtags
+  :quelpa (ggtags :fetcher github :repo "ashiklom/ggtags")
+  :config
+  (setq ggtags-highlight-tag nil
+        ggtags-literal-search t)
+  :general
+  (ans-leader-def
+    :states 'normal
+    "gg" #'ggtags-mode)
+  (ans-leader-def
+    :states 'normal
+    :keymaps 'ggtags-mode-map
+    "g0" #'ggtags-create-tags
+    "gR" #'ggtags-update-tags)
+  (general-def
+    :states 'normal
+    :keymaps 'ggtags-mode-map
+    "gd" #'ggtags-find-definition
+    "gD" #'ggtags-find-tag-dwim))
 #+END_SRC
 * Terminal
 ** Multi-term
