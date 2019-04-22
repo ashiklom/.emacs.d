@@ -2270,13 +2270,6 @@ These are expanded by typing ~<~ followed by the character(s) and then ~TAB~.
   "C-," '(lambda () (interactive) (org-cycle-list-bullet 'previous)))
 
 (general-def
-  :states '(motion normal emacs)
-  :keymaps 'org-mode-map
-  :prefix "SPC"
-  "#" 'org-update-statistics-cookies
-  "%" 'ans/org-toggle-emphasis-markers)
-
-(general-def
   :states '(motion normal visual)
   :keymaps 'org-mode-map
   :prefix "SPC"
@@ -2494,7 +2487,9 @@ Note also that loading this package triggers ~org-reload~.
   ("&" org-toggle-pretty-entities "Toggle pretty math")
   ("<tab>" org-reveal "Reveal")
   ("SPC" org-ctrl-c-ctrl-c "C-c")
-  ("=" org-toggle-latex-fragment "Preview LaTeX"))
+  ("=" org-toggle-latex-fragment "Preview LaTeX")
+  ("%" ans/org-toggle-emphasis-markers "Toggle emphasis markers")
+  ("#" org-update-statistics-cookies "Update stats cookies"))
 
 (defun ans/org-refile-aware ()
   "Context-aware org refile."
