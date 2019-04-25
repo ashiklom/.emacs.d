@@ -3952,6 +3952,8 @@ Based on [[https://stackoverflow.com/questions/13397737/ansi-coloring-in-compila
 #+BEGIN_SRC emacs-lisp
 (use-package ggtags
   :quelpa (ggtags :fetcher github :repo "ashiklom/ggtags")
+  :init
+  (setenv "GTAGSLABEL" "pygments")
   :config
   (setq ggtags-highlight-tag nil
         ggtags-literal-search t)
