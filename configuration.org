@@ -2887,7 +2887,8 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
                              (ess-indent-with-fancy-comments . nil))
         ess-default-style 'RStudio
         ess-use-company t
-        ess-eval-visibly 'nowait)
+        ess-eval-visibly 'nowait
+        ess-history-file nil)
   ;; Disable flymake. Use flycheck instead.
   (setq ess-use-flymake nil)
   (setq ess-roxy-str "#'"
