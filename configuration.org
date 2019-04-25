@@ -1013,10 +1013,10 @@ Quickly create and manipulate GitHub gists.
   :general
   (ans-leader-def
     :states 'normal
-    "gg" #'gist-list)
+    "Gl" #'gist-list)
   (ans-leader-def
     :states '(normal visual)
-    "gG" #'gist-region-or-buffer)
+    "Gg" #'gist-region-or-buffer)
   :config
   (general-def
     :states 'emacs
