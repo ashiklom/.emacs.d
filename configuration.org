@@ -990,7 +990,8 @@ Special window rules.
 #+END_SRC
 ** forge
 
-Currently disabled while functionality is evolving, but may revisit at a later point.
+General system for working with "forges" in Magit.
+Replaces ~magithub~ (above).
 
 #+BEGIN_SRC emacs-lisp
 (use-package forge
@@ -1092,6 +1093,7 @@ Edit code blocks in a separate window.
 #+END_SRC
 ** mmm-mode
 
+Multiple major modes.
 Currently disabled.
 
 #+BEGIN_SRC emacs-lisp
@@ -1171,7 +1173,8 @@ Set default external programs for certain filetypes.
                 '("pdf" "png" "jpg" "tiff" "svg"
                   "doc" "xls" "ppt"
                   "odt" "ods" "odp"
-                  "mpg" "mpeg" "mp3" "mp4" "avi"))
+                  "mpg" "mpeg" "mp3" "mp4" "avi"
+                  "html"))
                "open" '(file))))
   (openwith-mode t))
 #+END_SRC
