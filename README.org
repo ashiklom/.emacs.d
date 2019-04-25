@@ -1,1 +1,9 @@
-/Users/shik544/.emacs.d/configuration.org
+#+TITLE: My Emacs configuration
+#+AUTHOR: Alexey Shiklomanov
+
+The core of the configuration is stored and described in [[configuration.org]].
+Highlights include:
+
+- Literate configuration file with ~org-mode~, which makes it easier to navigate and document.
+- [[https://github.com/emacs-evil/evil][ESS]] mode for vim keybindings. Mode specific keys are handled by [[https://github.com/noctuid/general.el][general.el]].
+- Heavily customized [[https://github.com/emacs-ess/ess][ESS]] configuration, since most of my work is in R
