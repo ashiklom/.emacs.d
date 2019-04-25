@@ -37,6 +37,12 @@ Bootstrap the ~use-package~ package manager.
 (eval-when-compile (require 'use-package))
 #+END_SRC
 
+Some additional settings related to ~use-package~.
+
+#+BEGIN_SRC emacs-lisp
+(setq use-package-compute-statistics t)
+#+END_SRC
+
 ** System packages
 
 #+BEGIN_SRC emacs-lisp
