@@ -658,6 +658,7 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "p" 'ans/projectile-hydra/body
   "h" 'ans/help-hydra/body
   "o" 'ans/org-mode-hydra/body
+  "O" (lambda() (interactive) (shell-command "open ."))
   "*" 'ans/replace-symbol-at-point
   ">" #'ans/kill-ring-to-clipboard
   "_" #'universal-argument
