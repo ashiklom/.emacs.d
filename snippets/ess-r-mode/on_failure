@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: on_failure
+# key: asfail
+# --
+assertthat::on_failure($1) <- function(call, env) {
+$0
+}
