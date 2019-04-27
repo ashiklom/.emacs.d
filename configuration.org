@@ -1532,6 +1532,13 @@ If so, return true."
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("ED2IN" . f90-namelist-mode))
 #+END_SRC
+** Rust
+
+#+BEGIN_SRC emacs-lisp
+(use-package rust-mode
+  :ensure t
+  :mode "\\.rs\\'")
+#+END_SRC
 * Utility functions
 ** Rename buffer and file
 
