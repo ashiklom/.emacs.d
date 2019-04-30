@@ -3712,7 +3712,11 @@ Edit comment boxes.
   :config
   (simpleclip-mode 1)
   (setq select-enable-clipboard t
-        x-select-enable-clipboard t))
+        x-select-enable-clipboard t)
+  (general-def
+    :keymaps 'override
+    "M-v" #'simpleclip-paste
+    "M-c" #'simpleclip-copy))
 #+END_SRC
 ** smartparens
 
