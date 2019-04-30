@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: UMBS coordinates
+# key: umbsll
+# --
+c(lat = 45.5594, lon = 84.6738)
