@@ -30,3 +30,4 @@ abbrev_defs
 /var/
 /transient/
 /.last-package-update-day
+/.cache/
