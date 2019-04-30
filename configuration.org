@@ -886,7 +886,6 @@ Note that all of these are lazy-loaded thanks to the =:general= keyword.
 #+BEGIN_SRC emacs-lisp
 (use-package treemacs
   :disabled
-  :ensure t
   :general
   (ans-leader-def
     :states 'normal
@@ -903,8 +902,7 @@ Note that all of these are lazy-loaded thanks to the =:general= keyword.
 
 (use-package treemacs-projectile
   :disabled
-  :after treemacs projectile
-  :ensure t)
+  :after treemacs projectile)
 #+END_SRC
 ** zoom-window
 
