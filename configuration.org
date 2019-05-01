@@ -3927,7 +3927,10 @@ Automatically detect current file indent (similar to =vim-sleuth=).
 
 #+BEGIN_SRC emacs-lisp
 (use-package dtrt-indent
-  :ensure t)
+  :ensure t
+  :config
+  (setq dtrt-indent-hook-mapping-list (add-to-list 'dtrt-indent-hook-mapping-list
+                                                   '(ess-r-mode default ess-indent-offset))))
 #+END_SRC
 
 ** ANSI colors in compilation buffer
