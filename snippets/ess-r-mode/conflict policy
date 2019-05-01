@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: conflict policy
+# key: rconflict
+# --
+if (getRversion() >= "3.6") {
+  options(conflicts.policy = "strict")
+  $0 
+} else {
+  warning("Package conflict resolution requires R >= 3.6. ",
+          "This script may not work as expected.",
+          immediate. = TRUE)
+}
