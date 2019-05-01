@@ -855,10 +855,11 @@ Swap buffer positions.
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :ensure t
-  :init
-  (setq projectile-mode-line '(:eval (format " 🕮%s🕮" (projectile-project-name))))
   :config
-  (projectile-mode))
+  (setq projectile-mode-line '(:eval (format " 🕮%s🕮" (projectile-project-name))))
+  (projectile-mode)
+  ;; Allow this to be safely set by `.dir-locals.el`
+  (put 'projectile-project-compilation-cmd 'safe-local-variable 'stringp))
 #+END_SRC
 
 Function to check if I'm inside of a projectile project.
