@@ -682,6 +682,13 @@ Add ~-~ to ~universal-argument~ map.
 	(buffer-file-name) 'save-buffer))
 #+END_SRC
 
+** Revert buffer with Command-U
+
+#+BEGIN_SRC emacs-lisp
+(general-def
+  :states 'normal
+  "M-u" #'revert-buffer)
+#+END_SRC
 ** Hydra for emacs help
 
 #+BEGIN_SRC emacs-lisp
