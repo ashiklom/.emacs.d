@@ -3184,11 +3184,8 @@ source(.esstmpfile, echo = TRUE)
 (defun ans/ess-reprex-region (start end venue)
   "Run the selection through `reprex::reprex', saving the output to the clipboard."
   (interactive "r\nsVenue (gh, so, ds, or r): ")
-  (ess-send-string
-   (ess-get-process)
-   (format "reprex::reprex({%s}, venue = '%s', show = FALSE, advertise = FALSE)"
-	   (buffer-substring-no-properties start end)
-	   venue)))
+  (simpleclip-copy start end)
+  (ess-send-string (ess-get-process) (format "reprex::reprex(venue = '%s', show = FALSE)" venue)))
 #+END_SRC
 
 *** ~Rcpp::compileAttributes()~
