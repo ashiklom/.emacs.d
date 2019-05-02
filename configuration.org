@@ -2963,7 +2963,8 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     "z p" #'ans/ess-usethis-package
     "r l" #'ans/ess-drake-loadd
     "r d" #'ans/ess-drake-readd
-    "r i" (lambda (arg) (interactive "P") (ans/import/add-to-imports arg) (ans/import/source-imports)))
+    "r i" (lambda (arg) (interactive "P") (ans/import/add-to-imports arg) (ans/import/source-imports)),
+    "," #'ans/split-path-string)
   (general-def
     :keymaps 'ess-mode-map
     "M-RET" 'ess-newline-and-indent)
@@ -3308,6 +3309,31 @@ source(.esstmpfile, echo = TRUE)
   (ess-send-string
    (ess-get-process)
    "dev.off()"))
+#+END_SRC
+*** Split path into comma-separate list
+
+Quickly convert code like ~file.path("path/to/file")~ to ~file.path("path", "to", "file")~.
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/split-path-string ()
+  "Split a single path string into a comma-separated list suitable for, e.g., `file.path'."
+  (interactive)
+  (let* (path bounds start end path-insert)
+    ;; Use sexp here to include quotes
+    (setq path (thing-at-point 'filename t))
+    (if (not path) (return nil))
+    (setq bounds (bounds-of-thing-at-point 'filename))
+    (setq start (- (car bounds) 1))
+    (setq end (+ (cdr bounds) 1))
+    (setq path-insert (s-with path
+                        (s-chop-prefix "\"")
+                        (s-chop-suffix "\"")
+                        (s-split "/")
+                        (mapcar (lambda (s) (s-wrap s "\"")))
+                        (s-join ", ")))
+    (delete-region start end)
+    (goto-char start)
+    (insert path-insert)))
 #+END_SRC
 ** ox-ravel
 
