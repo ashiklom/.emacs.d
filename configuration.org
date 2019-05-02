@@ -1053,7 +1053,7 @@ Quickly create and manipulate GitHub gists.
     :states 'normal
     :keymaps 'markdown-mode-map
     :prefix "\\"
-    "p" #'ans/toggle-poly-markdown-mode))
+    "P" #'ans/toggle-poly-markdown-mode))
 #+END_SRC
 
 Also, add Pandoc support.
@@ -2963,7 +2963,7 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     "z p" #'ans/ess-usethis-package
     "r l" #'ans/ess-drake-loadd
     "r d" #'ans/ess-drake-readd
-    "r i" (lambda (arg) (interactive "P") (ans/import/add-to-imports arg) (ans/import/source-imports)),
+    "r i" (lambda (arg) (interactive "P") (ans/import/add-to-imports arg) (ans/import/source-imports))
     "," #'ans/split-path-string)
   (general-def
     :keymaps 'ess-mode-map
