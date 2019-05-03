@@ -2971,7 +2971,8 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     "r l" #'ans/ess-drake-loadd
     "r d" #'ans/ess-drake-readd
     "r i" (lambda (arg) (interactive "P") (ans/import/add-to-imports arg) (ans/import/source-imports))
-    "," #'ans/split-path-string)
+    "," #'ans/split-path-string
+    "$" #'ans/ess-dollar-to-bracket)
   (general-def
     :keymaps 'ess-mode-map
     "M-RET" 'ess-newline-and-indent)
@@ -3341,6 +3342,32 @@ Quickly convert code like ~file.path("path/to/file")~ to ~file.path("path", "to"
     (delete-region start end)
     (goto-char start)
     (insert path-insert)))
+#+END_SRC
+*** Convert ~$~ to ~[[~ form
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-dollar-to-bracket ()
+  "Convert `$' subsetting notation to `[['."
+  (interactive)
+  (let* (thing thing-split thing-car thing-cdr thing-cdr-q thing-cdr-combined
+               insert-string start end)
+    ;; TODO: Refine this logic to select the entire symbol. Currently,
+    ;; only selects until the next `$' (or other end-of-word character).
+    (setq start (save-excursion (evil-backward-word-begin) (point)))
+    (setq end (save-excursion (evil-forward-word-end) (+ (point) 1)))
+    (setq thing (buffer-substring-no-properties start end))
+    (setq thing-split (s-split "\\$" thing))
+    (if (not (length thing-split)) (return nil))
+    (setq thing-car (car thing-split))
+    (setq thing-cdr (cdr thing-split))
+    (setq thing-cdr-q (mapcar (lambda (s) (s-wrap s "\"")) thing-cdr))
+    (setq thing-cdr-combined (s-join ", " thing-cdr-q))
+    (if (> (length thing-cdr) 1)
+        (setq thing-cdr-combined (s-wrap thing-cdr-combined "c(" ")")))
+    (setq insert-string (format "%s[[%s]]" thing-car thing-cdr-combined))
+    (delete-region start end)
+    (goto-char start)
+    (insert insert-string)))
 #+END_SRC
 ** ox-ravel
 
