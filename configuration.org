@@ -3803,10 +3803,21 @@ Edit comment boxes.
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
+(defvar ans/sp-nonhybrid-sexp-modes
+  '(emacs-lisp-mode
+    lisp-interaction-mode
+    common-lisp-mode
+    clojure-mode
+    scheme-mode)
+  "List of major modes for which to use regular sexps instead of hybrid sexps.
+Typically, these are all members of the lisp family.")
+
 (defun ans/sp-slurp-and-end ()
   "Slurp up sexp and move to its end."
   (interactive)
-  (sp-forward-slurp-sexp)
+  (if (member major-mode ans/sp-nonhybrid-sexp-modes)
+      (sp-forward-slurp-sexp)
+    (sp-slurp-hybrid-sexp))
   (sp-end-of-sexp))
 #+END_SRC
 
