@@ -3806,6 +3806,8 @@ Most of the code I usually write (R, C) doesn't have a natural concept for sexps
 "Hybrid" sexps provide a workaround.
 See the [[https://github.com/Fuco1/smartparens/wiki/Hybrid-S-expressions][smartparens wiki]] for more information.
 
+Note: A better solution (for R, at least) may be to fix the regular expression for ESS sexps (~sp-sexp-prefix/suffix~).
+
 #+BEGIN_SRC emacs-lisp
 (defvar ans/sp-nonhybrid-sexp-modes
   '(emacs-lisp-mode
