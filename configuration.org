@@ -2268,6 +2268,13 @@ End of line should ignore tags.
 (setq org-special-ctrl-a/e t)
 #+END_SRC
 
+Don't highlight mouse selections in the agenda.
+(Note that clicking still works.)
+
+#+BEGIN_SRC emacs-lisp
+(setq mouse-highlight nil)
+#+END_SRC
+
 ** Source code (babel)
 
 Automatically fontify source code, and edit source code in the current window (rather than opening a new one).
