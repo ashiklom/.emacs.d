@@ -280,6 +280,12 @@ By default, use spaces instead of tabs.
 (setq-default indent-tabs-mode nil)
 #+END_SRC
 
+Automatically follow version-controlled symlinks.
+
+#+BEGIN_SRC emacs-lisp
+(setq vc-follow-symlinks t)
+#+END_SRC
+
 * Text and prog mode hooks
 
 #+BEGIN_SRC emacs-lisp
