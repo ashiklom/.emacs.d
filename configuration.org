@@ -2986,14 +2986,19 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     :states 'visual
     :keymaps 'ess-mode-map
     :prefix "\\"
-    "s s" 'ans/r-send-region-source
-    "r x" 'ans/ess-reprex-region
+    "s s" #'ans/r-send-region-source
+    "s i" #'ans/ess-plot-imgur
+    "r x" #'ans/ess-reprex-region
     "=" #'ans/ess-tidy-region)
   (general-def
-    :states 'insert
     :keymaps 'inferior-ess-mode-map
+    :states 'insert
     "_" 'self-insert-command
     "M--" 'ess-insert-assign)
+  (general-def
+    :keymaps 'inferior-ess-r-mode-map
+    :states 'normal
+    "C-RET" #'markdown-follow-link-at-point)
   (general-def
     :states 'insert
     :keymaps 'ess-mode-map
@@ -3374,6 +3379,20 @@ Quickly convert code like ~file.path("path/to/file")~ to ~file.path("path", "to"
     (delete-region start end)
     (goto-char start)
     (insert insert-string)))
+#+END_SRC
+*** Plot region with imguR
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-plot-imgur (start end)
+  "Run plot code with imguR device."
+  (interactive "r")
+  (let* (command string)
+    (setq command (format ".imgur <- imguR::imgur('png', width = %s, height = %s, units = 'in', res = 300)"
+                          (read-string "Width [5]: " nil nil "5") (read-string "Height [5]: " nil nil "5")))
+    (setq string (s-join "\n" (list command
+                                    (buffer-substring-no-properties start end)
+                                    "imguR::imgur_off(.imgur)$link")))
+    (ess-send-string (ess-get-process) string)))
 #+END_SRC
 ** ox-ravel
 
