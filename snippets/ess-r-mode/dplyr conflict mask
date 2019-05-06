@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dplyr conflict mask
+# key: dpmask
+# --
+c("filter", "lag", "intersect", "setdiff", "setequal", "union")
