@@ -1250,8 +1250,8 @@ Mostly useful for R markdown files (R + markdown).
     :states 'normal
     :keymaps '(poly-markdown-mode-map)
     :prefix "\\"
-    "p" #'ans/toggle-poly-markdown-mode
-    "r" #'ans/reload-polymode
+    "P" #'ans/toggle-poly-markdown-mode
+    "R" #'ans/reload-polymode
     "`" #'ans/chunk-hydra/body)
   (general-def
     :states 'insert
