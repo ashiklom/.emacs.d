@@ -1166,10 +1166,14 @@ Currently disabled.
   (toggle-truncate-lines -1))
 
 (use-package csv-mode
-  :disabled
   :ensure t
   :mode "\\.csv\\'"
-  :hook (csv-mode . ans/csv-mode-settings))
+  :hook (csv-mode . ans/csv-mode-settings)
+  :config
+  (general-def
+    :keymaps 'csv-mode-map
+    "C-<right>" #'csv-forward-field
+    "C-<left>" #'csv-backward-field))
 #+END_SRC
 ** open with
 
