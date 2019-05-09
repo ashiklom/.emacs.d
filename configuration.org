@@ -2982,7 +2982,8 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     "r d" #'ans/ess-drake-readd
     "r i" (lambda (arg) (interactive "P") (ans/import/add-to-imports arg) (ans/import/source-imports))
     "," #'ans/split-path-string
-    "$" #'ans/ess-dollar-to-bracket)
+    "$" #'ans/ess-dollar-to-bracket
+    "<backspace>" #'ans/ess-rm)
   (general-def
     :keymaps 'ess-mode-map
     "M-RET" 'ess-newline-and-indent)
@@ -3397,6 +3398,14 @@ Quickly convert code like ~file.path("path/to/file")~ to ~file.path("path", "to"
                                     (buffer-substring-no-properties start end)
                                     "imguR::imgur_off(.imgur)$link")))
     (ess-send-string (ess-get-process) string)))
+#+END_SRC
+*** Delete (~rm~) symbol at point
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-rm ()
+  "Delete object at point from global environment."
+  (interactive)
+  (ans/ess-do-with-symbol-at-point "rm(%s)"))
 #+END_SRC
 ** ox-ravel
 
