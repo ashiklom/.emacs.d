@@ -47,6 +47,7 @@ Some additional settings related to ~use-package~.
 
 #+BEGIN_SRC emacs-lisp
 (use-package use-package-ensure-system-package
+  :if (string-equal system-type "darwin")
   :ensure t
   :config
   (setq system-packages-package-manager 'brew))
