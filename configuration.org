@@ -84,7 +84,8 @@ For installing packages from source (e.g. GitHub).
 
 #+BEGIN_SRC emacs-lisp
 (use-package restart-emacs
-  :ensure t)
+  :ensure t
+  :commands (restart-emacs))
 #+END_SRC
 
 ** Recursively unload package
