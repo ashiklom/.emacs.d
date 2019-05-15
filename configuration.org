@@ -164,7 +164,9 @@ Save them in =~/.emacs.d/backups=.
 This allows me to open Emacs quickly from external programs, most importantly the command line.
 
 #+BEGIN_SRC emacs-lisp
-(if (and window-system (not (server-running-p)))
+(if (and window-system
+         (fboundp 'server-running-p)
+         (not (server-running-p)))
     (server-start))
 #+END_SRC
 
@@ -459,6 +461,26 @@ My leader key is SPACE.
   :after evil
   :config
   (global-evil-surround-mode))
+#+END_SRC
+**** Custom surround macro
+
+#+BEGIN_SRC emacs-lisp
+(defmacro define-and-bind-quoted-text-object (name key start-regex end-regex)
+  (let ((inner-name (make-symbol (concat "evil-inner-" name)))
+        (outer-name (make-symbol (concat "evil-a-" name))))
+    `(progn
+       (evil-define-text-object ,inner-name (count &optional beg end type)
+         (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+       (evil-define-text-object ,outer-name (count &optional beg end type)
+         (evil-select-paren ,start-regex ,end-regex beg end type count t))
+       (define-key evil-inner-text-objects-map ,key #',inner-name)
+       (define-key evil-outer-text-objects-map ,key #',outer-name))))
+
+(define-and-bind-quoted-text-object "star" "*" "*" "*")
+(add-to-list 'evil-surround-pairs-alist '(?* . ("*" . "*")))
+
+(define-and-bind-quoted-text-object "underscore" "*" "*" "*")
+(add-to-list 'evil-surround-pairs-alist '(?_ . ("*" . "*")))
 #+END_SRC
 *** evil-embrace
 #+BEGIN_SRC emacs-lisp
