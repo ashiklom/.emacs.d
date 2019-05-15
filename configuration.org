@@ -247,8 +247,12 @@ Note that BSD ~tar~ (the default for MacOS) gets tripped up by certain package n
                     "Please install 'gnu-tar' with 'brew install gnu-tar'")))))
 #+END_SRC
 
+Get the executable path from the current shell.
+Currently disabled because (a) it's slow, and (b) it doesn't work well with TRAMP.
+
 #+BEGIN_SRC emacs-lisp
 (use-package exec-path-from-shell
+  :disabled
   :if (string-equal system-type "darwin")
   :ensure t
   :init
