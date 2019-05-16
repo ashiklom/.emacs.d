@@ -476,7 +476,10 @@ My leader key is SPACE.
 #+END_SRC
 **** Custom surround macro
 
-#+BEGIN_SRC emacs-lisp
+My attempt at adding support for Markdown.
+This is currently disabled because it doesn't work.
+
+#+BEGIN_SRC emacs-lisp :tangle no :eval no
 (defmacro define-and-bind-quoted-text-object (name key start-regex end-regex)
   (let ((inner-name (make-symbol (concat "evil-inner-" name)))
         (outer-name (make-symbol (concat "evil-a-" name))))
