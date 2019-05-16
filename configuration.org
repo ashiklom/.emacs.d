@@ -224,11 +224,19 @@ At a value >100, this means don't do any auto-scrolling (i.e. only ever scroll o
 (set-face-attribute 'show-paren-match nil :foreground nil :background "dim gray")
 
 (tool-bar-mode -1)
-(menu-bar-mode -1)
 (blink-cursor-mode -1)
 (global-hl-line-mode)
 (winner-mode)				; Remember window configurations
 (electric-pair-mode 1)
+#+END_SRC
+
+Menu bar mode is required for Emacs Macport to work correctly with Mission Control, etc.
+See [[https://github.com/railwaycat/homebrew-emacsmacport/issues/124][this issue]].
+
+#+BEGIN_SRC emacs-lisp
+(if (eq (window-system) 'mac)
+    (menu-bar-mode 1)
+  (menu-bar-mode -1))
 #+END_SRC
 
 ** PNNL mac settings
