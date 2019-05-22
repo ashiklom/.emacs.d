@@ -3031,7 +3031,9 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     "r i" (lambda (arg) (interactive "P") (ans/import/add-to-imports arg) (ans/import/source-imports))
     "," #'ans/split-path-string
     "$" #'ans/ess-dollar-to-bracket
-    "<backspace>" #'ans/ess-rm)
+    "<backspace>" #'ans/ess-rm
+    "b t" #'ans/ess-trace-back
+    "b T" #'ans/ess-last-error)
   (general-def
     :keymaps 'ess-mode-map
     "M-RET" 'ess-newline-and-indent)
@@ -3417,7 +3419,7 @@ Quickly convert code like ~file.path("path/to/file")~ to ~file.path("path", "to"
                insert-string start end)
     ;; TODO: Refine this logic to select the entire symbol. Currently,
     ;; only selects until the next `$' (or other end-of-word character).
-    (setq start (save-excursion (evil-backward-word-begin) (point)))
+    (setq start (save-excursion (backward-word-begin) (point)))
     (setq end (save-excursion (evil-forward-word-end) (+ (point) 1)))
     (setq thing (buffer-substring-no-properties start end))
     (setq thing-split (s-split "\\$" thing))
@@ -3454,6 +3456,19 @@ Quickly convert code like ~file.path("path/to/file")~ to ~file.path("path", "to"
   "Delete object at point from global environment."
   (interactive)
   (ans/ess-do-with-symbol-at-point "rm(%s)"))
+#+END_SRC
+*** Backtrace
+
+#+BEGIN_SRC emacs-lisp
+(defun ans/ess-trace-back ()
+  "Trace back the last error."
+  (interactive)
+  (ess-send-string (ess-get-process) "rlang::last_error()"))
+
+(defun ans/ess-last-error ()
+  "Run `rlang::last_error'."
+  (interactive)
+  (ess-send-string (ess-get-process) "rlang::last_trace()"))
 #+END_SRC
 ** ox-ravel
 
