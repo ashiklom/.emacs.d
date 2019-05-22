@@ -872,7 +872,11 @@ Evaluate lisp at point.
   (setq dired-listing-switches "-alh")
   (general-def
     :keymaps 'dired-mode-map
-    "SPC" 'ans-leader-command))
+    "SPC" 'ans-leader-command)
+  (general-def
+    :keymaps 'dired-mode-map
+    :states 'normal
+    "ge" #'wdired-change-to-wdired-mode))
 #+END_SRC
 
 ** ace-window
