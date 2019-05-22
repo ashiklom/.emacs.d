@@ -876,7 +876,13 @@ Evaluate lisp at point.
   (general-def
     :keymaps 'dired-mode-map
     :states 'normal
-    "ge" #'wdired-change-to-wdired-mode))
+    "ge" #'wdired-change-to-wdired-mode)
+  (defun ans/dired-mode-config ()
+    "Custom hooks for dired mode."
+    (interactive)
+    (let ((inhibit-message t))
+      (toggle-truncate-lines 1)))
+  (add-hook 'dired-mode-hook #'ans/dired-mode-config))
 #+END_SRC
 
 ** ace-window
@@ -1204,10 +1210,6 @@ Currently disabled.
 Currently disabled.
 
 #+BEGIN_SRC emacs-lisp
-(defun ans/csv-mode-settings ()
-  "Custom settings for CSV mode."
-  (toggle-truncate-lines -1))
-
 (use-package csv-mode
   :ensure t
   :mode "\\.csv\\'"
@@ -1216,7 +1218,10 @@ Currently disabled.
   (general-def
     :keymaps 'csv-mode-map
     "C-<right>" #'csv-forward-field
-    "C-<left>" #'csv-backward-field))
+    "C-<left>" #'csv-backward-field)
+  (defun ans/csv-mode-settings ()
+    "Custom settings for CSV mode."
+    (toggle-truncate-lines 1)))
 #+END_SRC
 ** open with
 
