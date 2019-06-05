@@ -675,7 +675,9 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   "C-0" 'balance-windows
   "C-)" 'shrink-window-if-larger-than-buffer
   "C-d" 'evil-scroll-down
-  "C-u" 'evil-scroll-up)
+  "C-u" 'evil-scroll-up
+  "g(" #'beginning-of-defun
+  "g)" #'end-of-defun)
 #+END_SRC
 
 ** Leader mappings
