@@ -711,6 +711,11 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
   ">" #'ans/kill-ring-to-clipboard
   "_" #'universal-argument
   "$" #'toggle-truncate-lines)
+
+(ans-leader-def
+  :states '(visual)
+  "c" #'comment-region
+  "C" #'uncomment-region)
 #+END_SRC
 
 Add ~-~ to ~universal-argument~ map.
