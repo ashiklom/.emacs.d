@@ -245,7 +245,8 @@ Note that BSD ~tar~ (the default for MacOS) gets tripped up by certain package n
 
 #+BEGIN_SRC emacs-lisp
 (when (string-equal system-type "darwin")
-  (setq exec-path (append exec-path '("/usr/local/bin")))
+  (setq exec-path (append '("/usr/local/bin") exec-path))
+  (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
   (setq mac-option-modifier 'meta)
   (let* ((gtar (executable-find "gtar")))
     (if gtar
