@@ -2247,7 +2247,10 @@ Indent nested agenda items with dots:
         ("i" "Interruption" entry (file "~/Dropbox/Notes/unsorted.org")
          "* %? \nCaptured %U" :clock-in t :clock-resume t)
         ("s" "Schedule event" entry (file "~/Dropbox/Notes/unsorted.org")
-         "* %^{Event}t %? :NOTE:\nCaptured %U" :clock-in t :clock-resume t)))
+         "* %^{Event}t %? :NOTE:\nCaptured %U" :clock-in t :clock-resume t)
+        ("c" "No-clock note" entry
+         (file "~/Dropbox/Notes/unsorted.org")
+         "* %?")))
 #+END_SRC
 
 *** org-capture-pop-frame
