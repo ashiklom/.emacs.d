@@ -15,3 +15,4 @@
 (provide 'init)
 ;;; init.el ends here
 (put 'dired-find-alternate-file 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
