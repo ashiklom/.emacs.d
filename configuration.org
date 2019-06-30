@@ -893,6 +893,20 @@ Evaluate lisp at point.
   (add-hook 'dired-mode-hook #'ans/dired-mode-config))
 #+END_SRC
 
+** dired-sidebar
+
+#+BEGIN_SRC emacs-lisp
+(use-package dired-sidebar
+  :ensure t
+  :general
+  (ans-leader-def
+    :states 'normal
+    "ds" #'dired-sidebar-toggle-sidebar)
+  (general-def
+    :states 'normal
+    :keymaps 'dired-sidebar-mode-map
+    "q" #'dired-sidebar-hide-sidebar))
+#+END_SRC
 ** ace-window
 
 #+BEGIN_SRC emacs-lisp
@@ -1731,8 +1745,7 @@ This is useful for complex R ~tribbles~.
   (gui-select-text (current-kill 0)))
 #+END_SRC
 * Helm
-
-Core helm configuration.
+** Core configuration
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm
