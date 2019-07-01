@@ -31,3 +31,4 @@ abbrev_defs
 /transient/
 /.last-package-update-day
 /.cache/
+/irony/bin/irony-server
