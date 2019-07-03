@@ -3065,6 +3065,7 @@ Based on [[https://emacs.stackexchange.com/a/10714/19378][this SO answer]].
     "z p" #'ans/ess-usethis-package
     "r l" #'ans/ess-drake-loadd
     "r d" #'ans/ess-drake-readd
+    "r b" #'ans/ess-drake-build-target
     "r i" (lambda (arg) (interactive "P") (ans/import/add-to-imports arg) (ans/import/source-imports))
     "," #'ans/split-path-string
     "$" #'ans/ess-dollar-to-bracket
@@ -3279,7 +3280,7 @@ source(.esstmpfile, echo = TRUE)
   "Run R expression in COMMAND-STRING using symbol-at-point."
   (ess-send-string
    (ess-get-process)
-   (format command-string (symbol-at-point))))
+   (format command-string (symbmtl-at-point))))
 #+END_SRC
 *** ~dplyr::glimpse~
 
@@ -3395,6 +3396,11 @@ source(.esstmpfile, echo = TRUE)
   "Run `drake::loadd` on symbol at point."
   (interactive)
   (ans/ess-do-with-symbol-at-point "drake::loadd('%s')"))
+
+(defun ans/ess-drake-build-target ()
+  "Build drake target symbol at point."
+  (interactive)
+  (ans/ess-do-with-symbol-at-point "invisible(drake::r_drake_build('%1$s')); drake::loadd('%1$s')"))
 #+END_SRC
 *** Object names and structure
 
