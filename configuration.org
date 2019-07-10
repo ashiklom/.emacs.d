@@ -3283,7 +3283,7 @@ source(.esstmpfile, echo = TRUE)
   "Run R expression in COMMAND-STRING using symbol-at-point."
   (ess-send-string
    (ess-get-process)
-   (format command-string (symbmtl-at-point))))
+   (format command-string (symbol-at-point))))
 #+END_SRC
 *** ~dplyr::glimpse~
 
