@@ -1053,6 +1053,8 @@ Special window rules.
     :states 'normal
     :keymaps 'magit-status-mode-map
     "gd" 'magit-diff-toggle-refine-hunk))
+  (setq magit-save-repository-buffers 'dontask
+        magit-diff-refine-hunk 'all))
 #+END_SRC
 ** magithub
 
