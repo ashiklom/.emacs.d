@@ -1049,12 +1049,13 @@ Special window rules.
     "g s" 'magit-status
     "g b" 'magit-blame)
   :config
+  (magit-wip-mode)
+  (setq magit-save-repository-buffers 'dontask
+        magit-diff-refine-hunk 'all)
   (general-def
     :states 'normal
     :keymaps 'magit-status-mode-map
     "gd" 'magit-diff-toggle-refine-hunk))
-  (setq magit-save-repository-buffers 'dontask
-        magit-diff-refine-hunk 'all))
 #+END_SRC
 ** magithub
 
