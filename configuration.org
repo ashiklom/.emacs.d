@@ -3996,9 +3996,7 @@ Here's a hydra for navigating lisp code.
 #+END_SRC
 ** lispyville
 
-(Currently disabled).
-
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
 (use-package lispyville
   :ensure t
   :hook ((lisp-mode emacs-lisp-mode lisp-interaction-mode) . lispyville-mode))
