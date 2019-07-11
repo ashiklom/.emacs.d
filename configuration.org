@@ -1131,9 +1131,13 @@ Quickly create and manipulate GitHub gists.
   :config
   (general-def
     :states 'normal
-    :keymaps 'markdown-mode-map
+    :keymaps '(markdown-mode-map gfm-mode-map)
     :prefix "\\"
-    "P" #'ans/toggle-poly-markdown-mode))
+    "P" #'ans/toggle-poly-markdown-mode)
+  (general-def
+    :states '(normal visual)
+    :prefix "\\"
+    "f" markdown-mode-style-map))
 #+END_SRC
 
 Also, add Pandoc support.
