@@ -688,9 +688,11 @@ Change universal argument from ~C-u~ (which I use for scrolling) to ~M-u~.
 (ans-leader-def
   :states '(motion normal visual emacs)
   :keymaps 'override
-  "b" 'helm-mini
+  "b b" #'helm-mini
+  "b k" #'kill-buffer
   "B" 'helm-bookmarks
-  "f" 'helm-find-files
+  "f f" 'helm-find-files
+  "f s" 'save-buffer
   "F" #'find-file
   ":" 'eval-expression
   "x" 'helm-M-x
@@ -787,7 +789,7 @@ Add ~-~ to ~universal-argument~ map.
 (defhydra ans/buffer-window-hydra (:exit t :hint nil)
   "
   Buffers: _w_:quit _W_:kill    Windows: _d_elete  _D_elete and kill    Frames: _f_:pop _F_:new     Split: _\\_:vert  _-_:horiz
-  Switch:  _h__j__k__l_  Move (far = g): _H__J__K__L_    Misc: _u_ revert   _s_ave as   _z_:undo   _Z_:redo   _SPC_:Last  _r_:Rotate  _o_:Ace swap"
+  Switch:  _h__j__k__l_  Move (far = g): _H__J__K__L_    Misc: _u_ revert   _s_ave as   _z_:undo   _Z_:redo   _SPC_:Last  _r_:Rotate  _o_:Ace window"
   ("w" quit-window)
   ("W" (kill-buffer (current-buffer)))
   ("d" evil-window-delete)
@@ -817,7 +819,7 @@ Add ~-~ to ~universal-argument~ map.
   ("SPC" ans/mru-window)
   ("0" (balance-windows (window-parent)))
   ("=" balance-windows)
-  ("o" ace-swap-window))
+  ("o" ace-window))
 
 (defhydra ans/rotate-window-hydra (:color 'pink)
   "Rotate window or layout"
@@ -957,13 +959,17 @@ Note that this is lazy-loaded on =persp-switch= thanks to the =:commands= keywor
 (use-package perspective
   :ensure t
   :init
-  (setq persp-mode-prefix-key (kbd "<C-SPC>"))
+  (setq persp-mode-prefix-key (kbd "SPC TAB"))
   :config
   (persp-mode)
   :general
   (general-def
     :states 'normal
-    "C-SPC s" 'persp-switch))
+    :prefix "SPC TAB"
+    "s" #'persp-switch
+    "r" #'persp-rename
+    "d" #'persp-kill
+    "TAB" #'persp-switch))
 #+END_SRC
 ** treemacs
 
